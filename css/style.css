@@ -1,0 +1,22 @@
+html, body {
+	height: 100%;
+}
+body {
+	padding-top: 50px;
+}
+#wrapper {
+	min-height: 100%;
+	height: auto;
+	margin: 0 auto -60px;
+	padding: 0 0 60px;
+}
+#footer {
+	height: 60px;
+	background-color: #f5f5f5;
+}
+#layer-form {
+	padding: 40px 15px;
+}
+.container .credit {
+	margin: 20px 0;
+}
