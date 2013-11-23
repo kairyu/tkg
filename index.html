@@ -6,7 +6,11 @@
 	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
 	<script src="js/bootstrap.touchspin.js"></script>
-	<script src="js/main.js"></script>
+	<script src="js/jquery-lang.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/lang/jp.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/lang/zh-sc.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/lang/zh-tc.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/main.js" charset="utf-8" type="text/javascript" ></script>
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>	
@@ -26,13 +30,30 @@
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
 						<li>
-							<a href="#">Home</a>
+							<a href="#" lang="en">Help</a>
 						</li>
 						<li>
-							<a href="#">About</a>
+							<a href="#" lang="en">About</a>
 						</li>
-						<li>
-							<a href="#">Contact</a>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="#" id="change-lan" role="button" class="dropdown-toggle" data-toggle="dropdown"><span lang="en">Language</span> <b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu" role="menu" aria-labelledby="change-lan">
+								<li role="presentation">
+									<a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="window.lang.change('en');">English</a>
+								</li>
+								<li role="presentation">
+									<a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="window.lang.change('jp');">日本語</a>
+								</li>
+								<li role="presentation">
+									<a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="window.lang.change('zh_sc');">中文（简体）</a>
+								</li>
+								<li role="presentation">
+									<a role="menuitem" tabindex="-1" href="javascript:void(0)" onclick="window.lang.change('zh_tc');">中文（繁體）</a>
+								</li>
+							</ul>
 						</li>
 					</ul>
 				</div>
@@ -41,26 +62,34 @@
 		<div class="container">
 			<form id="layer-form" class="form-horizontal" role="form">
 				<div class="form-group">
-					<label for="layer-num" class="col-md-2 control-label">Number of Layers</label>
+					<label for="keyboard-type" lang="en" class="col-md-2 control-label">Keyboard</label>
+					<div class="col-md-2">
+						<select id="keyboard-sel" class="form-control">
+							<option>GH60</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="layer-num" lang="en" class="col-md-2 control-label">Number of Layers</label>
 					<div class="col-md-2">
 						<input id="layer-num" class="form-control" type="text" name="layer-num" value="2">
 					</div>
 				</div>
 				<div class="layer form-group">
-					<label for="layer1" class="col-md-2 control-label">Layer1</label>
+					<label for="layer0" class="col-md-2 control-label" lang="en">Layer0</label>
+					<div class="col-md-4">
+						<textarea id="layer0" class="form-control" rows="4"></textarea>
+					</div>
+				</div>
+				<div class="layer form-group">
+					<label for="layer1" class="col-md-2 control-label" lang="en">Layer1</label>
 					<div class="col-md-4">
 						<textarea id="layer1" class="form-control" rows="4"></textarea>
 					</div>
 				</div>
-				<div class="layer form-group">
-					<label for="layer2" class="col-md-2 control-label">Layer2</label>
-					<div class="col-md-4">
-						<textarea id="layer2" class="form-control" rows="4"></textarea>
-					</div>
-				</div>
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-2">
-						<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+						<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> <span lang="en">Save</span></button>
 					</div>
 				</div>
 			</form>
