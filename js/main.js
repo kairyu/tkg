@@ -1,8 +1,14 @@
 window.lang = new jquery_lang_js();
+var tkg = new TKG();
 
 $(function() {
 
 	window.lang.run();
+	tkg.init({
+		"keycode_map": keycode_map,
+		"max_layers": 8,
+		"max_fns": 8,
+	});
 
 	// initialize touch spin
 	$('#layer-num').TouchSpin({
