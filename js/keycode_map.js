@@ -19,132 +19,132 @@ var keycode_map = {
 	"KC_A": {
 		"description": "a and A",
 		"keycode": "0x04",
-		"label": [ "a", "A" ]
+		"label": [ "a" ]
 	},
 	"KC_B": {
 		"description": "b and B",
 		"keycode": "0x05",
-		"label": [ "b", "B" ]
+		"label": [ "b" ]
 	},
 	"KC_C": {
 		"description": "c and C",
 		"keycode": "0x06",
-		"label": [ "c", "C" ]
+		"label": [ "c" ]
 	},
 	"KC_D": {
 		"description": "d and D",
 		"keycode": "0x07",
-		"label": [ "d", "D" ]
+		"label": [ "d" ]
 	},
 	"KC_E": {
 		"description": "e and E",
 		"keycode": "0x08",
-		"label": [ "e", "E" ]
+		"label": [ "e" ]
 	},
 	"KC_F": {
 		"description": "f and F",
 		"keycode": "0x09",
-		"label": [ "f", "F" ]
+		"label": [ "f" ]
 	},
 	"KC_G": {
 		"description": "g and G",
 		"keycode": "0x0A",
-		"label": [ "g", "G" ]
+		"label": [ "g" ]
 	},
 	"KC_H": {
 		"description": "h and H",
 		"keycode": "0x0B",
-		"label": [ "h", "H" ]
+		"label": [ "h" ]
 	},
 	"KC_I": {
 		"description": "i and I",
 		"keycode": "0x0C",
-		"label": [ "i", "I" ]
+		"label": [ "i" ]
 	},
 	"KC_J": {
 		"description": "j and J",
 		"keycode": "0x0D",
-		"label": [ "j", "J" ]
+		"label": [ "j" ]
 	},
 	"KC_K": {
 		"description": "k and K",
 		"keycode": "0x0E",
-		"label": [ "k", "K" ]
+		"label": [ "k" ]
 	},
 	"KC_L": {
 		"description": "l and L",
 		"keycode": "0x0F",
-		"label": [ "l", "L" ]
+		"label": [ "l" ]
 	},
 	"KC_M": {
 		"description": "m and M",
 		"keycode": "0x10",
-		"label": [ "m", "M" ]
+		"label": [ "m" ]
 	},
 	"KC_N": {
 		"description": "n and N",
 		"keycode": "0x11",
-		"label": [ "n", "N" ]
+		"label": [ "n" ]
 	},
 	"KC_O": {
 		"description": "o and O",
 		"keycode": "0x12",
-		"label": [ "o", "O" ]
+		"label": [ "o" ]
 	},
 	"KC_P": {
 		"description": "p and P",
 		"keycode": "0x13",
-		"label": [ "p", "P" ]
+		"label": [ "p" ]
 	},
 	"KC_Q": {
 		"description": "q and Q",
 		"keycode": "0x14",
-		"label": [ "q", "Q" ]
+		"label": [ "q" ]
 	},
 	"KC_R": {
 		"description": "r and R",
 		"keycode": "0x15",
-		"label": [ "r", "R" ]
+		"label": [ "r" ]
 	},
 	"KC_S": {
 		"description": "s and S",
 		"keycode": "0x16",
-		"label": [ "s", "S" ]
+		"label": [ "s" ]
 	},
 	"KC_T": {
 		"description": "t and T",
 		"keycode": "0x17",
-		"label": [ "t", "T" ]
+		"label": [ "t" ]
 	},
 	"KC_U": {
 		"description": "u and U",
 		"keycode": "0x18",
-		"label": [ "u", "U" ]
+		"label": [ "u" ]
 	},
 	"KC_V": {
 		"description": "v and V",
 		"keycode": "0x19",
-		"label": [ "v", "V" ]
+		"label": [ "v" ]
 	},
 	"KC_W": {
 		"description": "w and W",
 		"keycode": "0x1A",
-		"label": [ "w", "W" ]
+		"label": [ "w" ]
 	},
 	"KC_X": {
 		"description": "x and X",
 		"keycode": "0x1B",
-		"label": [ "x", "X" ]
+		"label": [ "x" ]
 	},
 	"KC_Y": {
 		"description": "y and Y",
 		"keycode": "0x1C",
-		"label": [ "y", "Y" ]
+		"label": [ "y" ]
 	},
 	"KC_Z": {
 		"description": "z and Z",
 		"keycode": "0x1D",
-		"label": [ "z", "Z" ]
+		"label": [ "z" ]
 	},
 	"KC_1": {
 		"description": "1 and !",
@@ -273,8 +273,8 @@ var keycode_map = {
 	"KC_NONUS_HASH": {
 		"description": "Non-US # and ~",
 		"keycode": "0x32",
-		"label": [ "#" ],
-		"label_2": [ "~" ],
+		"label": [ "~" ],
+		"label_2": [ "#" ],
 		"short_name": "KC_NUHS"
 	},
 	"KC_SCOLON": {
@@ -301,21 +301,21 @@ var keycode_map = {
 	"KC_COMMA": {
 		"description": ", and <",
 		"keycode": "0x36",
-		"label": [ "," ],
-		"label_2": [ "<" ],
+		"label": [ "<" ],
+		"label_2": [ "," ],
 		"short_name": "KC_COMM"
 	},
 	"KC_DOT": {
 		"description": ". and >",
 		"keycode": "0x37",
-		"label": [ "." ],
-		"label_2": [ "<" ]
+		"label": [ ">" ],
+		"label_2": [ "." ]
 	},
 	"KC_SLASH": {
 		"description": "/ and ?",
 		"keycode": "0x38",
-		"label": [ "/" ],
-		"label_2": [ "?" ],
+		"label": [ "?" ],
+		"label_2": [ "/" ],
 		"short_name": "KC_SLSH"
 	},
 	"KC_CAPSLOCK": {
@@ -1282,7 +1282,7 @@ var keycode_map = {
 	"KC_MS_BTN4": {
 		"description": "Mouse Button 4",
 		"keycode": "0xF7",
-		"label": [ "button4", "btn1" ],
+		"label": [ "button4", "btn4" ],
 		"short_name": "KC_BTN4"
 	},
 	"KC_MS_BTN5": {

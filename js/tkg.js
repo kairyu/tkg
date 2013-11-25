@@ -33,28 +33,28 @@ function TKG() {
 					for (var i = 0; i < labels.length; i++) {
 						if (_.isArray(labels[i])) {
 							for (var j = 0; j < labels[i].length; j++) {
-								var label = labels[i][j];
+								var label = labels[i][j].toLowerCase();
 								var conflicted = false;
 								if (keycode_map_reversed[label]) {
 									conflicted = true;
 								}
-								_smartPush(keycode_map_reversed[label], symbol);
+								keycode_map_reversed[label] = _smartPush(keycode_map_reversed[label], symbol);
 								if (conflicted) {
 									_consoleWarn("Conflicted label: " + label);
-									_consoleWare(keycode_map_reversed[label]);
+									_consoleWarn(keycode_map_reversed[label]);
 								}
 							}
 						}
 						else if (_.isString(labels[i])) {
-							var label = labels[i];
+							var label = labels[i].toLowerCase();
 							var conflicted = false;
 							if (keycode_map_reversed[label]) {
 								conflicted = true;
 							}
-							_smartPush(keycode_map_reversed[label], symbol);
+							keycode_map_reversed[label] = _smartPush(keycode_map_reversed[label], symbol);
 							if (conflicted) {
 								_consoleWarn("Conflicted label: " + label);
-								_consoleWare(keycode_map_reversed[label]);
+								_consoleWarn(keycode_map_reversed[label]);
 							}
 						}
 						else {
@@ -82,6 +82,7 @@ function TKG() {
 		else {
 			target = value;
 		}
+		return target;
 	}
 
 	var _parseLayer = function(layer_number, raw_string) {
