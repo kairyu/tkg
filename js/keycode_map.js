@@ -4,9 +4,18 @@ var keycode_map = {
 		"keycode": "0x00",
 		"label": [ "no" ]
 	},
+	/*
 	"KC_ROLL_OVER": {
 		"description": "ErrorRollOver",
 		"keycode": "0x01"
+	},
+	*/
+	"KC_TRANSPARENT": {
+		"description": "Transparent",
+		"keycode": "0x01",
+		"label": [ "" ],
+		"label_priority": [ "" ],
+		"short_name": "KC_TRANS"
 	},
 	"KC_POST_FAIL":	{
 		"description": "POSTFail",
@@ -210,6 +219,7 @@ var keycode_map = {
 		"description": "Return (ENTER)",
 		"keycode": "0x28",
 		"label": [ "enter", "return" ],
+		"label_priority": [ "enter", "return" ],
 		"short_name": "KC_ENT"
 	},
 	"KC_ESCAPE": {
@@ -221,7 +231,7 @@ var keycode_map = {
 	"KC_BSPACE": {
 		"description": "DELETE (Backspace)",
 		"keycode": "0x2A",
-		"label": [ "delete", "backspace", "bs" ],
+		"label": [ "delete", "backspace", "back space", "bs" ],
 		"short_name": "KC_BSPC"
 	},
 	"KC_TAB": {
@@ -232,14 +242,14 @@ var keycode_map = {
 	"KC_SPACE": {
 		"description": "Spacebar",
 		"keycode": "0x2C",
-		"label": [ "spacebar", "space", "spc" ],
+		"label": [ "spacebar", "space", "spc", "" ],
 		"short_name": "KC_SPC"
 	},
 	"KC_MINUS": {
 		"description": "- and _",
 		"keycode": "0x2D",
-		"label": [ "_", "=" ],
-		"label_2": [ "-" ],
+		"label": [ "_", "&mdash;", "=" ],
+		"label_2": [ "-", "&ndash;" ],
 		"short_name": "KC_MINS"
 	},
 	"KC_EQUAL": {
@@ -268,6 +278,7 @@ var keycode_map = {
 		"keycode": "0x31",
 		"label": [ "|" ],
 		"label_2": [ "\\" ],
+		"label_priority": [ "|" ],
 		"short_name": "KC_BSLS"
 	},
 	"KC_NONUS_HASH": {
@@ -294,8 +305,8 @@ var keycode_map = {
 	"KC_GRAVE": {
 		"description": "`(grave accent) and ~(tilde)",
 		"keycode": "0x35",
-		"label": [ "`" ],
-		"label_2": [ "~" ],
+		"label": [ "~" ],
+		"label_2": [ "`" ],
 		"short_name": "KC_GRV"
 	},
 	"KC_COMMA": {
@@ -387,7 +398,7 @@ var keycode_map = {
 	"KC_PSCREEN": {
 		"description": "PrintScreen",
 		"keycode": "0x46",
-		"label": [ "printscreen", "print screen", "prtsc" ],
+		"label": [ "printscreen", "print screen", "prtsc", "print" ],
 		"short_name": "KC_PSCR"
 	},
 	"KC_SCROLLLOCK": {
@@ -423,6 +434,7 @@ var keycode_map = {
 		"description": "Delete Forward",
 		"keycode": "0x4C",
 		"label": [ "delete", "del" ],
+		"label_priority": [ "delete" ],
 		"short_name": "KC_DEL"
 	},
 	"KC_END": {
@@ -439,23 +451,23 @@ var keycode_map = {
 	"KC_RIGHT": {
 		"description": "RightArrow",
 		"keycode": "0x4F",
-		"label": [ "right", "→" ],
+		"label": [ "right", "→", "&#9656;" ],
 		"short_name": "KC_RGHT"
 	},
 	"KC_LEFT": {
 		"description": "LeftArrow",
 		"keycode": "0x50",
-		"label": [ "left", "←" ]
+		"label": [ "left", "←", "&#9666;" ]
 	},
 	"KC_DOWN": {
 		"description": "DownArrow",
 		"keycode": "0x51",
-		"label": [ "down", "↓" ]
+		"label": [ "down", "↓", "&#9662;" ]
 	},
 	"KC_UP": {
 		"description": "UpArrow",
 		"keycode": "0x52",
-		"label": [ "up", "↑" ]
+		"label": [ "up", "↑", "&#9652;" ]
 	},
 	"KC_NUMLOCK": {
 		"description": "Num Lock and Clear",
@@ -480,7 +492,7 @@ var keycode_map = {
 	"KC_KP_MINUS": {
 		"description": "Keypad -",
 		"keycode": "0x56",
-		"label": [ [ "-" ], [ "p-" ] ],
+		"label": [ [ "-", "&ndash;" ], [ "p-" ] ],
 		"label_2": [ [ "" ], [] ],
 		"short_name": "KC_PMNS"
 	},
@@ -586,6 +598,7 @@ var keycode_map = {
 		"description": "Application",
 		"keycode": "0x65",
 		"label": [ "app", "menu" ],
+		"label_priority": [ "menu" ],
 		"short_name": "KC_APP"
 	},
 	"KC_POWER": {
@@ -1196,45 +1209,49 @@ var keycode_map = {
 		"description": "Left Control",
 		"keycode": "0xE0",
 		"label": [ "control", "ctrl", "lcontrol", "lctrl" ],
+		"label_priority": [ "control", "ctrl" ],
 		"short_name": "KC_LCTL"
 	},
 	"KC_LSHIFT": {
 		"description": "Left Shift",
 		"keycode": "0xE1",
 		"label": [ "shift", "lshift" ],
+		"label_priority": [ "shift" ],
 		"short_name": "KC_LSFT"
 	},
 	"KC_LALT": {
 		"description": "Left Alt",
 		"keycode": "0xE2",
-		"label": [ "alt", "lalt" ]
+		"label": [ "alt", "lalt" ],
+		"label_priority": [ "alt" ]
 	},
 	"KC_LGUI": {
 		"description": "Left GUI(Windows/Apple/Meta key)",
 		"keycode": "0xE3",
-		"label": [ "gui", "win", "command", "comm", "meta", "lgui", "lwin", "lcommand", "lcomm", "lmeta" ]
+		"label": [ "gui", "win", "command", "comm", "meta", "lgui", "lwin", "lcommand", "lcomm", "lmeta" ],
+		"label_priority": [ "gui", "win", "command", "comm", "meta" ]
 	},
 	"KC_RCTRL": {
 		"description": "Right Ctonrol",
 		"keycode": "0xE4",
-		"label": [ "rcontrol", "rctrl" ],
+		"label": [ "control", "ctrl", "rcontrol", "rctrl" ],
 		"short_name": "KC_RCTL"
 	},
 	"KC_RSHIFT": {
 		"description": "Right Shift",
 		"keycode": "0xE5",
-		"label": [ "rshift" ],
+		"label": [ "shift", "rshift" ],
 		"short_name": "KC_RSFT"
 	},
 	"KC_RALT": {
 		"description": "Right Alt",
 		"keycode": "0xE6",
-		"label": [ "ralt" ]
+		"label": [ "alt", "ralt" ]
 	},
 	"KC_RGUI": {
 		"description": "Right GUI(Windows/Apple/Meta key)",
 		"keycode": "0xE7",
-		"label": [ "rgui", "rwin", "rcommand", "rcomm", "rmeta" ]
+		"label": [ "gui", "win", "command", "comm", "meta", "rgui", "rwin", "rcommand", "rcomm", "rmeta" ]
 	},
 	/* Mousekey */
 	"KC_MS_UP": {
