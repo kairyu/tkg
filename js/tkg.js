@@ -18,9 +18,11 @@ function TKG() {
 
 	var _init = function(object) {
 		_keycode_map = object["keycode_map"];
-		console.log(_keycode_map);
+		_consoleLog("keycode_map:");
+		_consoleLog(_keycode_map);
 		_keycode_map_reversed = _generateReversedKeycodeMap(_keycode_map);
-		console.log(_keycode_map_reversed);
+		_consoleLog("keycode_map_reversed:");
+		_consoleLog(_keycode_map_reversed);
 		_max_layers = object["max_layers"];
 		_max_fns = object["max_fns"];
 		_matrix_rows = object["matrix_rows"];
@@ -111,15 +113,18 @@ function TKG() {
 
 		// parse keycode from label
 		layer = _parseKeycode(layer);
-		console.log(layer);
+		_consoleLog("layer:");
+		_consoleLog(layer);
 		
 		// parse fns from layer
 		_fns = _parseFns(layer);
-		console.log(_fns);
+		_consoleLog("fns:");
+		_consoleLog(_fns);
 
 		// parse matrix from position
 		matrix = _parseMatrix(layer);
-		console.log(matrix);
+		_consoleLog("matrix:");
+		_consoleLog(matrix);
 
 		// generate keymap from matrix
 
@@ -138,7 +143,6 @@ function TKG() {
 			_raiseError(error, "general", "Invalid raw data", raw_string);
 			return layer;
 		}
-		console.log(raw);
 
 		// parse object to keys
 		var keys = [];
@@ -448,6 +452,12 @@ function TKG() {
 	var _consoleWarn = function(message) {
 		if (_debug) {
 			console.warn(message);
+		}
+	}
+
+	var _consoleLog = function(message) {
+		if (_debug) {
+			console.log(message);
 		}
 	}
 
