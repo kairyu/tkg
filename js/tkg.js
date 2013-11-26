@@ -138,6 +138,7 @@ function TKG() {
 			_raiseError(error, "general", "Invalid raw data", raw_string);
 			return layer;
 		}
+		console.log(raw);
 
 		// parse object to keys
 		var keys = [];
@@ -146,6 +147,7 @@ function TKG() {
 		var c_w = 1;
 		var c_h = 1;
 		var before_first_key = true;
+		var stepped = false;
 		if (!_.isArray(raw)) {
 			_raiseError(error, "general", "Invalid raw data", raw);
 			return layer;
@@ -157,10 +159,19 @@ function TKG() {
 				var el = raw[i][j];
 				// a property object
 				if (_.isObject(el)) {
-					if (el.x) { c_x += el.x; }
+					if (el.x) {
+						if (stepped) {
+							stepped = false;
+						}
+						else {
+							c_x += el.x;
+						}
+					}
 					if (!before_first_key && j == 0 && el.y) { c_y += el.y; }
 					if (el.w) { c_w = el.w; }
+					if (el.w2) { c_w = el.w2; }
 					if (el.h) { c_h = el.h; }
+					if (el.l) { stepped = true; }
 				}
 				// a key
 				else if (_.isString(el)) {
