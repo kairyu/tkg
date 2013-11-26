@@ -170,7 +170,7 @@ var keycode_map = {
 	"KC_3": {
 		"description": "3 and #",
 		"keycode": "0x20",
-		"label": [ "#" ],
+		"label": [ "#", "£" ],
 		"label_2": [ "3" ]
 	},
 	"KC_4": {
@@ -305,7 +305,7 @@ var keycode_map = {
 	"KC_GRAVE": {
 		"description": "`(grave accent) and ~(tilde)",
 		"keycode": "0x35",
-		"label": [ "~" ],
+		"label": [ "~", "¬" ],
 		"label_2": [ "`" ],
 		"short_name": "KC_GRV"
 	},
@@ -1246,7 +1246,7 @@ var keycode_map = {
 	"KC_RALT": {
 		"description": "Right Alt",
 		"keycode": "0xE6",
-		"label": [ "alt", "ralt" ]
+		"label": [ "alt", "ralt", "altgr" ]
 	},
 	"KC_RGUI": {
 		"description": "Right GUI(Windows/Apple/Meta key)",

@@ -150,8 +150,11 @@ function TKG() {
 		var c_y = 0;
 		var c_w = 1;
 		var c_h = 1;
+		var c_x2 = 0;
+		var c_w2 = 0;
 		var before_first_key = true;
 		var stepped = false;
+		var rowspan = false;
 		if (!_.isArray(raw)) {
 			_raiseError(error, "general", "Invalid raw data", raw);
 			return layer;
@@ -163,9 +166,13 @@ function TKG() {
 				var el = raw[i][j];
 				// a property object
 				if (_.isObject(el)) {
+					if (el.l) { stepped = true; }
+					if (el.h && el.h > 1) { rowspan = true; }
 					if (el.x) {
 						if (stepped) {
 							stepped = false;
+						}
+						else if (rowspan) {
 						}
 						else {
 							c_x += el.x;
@@ -173,9 +180,24 @@ function TKG() {
 					}
 					if (!before_first_key && j == 0 && el.y) { c_y += el.y; }
 					if (el.w) { c_w = el.w; }
-					if (el.w2) { c_w = el.w2; }
 					if (el.h) { c_h = el.h; }
-					if (el.l) { stepped = true; }
+					if (stepped && el.w2) { c_w = el.w2; }
+					if (rowspan) {
+						if (el.x2) {
+							c_x2 = c_x + el.x;
+							c_x = c_x2 + el.x2;
+						}
+						else {
+							c_x2 = c_x;
+						}
+						if (el.w2) {
+							c_w2 = el.w;
+							c_w = el.w2;
+						}
+						else {
+							c_w2 = c_w;
+						}
+					}
 				}
 				// a key
 				else if (_.isString(el)) {
@@ -184,13 +206,19 @@ function TKG() {
 					if (_.isEmpty(label)) {
 						label["top"] = "";
 					}
-					keys.push({
+					var key = {
 						"label": label,
 						"x": c_x,
 						"y": c_y,
 						"w": c_w,
 						"h": c_h
-					});
+					};
+					if (rowspan) {
+						if (c_x2 != c_x || c_w2 != c_w) { key["x2"] = c_x2; }
+						if (c_w2 != c_w) { key["w2"] = c_w2; }
+						rowspan = false;
+					}
+					keys.push(key);
 					c_x += c_w;
 					c_w = 1;
 					c_h = 1;
@@ -240,6 +268,7 @@ function TKG() {
 				var alt_symbol = "";
 				// unique
 				if (_.isString(symbol)) {
+					// TODO: check label and label_2 matching
 					alt_symbol = symbol;
 				}
 				// conflicted
@@ -390,7 +419,7 @@ function TKG() {
 		var keys = layer["keys"];
 		for (var i = 0; i < keys.length; i++) {
 			var key = keys[i];
-			var index = _positionToIndex(key["x"], key["y"], key["w"], key["h"]);
+			var index = _positionToIndex(key["x"], key["y"], key["w"], key["h"], key["x2"], key["w2"]);
 			if (_matrix_map[index]) {
 				var row = _matrix_map[index]["row"];
 				var col = _matrix_map[index]["col"];
@@ -423,13 +452,19 @@ function TKG() {
 		return label;
 	}
 
-	var _positionToIndex = function(x, y, w, h) {
+	var _positionToIndex = function(x, y, w, h, x2, w2) {
 		var index = x + "," + y;
-		if (w > 1) {
+		if (w > 1 || h > 1) {
 			index += "," + w;
 		}
 		if (h > 1) {
 			index += "," + h;
+		}
+		if (x2 || w2) {
+			index += "," + x2;
+		}
+		if (w2) {
+			index += "," + w2;
 		}
 		return index;
 	}
@@ -487,7 +522,24 @@ function TKG() {
 		object = {};
 	}
 
+	var _getError = function(layer_number) {
+		if (layer_number > _max_layers) { return false; }
+		return _layers[layer_number]["error"];
+	}
+
+	var _getWarn = function(layer_number) {
+		if (layer_number > _max_layers) { return false; }
+		return _layers[layer_number]["warn"];
+	}
+
+	var _getFns = function() {
+		return _fns;
+	}
+
 	// public methods
 	this.init = _init;
 	this.parseLayer = _parseLayer;
+	this.getError = _getError;
+	this.getWarn = _getWarn;
+	this.getFns = _getFns;
 }
