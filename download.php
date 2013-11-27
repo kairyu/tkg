@@ -44,6 +44,7 @@ if (
 		if (isset($_POST['eep_size']) && isset($_POST['eep_start'])) {
 			$eep_size = intval($_POST['eep_size']);
 			$eep_start = intval($_POST['eep_start']);
+		}
 		else {
 			die('Invalid Data');
 		}
@@ -66,7 +67,7 @@ if ($filetype == 'eep') {
 	for ($layer = 0; $layer < $max_layers; $layers++) {
 		for ($row = 0; $row < $matrix_rows; $row++) {
 			for ($col = 0; $col < $matrix_cols; $col++) {
-				$keymap_bin .= pack('C', $keymaps[$layer][$row][$col]));
+				$keymap_bin .= pack('C', $keymaps[$layer][$row][$col]);
 			}
 		}
 	}
