@@ -17,7 +17,7 @@ $filename = '';
 // check get
 if (isset($_GET['file'])) {
 	$filetype = $_GET['file'];
-	if (!in_array(['eep', 'h'], $filetype)) {
+	if (!in_array(array('eep', 'h'), $filetype)) {
 		die('Invalid Parameter');
 	}
 }
