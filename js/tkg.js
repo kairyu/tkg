@@ -109,6 +109,7 @@ function TKG() {
 
 		// parse raw string to keys
 		layer = _parseRawString(raw_string);
+		console.log(layer["error"]);
 		if (!_.isEmpty(layer["error"])) {
 			return false;
 		}
@@ -148,6 +149,8 @@ function TKG() {
 			eval("raw = [" + raw_string + "]");
 		} catch (e) {
 			_raiseError(error, "general", "Invalid raw data", raw_string);
+			layer["error"] = error;
+			layer["warn"] = warn;
 			return layer;
 		}
 
@@ -164,6 +167,8 @@ function TKG() {
 		var rowspan = false;
 		if (!_.isArray(raw)) {
 			_raiseError(error, "general", "Invalid raw data", raw);
+			layer["error"] = error;
+			layer["warn"] = warn;
 			return layer;
 		}
 		for (var i = 0; i < raw.length; i++) {
