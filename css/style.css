@@ -23,3 +23,9 @@ body {
 .kbd-info {
 	padding-top: 10px;
 }
+.kbd-info .tooltip-inner {
+	text-align: left;
+}
+#kbd-info {
+	background-color: #101010;
+}

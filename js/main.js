@@ -72,10 +72,11 @@ $(function() {
 
 	// show keyboard help info
 	$('#kbd-info').tooltip({
+		html: true,
 		placement: 'right',
-		title:	'Name:' +
-				'Description:' +
-				'Max Layers:' +
+		title:	'Name:<br/>' +
+				'Description:<br/>' +
+				'Max Layers:<br/>' +
 				'Max Fns:'
 	});
 
