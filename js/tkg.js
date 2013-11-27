@@ -676,10 +676,31 @@ function TKG() {
 		return _fns;
 	}
 
+	var _getKeymapsHex = function() {
+		return _keymaps_hex;
+	}
+
+	var _getKeymapsSymbol = function() {
+		return _keymap_symbol;
+	}
+
+	var _getFnActionsHex = function() {
+		return _fn_actions_hex;
+	}
+
+	var _getFnActionsSymbol = function() {
+		return _fn_actions_symbol;
+	}
+
 	// public methods
 	this.init = _init;
 	this.parseLayer = _parseLayer;
 	this.getError = _getError;
 	this.getWarn = _getWarn;
 	this.getFns = _getFns;
+	this.getKeymapsHex = _getKeymapsHex;
+	this.getKeymapsSymbol = _getKeymapsSymbol;
+	this.getFnActionsHex = _getFnActionsHex;
+	this.getFnActionsSymbol = _getFnActionsSymbol;
+
 }
