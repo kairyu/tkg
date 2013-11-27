@@ -70,6 +70,15 @@ $(function() {
 		window.lang.run();
 	});
 
+	// show keyboard help info
+	$('#kbd-info').tooltip({
+		placement: 'right',
+		title:	'Name:' +
+				'Description:' +
+				'Max Layers:' +
+				'Max Fns:'
+	});
+
 	$('#layer-form').on('blur', 'textarea', function(event) {
 		var id = event.target.id;
 		var layer_number = id.slice(5);
