@@ -104,6 +104,8 @@ function TKG() {
 
 		var layer = _layers[layer_number];
 		var matrix = _matrices[layer_number];
+		var keymap_hex = _keymaps_hex[layer_number];
+		var keymap_symbol = _keymaps_symbol[layer_number];
 
 		// parse raw string to keys
 		layer = _parseRawString(raw_string);
@@ -127,7 +129,12 @@ function TKG() {
 		_consoleLog(matrix);
 
 		// generate keymap from matrix
-
+		keymap_hex = _generateKeymapHex(matrix);
+		keymap_symbol = _generateKeymapSymbol(matrix);
+		_consoleLog("keymap_hex:");
+		_consoleLog(keymap_hex);
+		_consoleLog("keymap_symbol:");
+		_consoleLog(keymap_symbol);
 	}
 
 	var _parseRawString = function(raw_string) {
@@ -498,7 +505,8 @@ function TKG() {
 			if (_matrix_map[index]) {
 				var row = _matrix_map[index]["row"];
 				var col = _matrix_map[index]["col"];
-				var symbol = key["short_name"] ? key["short_name"] : key["symbol"];
+				//var symbol = key["short_name"] ? key["short_name"] : key["symbol"];
+				var symbol = key["symbol"];
 				key["matrix"] = {
 					"row": row,
 					"col": col
@@ -511,6 +519,43 @@ function TKG() {
 		}
 
 		return matrix;
+	}
+
+	var _generateKeymapHex = function(matrix) {
+		var keymap = [];
+		var default_keycode = 1;
+		for (var row = 0; row < _matrix_rows; row++) {
+			keymap.push([]);
+			for (var col = 0; col < _matrix_cols; col++) {
+				if (matrix[row][col]) {
+					var symbol = matrix[row][col];
+					keymap[row].push(parseInt(_keycode_map[symbol]["keycode"], 16));
+				}
+				else {
+					keymap[row].push(default_keycode);
+				}
+			}
+		}
+		return keymap;
+	}
+
+	var _generateKeymapSymbol = function(matrix) {
+		var keymap = [];
+		var default_symbol = "KC_TRANS";
+		for (var row = 0; row < _matrix_rows; row++) {
+			keymap.push([]);
+			for (var col = 0; col < _matrix_cols; col++) {
+				if (matrix[row][col]) {
+					var symbol = matrix[row][col];
+					symbol = _keycode_map[symbol]["short_name"] ? _keycode_map[symbol]["short_name"] : symbol;
+					keymap[row].push(symbol);
+				}
+				else {
+					keymap[row].push(default_symbol);
+				}
+			}
+		}
+		return keymap;
 	}
 
 	var _parseLabelString = function(label_string) {
