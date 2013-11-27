@@ -102,6 +102,16 @@ function TKG() {
 			return false;
 		}
 
+		// clear when raw string is empty
+		if (!raw_string) {
+			_layers[layer_number] = {};
+			_matrices[layer_number] = [];
+			_keymaps_hex[layer_number] = [];
+			_keymaps_symbol[layer_number] = [];
+			_layers[layer_number]["error"] = {};
+			_layers[layer_number]["warn"] = {};
+		}
+
 		var layer = _layers[layer_number];
 		var matrix = _matrices[layer_number];
 		var keymap_hex = _keymaps_hex[layer_number];
@@ -641,10 +651,6 @@ function TKG() {
 		if (dump) {
 			_consoleWarn(dump);
 		}
-	}
-
-	var _clearError = function(object) {
-		object = {};
 	}
 
 	var _getError = function(layer_number) {
