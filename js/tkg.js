@@ -547,7 +547,7 @@ function TKG() {
 
 	var _generateKeymapHex = function(matrix) {
 		var keymap = [];
-		var default_keycode = 1;
+		var default_keycode = 0;
 		for (var row = 0; row < _matrix_rows; row++) {
 			keymap.push([]);
 			for (var col = 0; col < _matrix_cols; col++) {
@@ -565,7 +565,7 @@ function TKG() {
 
 	var _generateKeymapSymbol = function(matrix) {
 		var keymap = [];
-		var default_symbol = "KC_TRANS";
+		var default_symbol = "KC_NO";
 		for (var row = 0; row < _matrix_rows; row++) {
 			keymap.push([]);
 			for (var col = 0; col < _matrix_cols; col++) {
