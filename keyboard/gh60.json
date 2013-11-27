@@ -3,7 +3,8 @@
 	"description": "GH60 keyboard",
 	"max_layers": 8,
 	"max_fns": 8,
-	"eeprom_size": 1024,
+	"eep_size": 1024,
+	"eep_start": 16,
 	"matrix_rows": 5,
 	"matrix_cols": 14,
 	"matrix_map": {
