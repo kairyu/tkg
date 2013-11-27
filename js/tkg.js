@@ -1,6 +1,6 @@
 function TKG() {
 
-	var _debug = 1;
+	var _debug = 3;
 	var _keycode_map = {};
 	var _keycode_map_reversed = {};
 	var _max_layers = 0;
@@ -50,8 +50,8 @@ function TKG() {
 								}
 								keycode_map_reversed[label] = _smartPush(keycode_map_reversed[label], symbol);
 								if (conflicted) {
-									_consoleWarn("Conflicted label: " + label);
-									_consoleWarn(keycode_map_reversed[label]);
+									_consoleLog("Conflicted label: " + label);
+									_consoleLog(keycode_map_reversed[label]);
 								}
 							}
 						}
@@ -64,8 +64,8 @@ function TKG() {
 							}
 							keycode_map_reversed[label] = _smartPush(keycode_map_reversed[label], symbol);
 							if (conflicted) {
-								_consoleWarn("Conflicted label: " + label);
-								_consoleWarn(keycode_map_reversed[label]);
+								_consoleLog("Conflicted label: " + label);
+								_consoleLog(keycode_map_reversed[label]);
 							}
 						}
 						else {
@@ -243,7 +243,7 @@ function TKG() {
 			return layer;
 		}
 
-		// parse keycode from label
+		// guess keycode from label
 		var keys = layer["keys"];
 		for (var i = 0; i < keys.length; i++) {
 			var key = keys[i];
@@ -268,65 +268,23 @@ function TKG() {
 				var alt_symbol = "";
 				// unique
 				if (_.isString(symbol)) {
-					// TODO: check label and label_2 matching
-					alt_symbol = symbol;
+					if (_matchLabelsWithSymbol(label, label_2, symbol)) {
+						alt_symbol = symbol;
+					}
+					else {
+						var message = label + (label_2 ? "\n" + label_2 : "");
+						_raiseError(error, "no_matching_keycode", message, key);
+					}
 				}
 				// conflicted
 				else if (_.isArray(symbol)) {
+					var symbols = symbol;
 					var alt_symbols = [];
-					// parse each symbols
-					for (var j = 0; j < symbol.length; j++) {
-						// get labels in map
-						var labels_in_map = _keycode_map[symbol[j]]["label"];
-						if (_keycode_map[symbol[j]]["label_2"]) {
-							var labels_2_in_map = _keycode_map[symbol[j]]["label_2"];
-						}
-						else {
-							var labels_2_in_map = [];
-						}
-						var is_found = false;
-						// labels in keycode map should be array
-						if (_.isArray(labels_in_map) && labels_in_map.length > 0) {
-							for (var k = 0; k < labels_in_map.length; k++) {
-								var label_in_map = labels_in_map[k];
-								// multi group labels
-								if (_.isArray(label_in_map)) {
-									// if in this group
-									if (_.indexOf(label_in_map, label) != -1) {
-										is_found = true;
-										if (label_2 == "" && labels_in_map[k].length == 0) {
-											alt_symbols.push(symbol[j]);
-										}
-										else if (label_2 || label_2 == "") {
-											if (_.indexOf(labels_2_in_map[k], label_2) != -1) {
-												alt_symbols.push(symbol[j]);
-											}
-										}
-									}
-								}
-								// single group labels
-								else if (_.isString(label_in_map)) {
-									if (_.indexOf(labels_in_map, label) != -1) {
-										is_found = true;
-										if (label_2 == "" && labels_2_in_map.length == 0) {
-											alt_symbols.push(symbol[j]);
-										}
-										else if (label_2 || label_2 == "") {
-											if (_.indexOf(labels_2_in_map, label_2) != -1) {
-												alt_symbols.push(symbol[j]);
-											}
-										}
-									}
-									break;
-								}
-							}
-							// label not found in any groups
-							if (!is_found) {
-								_consoleError("Unexpected error: label not found");
-							}
-						}
-						else {
-							_consoleError("Invalid label data");
+					// parse each symbol
+					for (var j = 0; j < symbols.length; j++) {
+						var symbol = symbols[j];
+						if (_matchLabelsWithSymbol(label, label_2, symbol)) {
+							alt_symbols.push(symbol);
 						}
 					}
 					// check alternative symbols
@@ -334,22 +292,20 @@ function TKG() {
 						_consoleError("Unexpected error: no alternative symbols");
 						_consoleError(symbol);
 					}
+					// solved
 					else if (alt_symbols.length == 1) {
 						alt_symbol = alt_symbols[0];
 					}
 					// unsolved conflict
 					else {
-						var alt_symbols_2 = [];
-						for (var m = 0; m < alt_symbols.length; m++) {
-							if (_keycode_map[alt_symbols[m]]["label_priority"]) {
-								var label_priority = _keycode_map[alt_symbols[m]]["label_priority"];
-								if (_.indexOf(label_priority, label) != -1) {
-									alt_symbols_2.push(alt_symbols[m]);
-								}
+						var alt_symbols_round2 = [];
+						for (var j = 0; j < alt_symbols.length; j++) {
+							if (_matchLabelsWithSymbol(label, label_2, alt_symbols[j], "label_priority")) {
+								alt_symbols_round2.push(alt_symbols[j]);
 							}
 						}
-						if (alt_symbols_2.length == 1) {
-							alt_symbol = alt_symbols_2[0];
+						if (alt_symbols_round2.length == 1) {
+							alt_symbol = alt_symbols_round2[0];
 							_raiseWarn(warn, "solved_conflict", label + " -> " + alt_symbol, alt_symbols);
 						}
 						else {
@@ -369,6 +325,125 @@ function TKG() {
 		}
 
 		return layer;
+	}
+
+	var _matchLabelsWithSymbol = function(label, label_2, symbol, property_name) {
+		// check arguments
+		if (arguments.length == 3) {
+			property_name = "label";
+		}
+		else if (arguments.length == 4) {
+		}
+		else {
+			_consoleError("Wrong function call");
+			return false;
+		}
+		var property_name_2 = property_name + "_2";
+
+		// try to find symbol in keycode map
+		if (_keycode_map[symbol]) {
+			var element = _keycode_map[symbol];
+			// has label property
+			if (element[property_name]) {
+				// has label_2 property
+				if (element[property_name_2]) {
+					return _matchLabels(label, element[property_name], label_2, element[property_name_2]);
+				}
+				else {
+					return _matchLabels(label, element[property_name]);
+				}
+			}
+			else {
+				_consoleWarn("No such label property: " + property_name);
+				return false;
+			}
+		}
+		// not found
+		else {
+			_consoleError("Symbol not found");
+			return false;
+		}
+	}
+
+	var _matchLabels = function(label, target_labels, label_2, target_labels_2) {
+		var match_2;
+		// check arguments
+		if (arguments.length == 2) {
+			match_2 = false;
+		}
+		else if (arguments.length == 4) {
+			match_2 = true;
+		}
+		else {
+			_consoleError("Wrong function call");
+			return false;
+		}
+
+		// if is not array
+		if (!_.isArray(target_labels)) {
+			_consoleError("Unknown label type");
+			return false;
+		}
+		// if is empty array
+		if (target_labels.length == 0) {
+			_consoleError("Unknown label type");
+			return false;
+		}
+
+		// 2d array
+		if (_.isArray(target_labels[0])) {
+			for (var i = 0; i < target_labels.length; i++) {
+				if (match_2) {
+					if (_matchLabels(label, target_labels[i], label_2, target_labels_2[i])) {
+						return true;
+					}
+				}
+				else {
+					if (_matchLabels(label, target_labels[i])) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		// 1d array
+		else if (_.isString(target_labels[0])) {
+			// label found
+			if (_.indexOf(target_labels, label) != -1) {
+				// if match with label_2
+				if (match_2) {
+					// not a array
+					if (!_.isArray(target_labels_2)) {
+						_consoleError("Unknown label type");
+						return false;
+					}
+					// ignore label_2
+					if (target_labels_2.length == 0) {
+						return true;
+					}
+					// match with label_2
+					if (_.indexOf(target_labels_2, label_2) != -1) {
+						return true;
+					}
+					else {
+						return false;
+					}
+				}
+				// only match label
+				else {
+					return true;
+				}
+			}
+			// not found
+			else {
+				return false;
+			}
+		}
+		// unknown type
+		else {
+			_consoleError("Unknown label type");
+			return false;
+		}
 	}
 
 	var _parseFns = function(layer) {
@@ -479,19 +554,19 @@ function TKG() {
 	}
 
 	var _consoleError = function(message) {
-		if (_debug) {
+		if (_debug > 0) {
 			console.error(message);
 		}
 	}
 
 	var _consoleWarn = function(message) {
-		if (_debug) {
+		if (_debug > 1) {
 			console.warn(message);
 		}
 	}
 
 	var _consoleLog = function(message) {
-		if (_debug) {
+		if (_debug > 2) {
 			console.log(message);
 		}
 	}

@@ -298,7 +298,7 @@ var keycode_map = {
 	"KC_QUOTE": {
 		"description": "' and \"",
 		"keycode": "0x34",
-		"label": [ [ "\"" ], [ "+" ] ],
+		"label": [ [ "\"", "@" ], [ "+" ] ],
 		"label_2": [ [ "'" ], [ ";" ] ],
 		"short_name": "KC_QUOT"
 	},
