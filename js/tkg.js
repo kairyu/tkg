@@ -17,6 +17,7 @@ function TKG() {
 	var _fn_actions_symbol = [];
 
 	var _init = function(object) {
+		// get parameters
 		_keycode_map = object["keycode_map"];
 		_consoleLog("keycode_map:");
 		_consoleLog(_keycode_map);
@@ -28,6 +29,14 @@ function TKG() {
 		_matrix_rows = object["matrix_rows"];
 		_matrix_cols = object["matrix_cols"];
 		_matrix_map = object["matrix_map"];
+		// init variables
+		_layers = [];
+		_fns = [];
+		_matrices = [];
+		_keymaps_hex = [];
+		_keymaps_symbol = [];
+		_fn_actions_hex = [];
+		_fn_actions_symbol = [];
 	}
 
 	var _generateReversedKeycodeMap = function(keycode_map) {
