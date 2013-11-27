@@ -8,7 +8,7 @@ $(function() {
 
 	function loadKeyboard(name) {
 		$.ajaxSetup({ async: false });
-		$.getJSON("keyboard/" + name.toLowerCase + ".json", function(json) {
+		$.getJSON("keyboard/" + name.toLowerCase() + ".json", function(json) {
 			keyboard = json;
 			tkg.init({
 				"keycode_map": keycode_map,
