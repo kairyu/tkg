@@ -21,11 +21,9 @@ body {
 	margin: 20px 0;
 }
 .kbd-info {
-	padding-top: 10px;
-}
-.kbd-info .tooltip-inner {
-	text-align: left;
+	padding-top: 7px;
 }
 #kbd-info {
-	background-color: #101010;
+	color: #2f6f9f;
+	border-bottom: 1px dotted #999;
 }

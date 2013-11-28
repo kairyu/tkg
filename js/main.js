@@ -71,13 +71,13 @@ $(function() {
 	});
 
 	// show keyboard help info
-	$('#kbd-info').tooltip({
+	$('#kbd-info').popover({
 		html: true,
-		placement: 'right',
-		title:	'Name:<br/>' +
-				'Description:<br/>' +
-				'Max Layers:<br/>' +
-				'Max Fns:'
+		trigger: 'hover',
+		content: '<strong>Name: </strong>' + keyboard['name'] + '<br/>' +
+				'<strong>Description: </strong>' + keyboard['description'] + '<br/>' +
+				'<strong>Max Layers: </strong>' + keyboard['max_layers'] + '<br/>' + 
+				'<strong>Max Fns: </strong>' + keyboard['max_fns']
 	});
 
 	$('#layer-form').on('blur', 'textarea', function(event) {
@@ -89,4 +89,29 @@ $(function() {
 		}
 	});
 
+	// download
+	$('#dl_eep, #dl_h').click(function() {
+		var type = $(this).attr('id');
+		var keymaps = [];
+		var fn_actions = [];
+
+		if ( type == 'dl_eep' ) {
+			keymaps = tkg.getKeymapsHex();
+			fn_actions = tkg.getFnActionsHex();
+		}
+		else if ( type == 'dl_h' ) {
+			keymaps = tkg.getKeymapsSymbol();
+			fn_actions = tkg.getFnActionsSymbol();
+		}
+		$("body").append("<form id='dl_form' action='download.php' method='POST'>" +
+			"<input type='hidden' name='matrix_rows' value='" + keyboard['matrix_rows'] + "'>" +
+			"<input type='hidden' name='matrix_cols' value='" + keyboard['matrix_cols'] + "'>" +
+			"<input type='hidden' name='max_layers' value='" + keyboard['max_layers'] + "'>" +
+			"<input type='hidden' name='max_fns' value='" + keyboard['max_fns'] + "'>" +
+			"<input type='hidden' name='keymaps' value='" + JSON.stringify(keymaps) + "'>" +
+			"<input type='hidden' name='fn_actions' value='" + JSON.stringify(fn_actions) + "'>" +
+			"</form>");
+		// $('#dl_form').submit();
+		console.log($('#dl_form').html());
+	});
 });
