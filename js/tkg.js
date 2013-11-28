@@ -33,10 +33,21 @@ function TKG() {
 		_layers = [];
 		_fns = [];
 		_matrices = [];
-		_keymaps_hex = [];
-		_keymaps_symbol = [];
-		_fn_actions_hex = [];
-		_fn_actions_symbol = [];
+		_initKeymaps();
+	}
+
+	var _initKeymaps = function(layer_number) {
+		if (layer_number === undefined) {
+			for (var i = 0; i < _max_layers; i++) {
+				_initKeymaps(i);
+			}
+		}
+		else {
+			_keymaps_hex[layer_number] = _generateKeymapHex([]);
+			_keymaps_symbol[layer_number] = _generateKeymapSymbol([]);
+			console.log(_keymaps_hex);
+			console.log(_keymaps_symbol);
+		}
 	}
 
 	var _generateReversedKeycodeMap = function(keycode_map) {
@@ -115,16 +126,15 @@ function TKG() {
 		if (!raw_string) {
 			_layers[layer_number] = {};
 			_matrices[layer_number] = [];
-			_keymaps_hex[layer_number] = [];
-			_keymaps_symbol[layer_number] = [];
 			_layers[layer_number]["error"] = {};
 			_layers[layer_number]["warn"] = {};
+			_initKeymaps(layer_number);
 		}
 
-		var layer = _layers[layer_number];
-		var matrix = _matrices[layer_number];
-		var keymap_hex = _keymaps_hex[layer_number];
-		var keymap_symbol = _keymaps_symbol[layer_number];
+		var layer = {};
+		var matrix = [];
+		var keymap_hex = [];
+		var keymap_symbol = [];
 
 		// parse raw string to keys
 		layer = _parseRawString(raw_string);
@@ -155,6 +165,11 @@ function TKG() {
 		_consoleLog(keymap_hex);
 		_consoleLog("keymap_symbol:");
 		_consoleLog(keymap_symbol);
+
+		_layers[layer_number] = layer;
+		_matrices[layer_number] = matrix;
+		_keymaps_hex[layer_number] = keymap_hex;
+		_keymaps_symbol[layer_number] = keymap_symbol;
 	}
 
 	var _parseRawString = function(raw_string) {
@@ -551,7 +566,7 @@ function TKG() {
 		for (var row = 0; row < _matrix_rows; row++) {
 			keymap.push([]);
 			for (var col = 0; col < _matrix_cols; col++) {
-				if (matrix[row][col]) {
+				if (matrix.length && matrix[row][col]) {
 					var symbol = matrix[row][col];
 					keymap[row].push(parseInt(_keycode_map[symbol]["keycode"], 16));
 				}
@@ -569,7 +584,7 @@ function TKG() {
 		for (var row = 0; row < _matrix_rows; row++) {
 			keymap.push([]);
 			for (var col = 0; col < _matrix_cols; col++) {
-				if (matrix[row][col]) {
+				if (matrix.length && matrix[row][col]) {
 					var symbol = matrix[row][col];
 					symbol = _keycode_map[symbol]["short_name"] ? _keycode_map[symbol]["short_name"] : symbol;
 					keymap[row].push(symbol);
@@ -681,7 +696,7 @@ function TKG() {
 	}
 
 	var _getKeymapsSymbol = function() {
-		return _keymap_symbol;
+		return _keymaps_symbol;
 	}
 
 	var _getFnActionsHex = function() {
