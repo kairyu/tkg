@@ -38,15 +38,20 @@ function TKG() {
 
 	var _initKeymaps = function(layer_number) {
 		if (layer_number === undefined) {
+			_keymaps_symbol = {};
 			for (var i = 0; i < _max_layers; i++) {
 				_initKeymaps(i);
 			}
 		}
 		else {
 			_keymaps_hex[layer_number] = _generateKeymapHex([]);
-			_keymaps_symbol[layer_number] = _generateKeymapSymbol([]);
-			console.log(_keymaps_hex);
-			console.log(_keymaps_symbol);
+		}
+	}
+
+	var _initFnActions = function() {
+		_fn_actions_symbol = {};
+		for (var i = 0; i < _max_fns; i++) {
+			_fn_actions_hex[i] = 0;
 		}
 	}
 
