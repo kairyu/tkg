@@ -58,16 +58,23 @@ function parse_blank_entries($matrices) {
 	return $blanks;
 }
 
-function join_with_callback($callback, $array, $param) {
+function join_with_func_glur() {
+	$params = func_get_args();
+	$callback = array_shift($params);
+	$array = array_shift($params);
 	$join = '';
 	$end = end(array_keys($array));
 	foreach ($array as $key => $value) {
 		$join .= $value;
 		if ($key != $end) {
-			$join .= call_user_func($callback, $value, $param);
+			$join .= call_user_func_array($callback, array_merge(array($value), $params));
 		}
 	}
 	return $join;
+}
+
+function str_patch($input, $length, $patch_string = " ") {
+	return str_repeat($patch_string, $length - strlen($input));
 }
 
 function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_entries = array()) {
@@ -77,7 +84,7 @@ function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_e
 		array_push($symbols, array());
 		for ($col = 0; $col < $matrix_cols; $col++) {
 			if (!in_array("$row,$col", $blank_entries)) {
-				$symbols[$row][$col] = "K$row" . chr(ord("A" + intval($col)));
+				$symbols[$row][$col] = "K$row" . chr(ord("A") + $col);
 			}
 			else {
 				$symbols[$row][$col] = "";
@@ -86,20 +93,25 @@ function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_e
 	}
 	// generate macro
 	$macro = "#define $macro_name( \\\n    ";
-	$macro .= join(", \\\n    ", array_map(function($array) {
-			return join_with_callback(function($val) {
+	$macro .= join_with_func_glur(function($val, $width) {
+			$glur = preg_match('/,\s*$/', $val) ? " " : ",";
+			return $glur . str_patch($val, $width - 1) . " \\\n    ";
+		}, array_map(function($array) {
+			return join_with_func_glur(function($val) {
 				$glue = empty($val) ? " " : ",";
-				return $glue . str_repeat(" ", 4 - strlen($val));
+				return $glue . str_patch($val, 4);
 			}, $array);
-		}, $symbols));
+		}, $symbols), $matrix_cols * 5 - 1);
 	$macro .= "  \\\n) { \\\n    { ";
-	$macro .= join(" }, \\\n    { ", array_map(function($array) {
-			return join_with_callback(function($val) {
-				return "," . str_repeat(" ", 9 - strlen($val));
+	$macro .= join_with_func_glur(function($val, $width) {
+			return str_patch($val, $width - 1) . " }, \\\n    { ";
+		}, array_map(function($array) {
+			return join_with_func_glur(function($val) {
+				return "," . str_patch($val, 9);
 			}, array_map(function($val) {
 				return empty($val) ? "KC_NO" : "KC_##$val";
 			}, $array));
-		}, $symbols));
+		}, $symbols), $matrix_cols * 10 - 1);
 	$macro .= " }  \\\n}\n\n";
 	return $macro;
 }
@@ -117,17 +129,17 @@ function generate_keymaps_content($macro_name, $matrix_rows, $matrix_cols, $matr
 	$content = "";
 	foreach ($matrices as $layer => $matrix) {
 		$content .= "    [$layer] = $macro_name(\n        ";
-		$content .= join_with_callback(function($val, $cols) {
-			trigger_error(strlen($val));
-			return "," . str_repeat(" ", $cols * 5 - strlen($val)) . " \\\n        ";
+		$content .= join_with_func_glur(function($val, $width) {
+			$glur = preg_match('/,\s*$/', $val) ? " " : ",";
+			return $glur . str_patch($val, $width) . " \\\n        ";
 		}, array_map(function($array) {
-			return join_with_callback(function($val) {
+			return join_with_func_glur(function($val) {
 				$glue = empty($val) ? " " : ",";
-				return $glue . str_repeat(" ", 4 - strlen($val));
+				return $glue . str_patch($val, 4);
 			}, array_map(function($val) {
 				return substr($val, 3);
 			}, $array));
-		}, $matrix), $matrix_cols);
+		}, $matrix), $matrix_cols * 5 - 1);
 		$content .= "),\n";
 	}
 	return $content;
