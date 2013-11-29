@@ -17,7 +17,7 @@ $filename = '';
 // check get
 if (isset($_GET['file'])) {
 	$filetype = $_GET['file'];
-	if (!in_array(array('eep', 'h'), $filetype)) {
+	if (!in_array($filetype, array('eep', 'h'))) {
 		die('Invalid Parameter');
 	}
 }
@@ -46,7 +46,7 @@ if (
 			$eep_start = intval($_POST['eep_start']);
 		}
 		else {
-			die('Invalid Data');
+			die('Invalid EEP Data');
 		}
 	}
 }
@@ -64,7 +64,7 @@ if ($filetype == 'eep') {
 		$keymap_bin .= pack('v', $fn_actions[$fn]);
 	}
 	// keymaps
-	for ($layer = 0; $layer < $max_layers; $layers++) {
+	for ($layer = 0; $layer < $max_layers; $layer++) {
 		for ($row = 0; $row < $matrix_rows; $row++) {
 			for ($col = 0; $col < $matrix_cols; $col++) {
 				$keymap_bin .= pack('C', $keymaps[$layer][$row][$col]);
@@ -73,7 +73,7 @@ if ($filetype == 'eep') {
 	}
 	// checksum
 	$checksum = 0xFEED;
-	$checksum = calc_checksum_word($keymap_bin);
+	$checksum = calc_checksum_word($keymap_bin, $checksum);
 	$keymap_bin = pack('v', $checksum) . $keymap_bin;
 
 	// fill eeprom

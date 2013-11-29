@@ -91,23 +91,29 @@ $(function() {
 
 	// download
 	$('#dl_eep, #dl_h').click(function() {
-		var type = $(this).attr('id');
+		var id = $(this).attr('id');
+		var type = '';
 		var keymaps = [];
 		var fn_actions = [];
+		console.log(id);
 
-		if ( type == 'dl_eep' ) {
+		if ( id == 'dl_eep' ) {
+			type = 'eep';
 			keymaps = tkg.getKeymapsHex();
 			fn_actions = tkg.getFnActionsHex();
 		}
-		else if ( type == 'dl_h' ) {
+		else if ( id == 'dl_h' ) {
+			type = 'h';
 			keymaps = tkg.getKeymapsSymbol();
 			fn_actions = tkg.getFnActionsSymbol();
 		}
-		$("body").append("<form id='dl_form' action='download.php' method='POST'>" +
+		$("body").append("<form id='dl_form' action='download.php?file=" + type + "' method='POST'>" +
 			"<input type='hidden' name='matrix_rows' value='" + keyboard['matrix_rows'] + "'>" +
 			"<input type='hidden' name='matrix_cols' value='" + keyboard['matrix_cols'] + "'>" +
 			"<input type='hidden' name='max_layers' value='" + keyboard['max_layers'] + "'>" +
 			"<input type='hidden' name='max_fns' value='" + keyboard['max_fns'] + "'>" +
+			"<input type='hidden' name='eep_size' value='" + keyboard['eep_size'] + "'>" +
+			"<input type='hidden' name='eep_start' value='" + keyboard['eep_start'] + "'>" +
 			"<input type='hidden' name='keymaps' value='" + JSON.stringify(keymaps) + "'>" +
 			"<input type='hidden' name='fn_actions' value='" + JSON.stringify(fn_actions) + "'>" +
 			"</form>");

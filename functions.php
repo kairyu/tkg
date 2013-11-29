@@ -7,28 +7,28 @@ if (!defined('TKG')) {
 function calc_checksum_word($bin, $checksum = 0) {
 	for ($i = 0; $i < strlen($bin); $i += 2) {
 		list(,$word) = unpack('v', substr($bin, $i, 2));
-		$checksum ^= $word;
+		$checksum = ($checksum + $word) % 0x100;
 	}
 	return $checksum;
 }
 
 function bin_to_intel_hex($bin, $byte_count = 16) {
 	$hex = '';
-	for ($i = 0; $i < strlen($hex); $i += $byte_count) {
-		$row = substr($bin, $byte_count);
-		$bytes = unpack('C*', $row);
-		$checksum = 0;
-		foreach ($bytes as $byte) {
-			$checksum ^= $byte;
-		}
-		$checksum = $checksum ^ 0xFF + 1;
-		$hex .= sprintf(":%02X%04X00%s%02X\n",
+	for ($i = 0; $i < strlen($bin); $i += $byte_count) {
+		$block = substr($bin, $i, $byte_count);
+		$row = sprintf("%02X%04X00%s",
 			$byte_count,
 			(int)($i / $byte_count) * $byte_count,
-			bin2hex($row),
-			$checksum);
+			strtoupper(bin2hex($block)));
+		$bytes = unpack('C*', pack("H*", $row));
+		$checksum = 0;
+		foreach ($bytes as $byte) {
+			$checksum = ($checksum + $byte) % 0x100;
+		}
+		$checksum = (0x100 - $checksum) % 0x100;
+		$hex .= sprintf(":%s%02X\n", $row, $checksum);
 	}
-	$hex .= '00000001FF';
+	$hex .= ':00000001FF';
 	return $hex;
 }
 
@@ -70,7 +70,7 @@ function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_e
 	for ($row = 0; $row < $matrix_rows; $row++) {
 		array_push($symbols, array());
 		for ($col = 0; $col < $matrix_cols; $col++) {
-			if (!in_array($blank_entries, "$row,$col")) {
+			if (!in_array("$row,$col", $blank_entries)) {
 				$symbols[$row][$col] = "K$row" . chr(ord("A" + $col));
 			}
 			else {
@@ -81,21 +81,20 @@ function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_e
 	// generate macro
 	$macro = "#define $macro_name( ";
 	$macro .= $join("\\\n    ", array_map(function($array) {
-		return $join_with_callback(function($val) {
-			$glue = "";
-			if (!empty($val)) {
-				$glue .= ","
-			}
-			return $glue . str_repeat(" ", 4 - strlen($val));
-		}, $array), $symbols);
-	});
+			return $join_with_callback(function($val) {
+				$glue = "";
+				if (!empty($val)) { $glue .= ","; }
+				return $glue . str_repeat(" ", 4 - strlen($val));
+			}, $array);
+		}, $symbols));
 	$macro .= "  \\\n) { \\\n    {";
 	$macro .= $join("}, \\\n    { ", array_map(function($array) {
-		return $join_with_callback(function($val) {
-			return "," . str_repeat(" ", 9 - strlen($val));
-		}, $array_map(function($val) {
-			return empty($val) ? "KC_NO" : "KC_##$val";
-		}, $array)), $symbols));
+			return $join_with_callback(function($val) {
+				return "," . str_repeat(" ", 9 - strlen($val));
+			}, $array_map(function($val) {
+				return empty($val) ? "KC_NO" : "KC_##$val";
+			}, $array));
+		}, $symbols));
 	$macro .= "}\n";
 	return $macro;
 }

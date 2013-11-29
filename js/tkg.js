@@ -34,6 +34,7 @@ function TKG() {
 		_fns = [];
 		_matrices = [];
 		_initKeymaps();
+		_initFnActions();
 	}
 
 	var _initKeymaps = function(layer_number) {
@@ -122,6 +123,7 @@ function TKG() {
 	}
 
 	var _parseLayer = function(layer_number, raw_string) {
+		_consoleLog("layer_number: " + layer_number);
 		if (layer_number >= _max_layers) {
 			_consoleError("Layer number out of bounds");
 			return false;
