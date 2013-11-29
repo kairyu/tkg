@@ -15,7 +15,7 @@ var keycode_map = {
 		"keycode": "0x01",
 		"label": [ "" ],
 		"label_priority": [ "" ],
-		"short_name": "KC_TRANS"
+		"short_name": "KC_TRNS"
 	},
 	"KC_POST_FAIL":	{
 		"description": "POSTFail",

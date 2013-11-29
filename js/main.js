@@ -117,6 +117,8 @@ $(function() {
 			"<input type='hidden' name='keymaps' value='" + JSON.stringify(keymaps) + "'>" +
 			"<input type='hidden' name='fn_actions' value='" + JSON.stringify(fn_actions) + "'>" +
 			"</form>");
+		console.log(keymaps);
+		console.log(fn_actions);
 		console.log($('#dl_form').html());
 		$('#dl_form').submit();
 	});
