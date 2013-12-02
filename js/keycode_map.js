@@ -549,7 +549,7 @@ var keycode_map = {
 		"description": "Keypad 6 and RightArrow",
 		"keycode": "0x5E",
 		"label": [ [ "6" ], [ "p6" ] ],
-		"label_2": [ [ "end" ], [] ],
+		"label_2": [ [ "right", "→" ], [] ],
 		"short_name": "KC_P1"
 	},
 	"KC_KP_7": {

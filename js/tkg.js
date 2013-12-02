@@ -560,7 +560,7 @@ function TKG() {
 				matrix[row][col] = symbol;
 			}
 			else {
-				_raiseError(error, "matrix_missmapping", i, key);
+				_raiseError(error, "matrix_missmapping", index, key);
 			}
 		}
 
