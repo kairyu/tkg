@@ -7,7 +7,7 @@ if (!defined('TKG')) {
 function calc_checksum_word($bin, $checksum = 0) {
 	for ($i = 0; $i < strlen($bin); $i += 2) {
 		list(,$word) = unpack('v', substr($bin, $i, 2));
-		$checksum = ($checksum + $word) % 0x100;
+		$checksum = ($checksum + $word) % 0x10000;
 	}
 	return $checksum;
 }
@@ -62,12 +62,15 @@ function join_with_func_glur() {
 	$params = func_get_args();
 	$callback = array_shift($params);
 	$array = array_shift($params);
+	$count = count($array);
 	$join = '';
-	$end = end(array_keys($array));
-	foreach ($array as $key => $value) {
-		$join .= $value;
-		if ($key != $end) {
-			$join .= call_user_func_array($callback, array_merge(array($value), $params));
+	for ($i = 0; $i < $count; $i++) {
+		$join .= $array[$i];
+		if ($i + 1 < $count) {
+			$join .= call_user_func_array($callback, array_merge(array($array[$i], $array[$i + 1]), $params));
+		}
+		else {
+			$join .= call_user_func_array($callback, array_merge(array($array[$i], null), $params));
 		}
 	}
 	return $join;
@@ -93,21 +96,41 @@ function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_e
 	}
 	// generate macro
 	$macro = "#define $macro_name( \\\n    ";
-	$macro .= join_with_func_glur(function($val, $width) {
-			$glur = preg_match('/,\s*$/', $val) ? " " : ",";
-			return $glur . str_patch($val, $width - 1) . " \\\n    ";
+	$macro .= join_with_func_glur(function($current, $next, $width) {
+			if ($next === null) {
+				return "";
+			}
+			else {
+				$glur = preg_match('/,\s*$/', $current) ? " " : ",";
+				return $glur . str_patch($current, $width - 1) . " \\\n    ";
+			}
 		}, array_map(function($array) {
-			return join_with_func_glur(function($val) {
-				$glue = empty($val) ? " " : ",";
-				return $glue . str_patch($val, 4);
+			return join_with_func_glur(function($current, $next) {
+				if ($next === null) {
+					return empty($current) ? "   " : "";
+				}
+				else {
+					$glue = empty($current) || empty($next) ? " " : ",";
+					return $glue . str_patch($current, 4);
+				}
 			}, $array);
 		}, $symbols), $matrix_cols * 5 - 1);
 	$macro .= "  \\\n) { \\\n    { ";
-	$macro .= join_with_func_glur(function($val, $width) {
-			return str_patch($val, $width - 1) . " }, \\\n    { ";
+	$macro .= join_with_func_glur(function($current, $next, $width) {
+			if ($next === null) {
+				return "";
+			}
+			else {
+				return str_patch($current, $width - 1) . " }, \\\n    { ";
+			}
 		}, array_map(function($array) {
-			return join_with_func_glur(function($val) {
-				return "," . str_patch($val, 9);
+			return join_with_func_glur(function($current, $next) {
+				if ($next === null) {
+					return str_patch($current, 8);
+				}
+				else {
+					return "," . str_patch($current, 9);
+				}
 			}, array_map(function($val) {
 				return empty($val) ? "KC_NO" : "KC_##$val";
 			}, $array));
@@ -129,13 +152,23 @@ function generate_keymaps_content($macro_name, $matrix_rows, $matrix_cols, $matr
 	$content = "";
 	foreach ($matrices as $layer => $matrix) {
 		$content .= "    [$layer] = $macro_name(\n        ";
-		$content .= join_with_func_glur(function($val, $width) {
-			$glur = preg_match('/,\s*$/', $val) ? " " : ",";
-			return $glur . str_patch($val, $width) . " \\\n        ";
+		$content .= join_with_func_glur(function($current, $next, $width) {
+			if ($next === null) {
+				return "";
+			}
+			else {
+				$glur = preg_match('/,\s*$/', $current) ? " " : ",";
+				return $glur . str_patch($current, $width) . " \\\n        ";
+			}
 		}, array_map(function($array) {
-			return join_with_func_glur(function($val) {
-				$glue = empty($val) ? " " : ",";
-				return $glue . str_patch($val, 4);
+			return join_with_func_glur(function($current, $next) {
+				if ($next === null) {
+					return "";
+				}
+				else {
+					$glue = empty($current) || empty($next) ? " " : ",";
+					return $glue . str_patch($current, 4);
+				}
 			}, array_map(function($val) {
 				return substr($val, 3);
 			}, $array));
