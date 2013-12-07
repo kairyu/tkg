@@ -938,13 +938,13 @@ var keycode_map = {
 	"KC_AUDIO_VOL_UP": {
 		"description": "Audio Volume Up",
 		"keycode": "0xA9",
-		"label": [ "volume up", "volumeup", "vol up", "volup" ],
+		"label": [ "volume up", "volumeup", "vol up", "volup", "vol_up" ],
 		"short_name": "KC_VOLU"
 	},
 	"KC_AUDIO_VOL_DOWN": {
 		"description": "Audio Volume Down",
 		"keycode": "0xAA",
-		"label": [ "volume down", "volumedown", "vol down", "voldown", "voldn" ],
+		"label": [ "volume down", "volumedown", "vol down", "voldown", "vol dn", "voldn", "vol_dn" ],
 		"short_name": "KC_VOLD"
 	},
 	"KC_MEDIA_NEXT_TRACK": {
@@ -963,6 +963,7 @@ var keycode_map = {
 		"description": "Media Stop",
 		"keycode": "0xAD",
 		"label": [ "stop" ],
+		"label_priority": [ "stop" ],
 		"short_name": "KC_MSTP"
 	},
 	"KC_MEDIA_PLAY_PAUSE": {
@@ -1047,7 +1048,7 @@ var keycode_map = {
 	"KC_FN0": {
 		"description": "Fn Key 0",
 		"keycode": "0xC0",
-		"label": [ "fn0" ]
+		"label": [ "fn0", "fn" ]
 	},
 	"KC_FN1": {
 		"description": "Fn Key 1",
