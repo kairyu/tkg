@@ -4,41 +4,11 @@ var keyboard = {};
 
 $(function() {
 
-	window.lang.run();
-
-	function loadKeyboard(name) {
-		$.ajaxSetup({ async: false });
-		$.getJSON("keyboard/" + name.toLowerCase() + ".json", function(json) {
-			keyboard = json;
-			tkg.init({
-				"keycode_map": keycode_map,
-				"max_layers": keyboard["max_layers"],
-				"max_fns": keyboard["max_fns"],
-				"matrix_rows": keyboard["matrix_rows"],
-				"matrix_cols": keyboard["matrix_cols"],
-				"matrix_map": keyboard["matrix_map"]
-			});
-			console.log(keyboard);
-		}).fail(function(d, textStatus, error) {
-			console.error("getJSON failed, status: " + textStatus + ", error: "+error)
-		});
-		$.ajaxSetup({ async: true });
-	}
-
-	loadKeyboard("GH60");
-
-	// initialize touch spin
-	$('#layer-num').TouchSpin({
-		min: 1,
-		max: 8,
-		boostat: 5,
-		stepinterval: 200,
-		booster: false
-	});
+	initialize( $('#keyboard-sel:first-child').val() );
 	
 	$('#keyboard-sel').on('change', function() {
 		var name = this.value;
-		loadKeyboard(name);
+		initialize( name );
 	});
 	
 	// on change
@@ -68,16 +38,6 @@ $(function() {
 		
 		// load translation
 		window.lang.run();
-	});
-
-	// show keyboard help info
-	$('#kbd-info').popover({
-		html: true,
-		trigger: 'hover',
-		content: '<strong>Name: </strong>' + keyboard['name'] + '<br/>' +
-				'<strong>Description: </strong>' + keyboard['description'] + '<br/>' +
-				'<strong>Max Layers: </strong>' + keyboard['max_layers'] + '<br/>' + 
-				'<strong>Max Fns: </strong>' + keyboard['max_fns']
 	});
 
 	// parse layer
@@ -129,3 +89,68 @@ $(function() {
 		$('#dl_form').submit();
 	});
 });
+
+function initialize( name ) {
+
+	loadKeyboard( name );
+
+	// initialize touch spin
+	$('#layer-num').TouchSpin({
+		min: 1,
+		max: keyboard['max_layers'],
+		boostat: 5,
+		stepinterval: 200,
+		booster: false
+	});
+
+	$('#layer-num').val('2');
+
+	$('#kbd-info').popover('destroy');
+
+	// show keyboard help info
+	$('#kbd-info').popover({
+		html: true,
+		trigger: 'hover',
+		content: '<strong>Name: </strong>' + keyboard['name'] + '<br/>' +
+				'<strong>Description: </strong>' + keyboard['description'] + '<br/>' +
+				'<strong>Max Layers: </strong>' + keyboard['max_layers'] + '<br/>' + 
+				'<strong>Max Fns: </strong>' + keyboard['max_fns']
+	});
+
+	if ( $('.layer').length > 0 )
+		$('.layer').remove();
+
+	$('#layer-control').after('<div class="layer form-group">' +
+					'<label for="layer0" class="col-md-2 control-label" lang="en">Layer0</label>' +
+					'<div class="col-md-4">' +
+						'<textarea id="layer0" class="form-control layer-raw" rows="4"></textarea>' +
+					'</div>' +
+				'</div>' + 
+				'<div class="layer form-group">' +
+					'<label for="layer1" class="col-md-2 control-label" lang="en">Layer1</label>' +
+					'<div class="col-md-4">' +
+						'<textarea id="layer1" class="form-control layer-raw" rows="4"></textarea>' +
+					'</div>' +
+				'</div>' );
+
+	window.lang.run();
+}
+
+function loadKeyboard( name ) {
+	$.ajaxSetup({ async: false });
+	$.getJSON("keyboard/" + name.toLowerCase() + ".json", function(json) {
+		keyboard = json;
+		tkg.init({
+			"keycode_map": keycode_map,
+			"max_layers": keyboard["max_layers"],
+			"max_fns": keyboard["max_fns"],
+			"matrix_rows": keyboard["matrix_rows"],
+			"matrix_cols": keyboard["matrix_cols"],
+			"matrix_map": keyboard["matrix_map"]
+		});
+		console.log(keyboard);
+	}).fail(function(d, textStatus, error) {
+		console.error("getJSON failed, status: " + textStatus + ", error: "+error)
+	});
+	$.ajaxSetup({ async: true });
+}
