@@ -80,6 +80,7 @@ $(function() {
 				'<strong>Max Fns: </strong>' + keyboard['max_fns']
 	});
 
+	// parse layer
 	$('#layer-form').on('blur', 'textarea', function(event) {
 		var id = event.target.id;
 		var layer_number = id.slice(5);
@@ -107,6 +108,11 @@ $(function() {
 			keymaps = tkg.getKeymapsSymbol();
 			fn_actions = tkg.getFnActionsSymbol();
 		}
+
+		if ( $('#dl_form').length > 0 ) {
+			$('#dl_form').remove();
+		}
+
 		$("body").append("<form id='dl_form' action='download.php?file=" + type + "' method='POST'>" +
 			"<input type='hidden' name='matrix_rows' value='" + keyboard['matrix_rows'] + "'>" +
 			"<input type='hidden' name='matrix_cols' value='" + keyboard['matrix_cols'] + "'>" +
