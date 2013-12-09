@@ -1,6 +1,7 @@
 function TKG() {
 
 	var _debug = 3;
+	var _simple_mode = false;
 	var _keycode_map = {};
 	var _keycode_map_reversed = {};
 	var _max_layers = 0;
@@ -30,6 +31,10 @@ function TKG() {
 		_matrix_cols = object["matrix_cols"];
 		_matrix_map = object["matrix_map"];
 		// init variables
+		_initVariables();
+	}
+
+	var _initVariables = function() {
 		_layers = [];
 		_fns = [];
 		_matrices = [];
@@ -122,11 +127,35 @@ function TKG() {
 		return target;
 	}
 
+	var _setSimpleMode = function(simple_mode) {
+		if (_simple_mode != simple_mode) {
+			_simple_mode = simple_mode;
+			_initVariables();
+		}
+	}
+
 	var _parseLayer = function(layer_number, raw_string) {
-		_consoleLog("layer_number: " + layer_number);
-		if (layer_number >= _max_layers) {
-			_consoleError("Layer number out of bounds");
-			return false;
+		// console log
+		if (_simple_mode) {
+			_consoleLog("Parse layer");
+			_consoleLog("layer_number: " + layer_number);
+		}
+		else {
+			_consoleLog("Parse layer simple mode");
+		}
+
+		// check layer_number parameter
+		if (_simple_mode) {
+			if (layer_number != 0) {
+				_consoleError("Invalid layer number: " + layer_number);
+				return false;
+			}
+		}
+		else {
+			if (layer_number >= _max_layers) {
+				_consoleError("Layer number out of bounds");
+				return false;
+			}
 		}
 
 		// clear when raw string is empty
@@ -136,34 +165,70 @@ function TKG() {
 			_layers[layer_number]["error"] = {};
 			_layers[layer_number]["warn"] = {};
 			_initKeymaps(layer_number);
+			if (_simple_mode) {
+				_layers[layer_number + 1] = {};
+				_matrices[layer_number + 1] = [];
+				_layers[layer_number + 1]["error"] = {};
+				_layers[layer_number + 1]["warn"] = {};
+				_initKeymaps(layer_number + 1);
+			}
 		}
 
 		var layer = {};
+		var fns = [];
 		var matrix = [];
 		var keymap_hex = [];
 		var keymap_symbol = [];
+		if (_simple_mode) {
+			var layer_2 = {}
+			var fns_2 = [];
+			var matrix_2 = [];
+			var keymap_hex_2 = [];
+			var keymap_symbol_2 = [];
+		}
 
 		// parse raw string to keys
 		layer = _parseRawString(raw_string);
-		console.log(layer["error"]);
+		if (_simple_mode) {
+			layer_2 = _parseRawString(raw_string);
+		}
 		if (!_.isEmpty(layer["error"])) {
 			return false;
 		}
 
 		// parse keycode from label
-		layer = _parseKeycode(layer);
+		layer = _parseKeycode(layer, "top", "bottom");
 		_consoleLog("layer:");
 		_consoleLog(layer);
+		if (_simple_mode) {
+			layer_2 = _parseKeycode(layer_2, "side_print");
+			_consoleLog("layer_2:");
+			_consoleLog(layer_2);
+		}
 		
 		// parse fns from layer
-		_fns = _parseFns(layer);
+		fns = _parseFns(layer);
+		_fns = _.extend(_fns, fns);
 		_consoleLog("fns:");
+		_consoleLog(fns);
 		_consoleLog(_fns);
+		if (_simple_mode) {
+			fns_2 = _parseFns(layer_2);
+			_fns = _.extend(_fns, fns_2);
+			_consoleLog("fns_2:");
+			_consoleLog(fns_2);
+			_consoleLog(_fns);
+		}
 
 		// parse matrix from position
 		matrix = _parseMatrix(layer);
 		_consoleLog("matrix:");
 		_consoleLog(matrix);
+		if (_simple_mode) {
+			matrix_2 = _parseMatrix(layer_2);
+			_consoleLog("matrix_2:");
+			_consoleLog(matrix_2);
+		}
 
 		// generate keymap from matrix
 		keymap_hex = _generateKeymapHex(matrix);
@@ -172,11 +237,25 @@ function TKG() {
 		_consoleLog(keymap_hex);
 		_consoleLog("keymap_symbol:");
 		_consoleLog(keymap_symbol);
+		if (_simple_mode) {
+			keymap_hex_2 = _generateKeymapHex(matrix_2);
+			keymap_symbol_2 = _generateKeymapSymbol(matrix_2);
+			_consoleLog("keymap_hex_2:");
+			_consoleLog(keymap_hex_2);
+			_consoleLog("keymap_symbol_2:");
+			_consoleLog(keymap_symbol_2);
+		}
 
 		_layers[layer_number] = layer;
 		_matrices[layer_number] = matrix;
 		_keymaps_hex[layer_number] = keymap_hex;
 		_keymaps_symbol[layer_number] = keymap_symbol;
+		if (_simple_mode) {
+			_layers[layer_number + 1] = layer_2;
+			_matrices[layer_number + 1] = matrix_2;
+			_keymaps_hex[layer_number + 1] = keymap_hex_2;
+			_keymaps_symbol[layer_number + 1] = keymap_symbol_2;
+		}
 	}
 
 	var _parseRawString = function(raw_string) {
@@ -285,7 +364,7 @@ function TKG() {
 		return layer;
 	}
 
-	var _parseKeycode = function(layer) {
+	var _parseKeycode = function(layer, label_property, label_property_2) {
 		var error = layer["error"];
 		var warn = layer["warn"];
 
@@ -295,6 +374,12 @@ function TKG() {
 			layer["error"] = error;
 			return layer;
 		}
+		
+		// check label parameter
+		if (!label_property) {
+			_consoleError("Wrong function call");
+			return false;
+		}
 
 		// guess keycode from label
 		var keys = layer["keys"];
@@ -303,9 +388,9 @@ function TKG() {
 			// select label to be used for matching
 			var label;
 			var label_2;
-			if (key["label"]["top"] || key["label"]["top"] == "") {
-				label = key["label"]["top"].toLowerCase();
-				if (key["label"]["bottom"]) {
+			if (key["label"][label_property] || key["label"][label_property] == "") {
+				label = key["label"][label_property].toLowerCase();
+				if (label_property_2 && key["label"][label_property_2]) {
 					label_2 = key["label"]["bottom"].toLowerCase();
 				}
 				else {
