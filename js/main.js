@@ -24,7 +24,7 @@ $(function() {
 				$('.layer:last').after( 
 				'<div class="layer form-group">' +
 					'<label for="layer' + (i - 1) + '" class="col-md-2 control-label" lang="en">Layer' + (i - 1) + '</label>' +
-					'<div class="col-md-4">' +
+					'<div class="col-md-5">' +
 						'<textarea id="layer' + (i - 1) + '" class="form-control layer-raw" rows="4"></textarea>' +
 					'</div>' +
 				'</div>');
@@ -113,10 +113,10 @@ function initialize( name ) {
 	$('#kbd-info').popover({
 		html: true,
 		trigger: 'hover',
-		content: '<strong>Name: </strong>' + keyboard['name'] + '<br/>' +
-				'<strong>Description: </strong>' + keyboard['description'] + '<br/>' +
-				'<strong>Max Layers: </strong>' + keyboard['max_layers'] + '<br/>' + 
-				'<strong>Max Fns: </strong>' + keyboard['max_fns']
+		content: '<strong><span lang="en">Name: </span></strong>' + keyboard['name'] + '<br/>' +
+				'<strong><span lang="en">Description: </span></strong>' + keyboard['description'] + '<br/>' +
+				'<strong><span lang="en">Max Layers: </span></strong>' + keyboard['max_layers'] + '<br/>' + 
+				'<strong><span lang="en">Max Fns: </span></strong>' + keyboard['max_fns']
 	});
 
 	if ( $('.layer').length > 0 )
@@ -124,13 +124,13 @@ function initialize( name ) {
 
 	$('#layer-control').after('<div class="layer form-group">' +
 					'<label for="layer0" class="col-md-2 control-label" lang="en">Layer0</label>' +
-					'<div class="col-md-4">' +
+					'<div class="col-md-5">' +
 						'<textarea id="layer0" class="form-control layer-raw" rows="4"></textarea>' +
 					'</div>' +
 				'</div>' + 
 				'<div class="layer form-group">' +
 					'<label for="layer1" class="col-md-2 control-label" lang="en">Layer1</label>' +
-					'<div class="col-md-4">' +
+					'<div class="col-md-5">' +
 						'<textarea id="layer1" class="form-control layer-raw" rows="4"></textarea>' +
 					'</div>' +
 				'</div>' );
@@ -163,6 +163,6 @@ function appendNotification() {
 
 function showNotification() {
 	appendNotification();
-	$('.navbar-fixed-top').css('top', '27px');
-	$('body').css('padding-top', '77px');
+	$('.navbar-fixed-top').css('top', '29px');
+	$('body').css('padding-top', '79px');
 }

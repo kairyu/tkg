@@ -3,6 +3,7 @@ jquery_lang_js.prototype.lang.zh_tc = {
 	'About':'關於',
 	'Language':'語言',
 	'Keyboard':'鍵盤',
+	'Detail':'詳細',
 	'Number of Layers':'層數',
 	'Layer0':'第0層',
 	'Layer1':'第1層',
@@ -12,5 +13,10 @@ jquery_lang_js.prototype.lang.zh_tc = {
 	'Layer5':'第5層',
 	'Layer6':'第6層',
 	'Layer7':'第7層',
-	'Save':'保存'
+	'Download .eep file':'下載 .eep 文件',
+	'Download .h file':'下載 .h 文件',
+	'Name':'名稱',
+	'Description':'描述',
+	'Max Layers':'最大層數',
+	'Max Fns':'最大Fn鍵數'
 }

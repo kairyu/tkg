@@ -3,6 +3,7 @@ jquery_lang_js.prototype.lang.jp = {
 	'About':'サイトについて',
 	'Language':'言語',
 	'Keyboard':'キーボード',
+	'Detail':'詳細',
 	'Number of Layers':'レイヤー数',
 	'Layer0':'レイヤー0',
 	'Layer1':'レイヤー1',
@@ -12,5 +13,10 @@ jquery_lang_js.prototype.lang.jp = {
 	'Layer5':'レイヤー5',
 	'Layer6':'レイヤー6',
 	'Layer7':'レイヤー7',
-	'Save':'保存'
+	'Download .eep file':'ダウンロード .eep ファイル',
+	'Download .h file':'ダウンロード .h ファイル',
+	'Name':'名前',
+	'Description':'説明',
+	'Max Layers':'最大レイヤー数',
+	'Max Fns':'最大Fnキー数'
 }
