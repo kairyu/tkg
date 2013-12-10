@@ -27,3 +27,20 @@ body {
 	color: #2f6f9f;
 	border-bottom: 1px dotted #999;
 }
+#notification {
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 1050;
+	width: 100%;
+	background-color: #f0ad4e;
+	background-image: repeating-linear-gradient( 135deg, transparent, transparent 8px, rgba(0, 0, 0, .8) 8px, rgba(0, 0, 0, .8) 16px );
+	box-shadow: 0 4px 3px 0 #000;
+}
+#notification-inner {
+	background: #fcf8e3;
+	padding: 3px 0;
+	margin: 4px 0;
+	text-align: center;
+	font-size: 0.8em;
+}

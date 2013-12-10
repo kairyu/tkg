@@ -4,6 +4,8 @@ var keyboard = {};
 
 $(function() {
 
+	showNotification();
+
 	initialize( $('#keyboard-sel:first-child').val() );
 	
 	$('#keyboard-sel').on('change', function() {
@@ -153,4 +155,14 @@ function loadKeyboard( name ) {
 		console.error("getJSON failed, status: " + textStatus + ", error: "+error)
 	});
 	$.ajaxSetup({ async: true });
+}
+
+function appendNotification() {
+	$('.navbar-fixed-top').prepend('<div id="notification"><div id="notification-inner">This website is under construction, any feature will be removed or be modified at any time without advance notice.</div></div>');
+}
+
+function showNotification() {
+	appendNotification();
+	$('.navbar-fixed-top').css('top', '27px');
+	$('body').css('padding-top', '77px');
 }
