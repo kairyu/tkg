@@ -4,6 +4,7 @@ function TKG() {
 	var _simple_mode = false;
 	var _keycode_map = {};
 	var _keycode_map_reversed = {};
+	var _action_map = {};
 	var _max_layers = 0;
 	var _max_fns = 0;
 	var _matrix_rows = 0;
@@ -25,6 +26,10 @@ function TKG() {
 		_keycode_map_reversed = _generateReversedKeycodeMap(_keycode_map);
 		_consoleLog("keycode_map_reversed:");
 		_consoleLog(_keycode_map_reversed);
+		_action_map = object["action_map"];
+		_action_map = action_map;
+		_consoleLog("action_map:");
+		_consoleLog(_action_map);
 		_max_layers = object["max_layers"];
 		_max_fns = object["max_fns"];
 		_matrix_rows = object["matrix_rows"];
@@ -201,7 +206,7 @@ function TKG() {
 		_consoleLog("layer:");
 		_consoleLog(layer);
 		if (_simple_mode) {
-			layer_2 = _parseKeycode(layer_2, "side_print");
+			layer_2 = _parseKeycode(layer_2, "side_print", "side_print_secondary");
 			_consoleLog("layer_2:");
 			_consoleLog(layer_2);
 		}
@@ -218,6 +223,11 @@ function TKG() {
 			_consoleLog("fns_2:");
 			_consoleLog(fns_2);
 			_consoleLog(_fns);
+			if (_fns[0]) {
+				var fn = _fns[0];
+				fn["symbol"] = "ACTION_LAYER_MOMENTARY";
+				fn["param"] = [ layer_number + 1 ];
+			}
 		}
 
 		// parse matrix from position
@@ -246,6 +256,15 @@ function TKG() {
 			_consoleLog(keymap_symbol_2);
 		}
 
+		// generate fn actions
+		_fn_actions_hex = _generateFnActionsHex(_fns);
+		_fn_actions_symbol = _generateFnActionsSymbol(_fns);
+		_consoleLog("fn_actions_hex:");
+		_consoleLog(_fn_actions_hex);
+		_consoleLog("fn_actions_symbol:");
+		_consoleLog(_fn_actions_symbol);
+
+		// set variables
 		_layers[layer_number] = layer;
 		_matrices[layer_number] = matrix;
 		_keymaps_hex[layer_number] = keymap_hex;
@@ -390,15 +409,17 @@ function TKG() {
 			var label_2;
 			if (key["label"][label_property] || key["label"][label_property] == "") {
 				label = key["label"][label_property].toLowerCase();
-				if (label_property_2 && key["label"][label_property_2]) {
-					label_2 = key["label"]["bottom"].toLowerCase();
-				}
-				else {
-					label_2 = "";
-				}
 			}
 			else {
-				_raiseError(error, "no_valid_label", key["x"] + "," + key["y"], key);
+				label = "";
+				_raiseWarn(warn, "no_valid_label", key["x"] + "," + key["y"], key);
+				//continue;
+			}
+			if (label_property_2 && key["label"][label_property_2]) {
+				label_2 = key["label"]["bottom"].toLowerCase();
+			}
+			else {
+				label_2 = "";
 			}
 			// if is a known label
 			if (_keycode_map_reversed[label]) {
@@ -689,6 +710,48 @@ function TKG() {
 		return keymap;
 	}
 
+	var _generateFnActionsHex = function(fns) {
+		fn_actions = [];
+		for (var i = 0; i < _max_fns; i++) {
+			var hex = "0x0000";
+			if (fns[i]) {
+				var fn = fns[i];
+				if (fn["symbol"]) {
+					var symbol = fn["symbol"];
+					if (_action_map[symbol]) {
+						var code = _action_map[symbol]["code"];
+						if (_.isFunction(code)) {
+							hex = code.apply(code, fn["param"]);
+						}
+						else {
+							hex = code;
+						}
+					}
+				}
+			}
+			fn_actions[i] = parseInt(hex, 16);
+		}
+		return fn_actions;
+	}
+
+	var _generateFnActionsSymbol = function(fns) {
+		fn_actions = [];
+		for (var i in fns) {
+			if (fns[i]) {
+				var fn = fns[i];
+				if (fn["symbol"]) {
+					var symbol = fn["symbol"];
+					var array = [ symbol ];
+					if (fn["param"]) {
+						array = array.concat(fn["param"]);
+					}
+					fn_actions[i] = array;
+				}
+			}
+		}
+		return fn_actions;
+	}
+
 	var _parseLabelString = function(label_string) {
 		var strings = label_string.split("\n");
 		var label = {};
@@ -801,6 +864,7 @@ function TKG() {
 
 	// public methods
 	this.init = _init;
+	this.setSimpleMode = _setSimpleMode;
 	this.parseLayer = _parseLayer;
 	this.getError = _getError;
 	this.getWarn = _getWarn;
