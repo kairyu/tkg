@@ -1,7 +1,7 @@
 function TKG() {
 
 	var _debug = 3;
-	var _simple_mode = false;
+	var _simple_mode = true;
 	var _keycode_map = {};
 	var _keycode_map_reversed = {};
 	var _action_map = {};
@@ -150,6 +150,7 @@ function TKG() {
 		}
 
 		// check layer_number parameter
+		layer_number = Number(layer_number);
 		if (_simple_mode) {
 			if (layer_number != 0) {
 				_consoleError("Invalid layer number: " + layer_number);
