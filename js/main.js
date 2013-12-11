@@ -130,24 +130,6 @@ function initialize( name ) {
 
 	loadKeyboard( name );
 
-	$('#simple-mode').after(
-				'<div id="layer-control" class="form-group">' +
-					'<label for="layer-num" lang="en" class="col-md-2 control-label">Number of Layers</label>' +
-					'<div class="col-md-2">' +
-						'<input id="layer-num" class="form-control" type="text" name="layer-num" value="2">' +
-					'</div>' +
-				'</div>');
-
-	// initialize touch spin
-	$('#layer-num').TouchSpin({
-		min: 1,
-		max: keyboard['max_layers'],
-		boostat: 5,
-		stepinterval: 200,
-		booster: false
-	});
-
-	$('#layer-num').val('2');
 
 	$('#kbd-info').popover('destroy');
 
@@ -161,21 +143,48 @@ function initialize( name ) {
 				'<strong><span lang="en">Max Fns: </span></strong>' + keyboard['max_fns']
 	});
 
-	if ( $('.layer').length > 0 )
-		$('.layer').remove();
+	$('#kbd-info').on('shown.bs.popover', function() {
+		window.lang.run();
+	});
 
-	$('#layer-control').after('<div class="layer form-group">' +
-					'<label for="layer0" class="col-md-2 control-label" lang="en">Layer0</label>' +
-					'<div class="col-md-5">' +
-						'<textarea id="layer0" class="form-control layer-raw" rows="4"></textarea>' +
-					'</div>' +
-				'</div>' + 
-				'<div class="layer form-group">' +
-					'<label for="layer1" class="col-md-2 control-label" lang="en">Layer1</label>' +
-					'<div class="col-md-5">' +
-						'<textarea id="layer1" class="form-control layer-raw" rows="4"></textarea>' +
-					'</div>' +
-				'</div>' );
+	if ($('#switch-off').hasClass('active')) {
+
+		if ( $('#layer-control').length == 0 )
+			$('#simple-mode').after(
+						'<div id="layer-control" class="form-group">' +
+							'<label for="layer-num" lang="en" class="col-md-2 control-label">Number of Layers</label>' +
+							'<div class="col-md-2">' +
+								'<input id="layer-num" class="form-control" type="text" name="layer-num" value="2">' +
+							'</div>' +
+						'</div>');
+
+		// initialize touch spin
+		$('#layer-num').TouchSpin({
+			min: 1,
+			max: keyboard['max_layers'],
+			boostat: 5,
+			stepinterval: 200,
+			booster: false
+		});
+
+		$('#layer-num').val('2');
+
+		if ( $('.layer').length > 0 )
+			$('.layer').remove();
+
+		$('#layer-control').after('<div class="layer form-group">' +
+						'<label for="layer0" class="col-md-2 control-label" lang="en">Layer0</label>' +
+						'<div class="col-md-5">' +
+							'<textarea id="layer0" class="form-control layer-raw" rows="4"></textarea>' +
+						'</div>' +
+					'</div>' + 
+					'<div class="layer form-group">' +
+						'<label for="layer1" class="col-md-2 control-label" lang="en">Layer1</label>' +
+						'<div class="col-md-5">' +
+							'<textarea id="layer1" class="form-control layer-raw" rows="4"></textarea>' +
+						'</div>' +
+					'</div>' );
+	}
 
 	window.lang.run();
 }
