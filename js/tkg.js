@@ -1,6 +1,10 @@
 function TKG() {
 
-	var _debug = 3;
+	const _NONE = 0;
+	const _ERROR = 1;
+	const _WARNING = 2;
+	const _INFO = 3;
+	var _debug = _INFO;
 	var _simple_mode = true;
 	var _keycode_map = {};
 	var _keycode_map_reversed = {};
@@ -159,13 +163,13 @@ function TKG() {
 		if (_simple_mode) {
 			if (layer_number != 0) {
 				_consoleError("Invalid layer number: " + layer_number);
-				return false;
+				return _ERROR;
 			}
 		}
 		else {
 			if (layer_number >= _max_layers) {
 				_consoleError("Layer number out of bounds");
-				return false;
+				return _ERROR;
 			}
 		}
 
@@ -204,7 +208,7 @@ function TKG() {
 			layer_2 = _parseRawString(raw_string);
 		}
 		if (!_.isEmpty(layer["error"])) {
-			return false;
+			return _ERROR;
 		}
 
 		// parse keycode from label
@@ -289,6 +293,24 @@ function TKG() {
 			_keymaps_hex[layer_number + 1] = keymap_hex_2;
 			_keymaps_symbol[layer_number + 1] = keymap_symbol_2;
 		}
+
+		// return value
+		var retval = 0;
+		if (!_.isEmpty(layer["warn"])) {
+			retval = _WARNING;
+		}
+		if (!_.isEmpty(layer["error"])) {
+			retval = _ERROR;
+		}
+		if (_simple_mode) {
+			if (!_.isEmpty(layer_2["warn"])) {
+				retval = _WARNING;
+			}
+			if (!_.isEmpty(layer_2["error"])) {
+				retval = _ERROR;
+			}
+		}
+		return retval;
 	}
 
 	var _parseRawString = function(raw_string) {
@@ -391,7 +413,13 @@ function TKG() {
 			}
 			c_y += 1;
 		}
-		layer["keys"] = keys;
+
+		if (keys.length == 0) {
+			_raiseError(error, "general", "Invalid raw data", raw);
+		}
+		else {
+			layer["keys"] = keys;
+		}
 		layer["error"] = error;
 		layer["warn"] = warn;
 		return layer;
@@ -807,19 +835,19 @@ function TKG() {
 	}
 
 	var _consoleError = function(message) {
-		if (_debug > 0) {
+		if (_debug > _ERROR) {
 			console.error(message);
 		}
 	}
 
 	var _consoleWarn = function(message) {
-		if (_debug > 1) {
+		if (_debug > _WARNING) {
 			console.warn(message);
 		}
 	}
 
 	var _consoleLog = function(message) {
-		if (_debug > 2) {
+		if (_debug > _INFO) {
 			console.log(message);
 		}
 	}
@@ -877,6 +905,10 @@ function TKG() {
 	}
 
 	// public methods
+	this.NONE = _NONE;
+	this.ERROR = _ERROR;
+	this.WARNING = _WARNING;
+	this.INFO = _INFO;
 	this.init = _init;
 	this.setKeycodeMap = _setKeycodeMap;
 	this.setActionMap = _setActionMap;

@@ -59,8 +59,29 @@ $(function() {
 			layer_number = id.slice(5);
 		}
 		var raw_string = $("#" + id).val();
-		if (raw_string) {
-			tkg.parseLayer(layer_number, raw_string);
+		var retval = tkg.parseLayer(layer_number, raw_string);
+		var div = $(this).parent();
+		// clear validation states
+		var class_names = [ "has-success", "has-warning", "has-error" ];
+		for (var i in class_names) {
+			var class_name = class_names[i];
+			if (div.hasClass(class_name)) {
+				div.removeClass(class_name);
+			}
+		}
+		// set validation state
+		if (raw_string != "") {
+			switch (retval) {
+				case tkg.NONE:
+					div.addClass("has-success");
+					break;
+				case tkg.WARNING:
+					div.addClass("has-warning");
+					break;
+				case tkg.ERROR:
+					div.addClass("has-error");
+					break;
+			}
 		}
 	});
 
@@ -77,7 +98,7 @@ $(function() {
 			'<div class="layer form-group">' +
 				'<label for="composite-layer" class="col-md-2 control-label" lang="en">Composite Layer</label>' +
 				'<div class="col-md-5">' +
-					'<textarea id="composite-layer" class="form-control composite-layer-raw" rows="4"></textarea>' +
+					'<textarea spellcheck="false" id="composite-layer" class="form-control composite-layer-raw" rows="4"></textarea>' +
 				'</div>' +
 			'</div>');
 
@@ -185,13 +206,13 @@ function initialize( name ) {
 		$('#layer-control').after('<div class="layer form-group">' +
 						'<label for="layer0" class="col-md-2 control-label" lang="en">Layer0</label>' +
 						'<div class="col-md-5">' +
-							'<textarea id="layer0" class="form-control layer-raw" rows="4"></textarea>' +
+							'<textarea spellcheck="false" id="layer0" class="form-control layer-raw" rows="4"></textarea>' +
 						'</div>' +
 					'</div>' + 
 					'<div class="layer form-group">' +
 						'<label for="layer1" class="col-md-2 control-label" lang="en">Layer1</label>' +
 						'<div class="col-md-5">' +
-							'<textarea id="layer1" class="form-control layer-raw" rows="4"></textarea>' +
+							'<textarea spellcheck="false" id="layer1" class="form-control layer-raw" rows="4"></textarea>' +
 						'</div>' +
 					'</div>' );
 	}
