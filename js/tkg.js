@@ -18,18 +18,30 @@ function TKG() {
 	var _fn_actions_hex = [];
 	var _fn_actions_symbol = [];
 
-	var _init = function(object) {
-		// get parameters
-		_keycode_map = object["keycode_map"];
+	var _setSimpleMode = function(simple_mode) {
+		if (_simple_mode != simple_mode) {
+			_simple_mode = simple_mode;
+			_initVariables();
+		}
+	}
+
+	var _setKeycodeMap = function(keycode_map) {
+		_keycode_map = keycode_map;
 		_consoleLog("keycode_map:");
 		_consoleLog(_keycode_map);
 		_keycode_map_reversed = _generateReversedKeycodeMap(_keycode_map);
 		_consoleLog("keycode_map_reversed:");
 		_consoleLog(_keycode_map_reversed);
-		_action_map = object["action_map"];
+	}
+
+	var _setActionMap = function(action_map) {
 		_action_map = action_map;
 		_consoleLog("action_map:");
 		_consoleLog(_action_map);
+	}
+
+	var _init = function(object) {
+		// get parameters
 		_max_layers = object["max_layers"];
 		_max_fns = object["max_fns"];
 		_matrix_rows = object["matrix_rows"];
@@ -130,13 +142,6 @@ function TKG() {
 			target = value;
 		}
 		return target;
-	}
-
-	var _setSimpleMode = function(simple_mode) {
-		if (_simple_mode != simple_mode) {
-			_simple_mode = simple_mode;
-			_initVariables();
-		}
 	}
 
 	var _parseLayer = function(layer_number, raw_string) {
@@ -865,6 +870,8 @@ function TKG() {
 
 	// public methods
 	this.init = _init;
+	this.setKeycodeMap = _setKeycodeMap;
+	this.setActionMap = _setActionMap;
 	this.setSimpleMode = _setSimpleMode;
 	this.parseLayer = _parseLayer;
 	this.getError = _getError;

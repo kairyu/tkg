@@ -1,6 +1,7 @@
 window.lang = new jquery_lang_js();
 var tkg = new TKG();
 var keyboard = {};
+var simple_mode = false;
 
 $(function() {
 
@@ -8,6 +9,9 @@ $(function() {
 
 	showNotification();
 
+	tkg.setKeycodeMap(keycode_map);
+	tkg.setActionMap(action_map);
+	tkg.setSimpleMode(simple_mode);
 	initialize( $('#keyboard-sel:first-child').val() );
 	
 	$('#keyboard-sel').on('change', function() {
@@ -47,7 +51,13 @@ $(function() {
 	// parse layer
 	$('#layer-form').on('blur', 'textarea', function(event) {
 		var id = event.target.id;
-		var layer_number = id.slice(5);
+		var layer_number;
+		if (id == "composite-layer") {
+			layer_number = 0;
+		}
+		else {
+			layer_number = id.slice(5);
+		}
 		var raw_string = $("#" + id).val();
 		if (raw_string) {
 			tkg.parseLayer(layer_number, raw_string);
@@ -194,7 +204,6 @@ function loadKeyboard( name ) {
 	$.getJSON("keyboard/" + name.toLowerCase() + ".json", function(json) {
 		keyboard = json;
 		tkg.init({
-			"keycode_map": keycode_map,
 			"max_layers": keyboard["max_layers"],
 			"max_fns": keyboard["max_fns"],
 			"matrix_rows": keyboard["matrix_rows"],
