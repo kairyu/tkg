@@ -4,6 +4,8 @@ var keyboard = {};
 
 $(function() {
 
+	$('.btn').button();
+
 	showNotification();
 
 	initialize( $('#keyboard-sel:first-child').val() );
@@ -14,7 +16,7 @@ $(function() {
 	});
 	
 	// on change
-	$('#layer-num').on('change', function() {
+	$('#layer-form').on('change', '#layer-num', function() {
 		var count = $('.layer').length;
 		var num = $('#layer-num').val();
 
@@ -50,6 +52,38 @@ $(function() {
 		if (raw_string) {
 			tkg.parseLayer(layer_number, raw_string);
 		}
+	});
+
+	// on off switch
+	$('#switch-on, #switch-off').click( function() {
+		$('#switch-on').toggleClass('btn-default active btn-primary');
+		$('#switch-off').toggleClass('btn-default active btn-primary');
+	});
+
+	// simple mode on
+	$('#switch-on').click( function() {
+		$('#layer-control, .layer').remove();
+		$('#simple-mode').after(
+			'<div class="layer form-group">' +
+				'<label for="composite-layer" class="col-md-2 control-label" lang="en">Composite Layer</label>' +
+				'<div class="col-md-5">' +
+					'<textarea id="composite-layer" class="form-control composite-layer-raw" rows="4"></textarea>' +
+				'</div>' +
+			'</div>');
+
+		window.lang.run();
+		tkg.setSimpleMode(true);
+
+		return false;	// no submit
+	});
+
+	// simple mode off
+	$('#switch-off').click( function() {
+		var name = $('#keyboard-sel').val();
+		initialize(name);
+		tkg.setSimpleMode(false);
+
+		return false;	// no submit
 	});
 
 	// download
@@ -95,6 +129,14 @@ $(function() {
 function initialize( name ) {
 
 	loadKeyboard( name );
+
+	$('#simple-mode').after(
+				'<div id="layer-control" class="form-group">' +
+					'<label for="layer-num" lang="en" class="col-md-2 control-label">Number of Layers</label>' +
+					'<div class="col-md-2">' +
+						'<input id="layer-num" class="form-control" type="text" name="layer-num" value="2">' +
+					'</div>' +
+				'</div>');
 
 	// initialize touch spin
 	$('#layer-num').TouchSpin({

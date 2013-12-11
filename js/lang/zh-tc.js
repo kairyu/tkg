@@ -3,6 +3,8 @@ jquery_lang_js.prototype.lang.zh_tc = {
 	'About':'關於',
 	'Language':'語言',
 	'Keyboard':'鍵盤',
+	'Simple Mode':'簡單模式',
+	'Composite Layer':'複合層',
 	'Detail':'詳細',
 	'Number of Layers':'層數',
 	'Layer0':'第0層',

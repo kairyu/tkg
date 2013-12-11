@@ -3,6 +3,8 @@ jquery_lang_js.prototype.lang.jp = {
 	'About':'サイトについて',
 	'Language':'言語',
 	'Keyboard':'キーボード',
+	'Simple Mode':'簡単モード',
+	'Composite Layer':'複合レイヤー',
 	'Detail':'詳細',
 	'Number of Layers':'レイヤー数',
 	'Layer0':'レイヤー0',

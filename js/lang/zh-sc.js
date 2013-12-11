@@ -3,6 +3,8 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'About':'关于',
 	'Language':'语言',
 	'Keyboard':'键盘',
+	'Simple Mode':'简单模式',
+	'Composite Layer':'复合层',
 	'Detail':'详细',
 	'Number of Layers':'层数',
 	'Layer0':'第0层',
