@@ -230,9 +230,17 @@ function TKG() {
 			_consoleLog(fns_2);
 			_consoleLog(_fns);
 			if (_fns[0]) {
-				var fn = _fns[0];
-				fn["symbol"] = "ACTION_LAYER_MOMENTARY";
-				fn["param"] = [ layer_number + 1 ];
+				_fns[0]["symbol"] = "ACTION_LAYER_MOMENTARY";
+				_fns[0]["param"] = [ layer_number + 1 ];
+			}
+			if (_fns[1]) {
+				_fns[1]["symbol"] = "ACTION_BACKLIGHT_TOGGLE";
+			}
+			if (_fns[2]) {
+				_fns[2]["symbol"] = "ACTION_BACKLIGHT_DECREASE";
+			}
+			if (_fns[3]) {
+				_fns[3]["symbol"] = "ACTION_BACKLIGHT_INCREASE";
 			}
 		}
 
@@ -422,7 +430,7 @@ function TKG() {
 				//continue;
 			}
 			if (label_property_2 && key["label"][label_property_2]) {
-				label_2 = key["label"]["bottom"].toLowerCase();
+				label_2 = key["label"][label_property_2].toLowerCase();
 			}
 			else {
 				label_2 = "";
