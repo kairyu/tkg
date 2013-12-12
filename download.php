@@ -25,6 +25,8 @@ else {
 	die('Invalid Parameter');
 }
 
+disable_magic_quotes();
+
 // check post data
 if (
 	isset($_POST['matrix_rows']) &&

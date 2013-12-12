@@ -4,6 +4,24 @@ if (!defined('TKG')) {
 	exit();
 }
 
+function disable_magic_quotes() {
+	if (get_magic_quotes_gpc()) {
+		$process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
+		while (list($key, $val) = each($process)) {
+			foreach ($val as $k => $v) {
+				unset($process[$key][$k]);
+				if (is_array($v)) {
+					$process[$key][stripslashes($k)] = $v;
+					$process[] = &$process[$key][stripslashes($k)];
+				} else {
+					$process[$key][stripslashes($k)] = stripslashes($v);
+				}
+			}
+		}
+		unset($process);
+	}
+}
+
 function calc_checksum_word($bin, $checksum = 0) {
 	for ($i = 0; $i < strlen($bin); $i += 2) {
 		list(,$word) = unpack('v', substr($bin, $i, 2));
