@@ -1,6 +1,7 @@
 window.lang = new jquery_lang_js();
 var tkg = new TKG();
 var keyboard = {};
+var simple_mode = false;
 
 $(function() {
 
@@ -8,6 +9,9 @@ $(function() {
 
 	showNotification();
 
+	tkg.setKeycodeMap(keycode_map);
+	tkg.setActionMap(action_map);
+	tkg.setSimpleMode(simple_mode);
 	initialize( $('#keyboard-sel:first-child').val() );
 	
 	$('#keyboard-sel').on('change', function() {
@@ -69,10 +73,37 @@ $(function() {
 	// parse layer
 	$('#layer-form').on('blur', 'textarea', function(event) {
 		var id = event.target.id;
-		var layer_number = id.slice(5);
+		var layer_number;
+		if (id == "composite-layer") {
+			layer_number = 0;
+		}
+		else {
+			layer_number = id.slice(5);
+		}
 		var raw_string = $("#" + id).val();
-		if (raw_string) {
-			tkg.parseLayer(layer_number, raw_string);
+		var retval = tkg.parseLayer(layer_number, raw_string);
+		var div = $(this).parent();
+		// clear validation states
+		var class_names = [ "has-success", "has-warning", "has-error" ];
+		for (var i in class_names) {
+			var class_name = class_names[i];
+			if (div.hasClass(class_name)) {
+				div.removeClass(class_name);
+			}
+		}
+		// set validation state
+		if (raw_string != "") {
+			switch (retval) {
+				case tkg.NONE:
+					div.addClass("has-success");
+					break;
+				case tkg.WARNING:
+					div.addClass("has-warning");
+					break;
+				case tkg.ERROR:
+					div.addClass("has-error");
+					break;
+			}
 		}
 	});
 
@@ -89,7 +120,7 @@ $(function() {
 			'<div class="layer form-group">' +
 				'<label for="composite-layer" class="col-md-2 control-label" lang="en">Composite Layer</label>' +
 				'<div class="col-md-5">' +
-					'<textarea id="composite-layer" class="form-control composite-layer-raw" rows="4"></textarea>' +
+					'<textarea spellcheck="false" id="composite-layer" class="form-control composite-layer-raw" rows="4"></textarea>' +
 				'</div>' +
 			'</div>');
 
@@ -197,13 +228,13 @@ function initialize( name ) {
 		$('#layer-control').after('<div class="layer form-group">' +
 						'<label for="layer0" class="col-md-2 control-label" lang="en">Layer0</label>' +
 						'<div class="col-md-5">' +
-							'<textarea id="layer0" class="form-control layer-raw" rows="4"></textarea>' +
+							'<textarea spellcheck="false" id="layer0" class="form-control layer-raw" rows="4"></textarea>' +
 						'</div>' +
 					'</div>' + 
 					'<div class="layer form-group">' +
 						'<label for="layer1" class="col-md-2 control-label" lang="en">Layer1</label>' +
 						'<div class="col-md-5">' +
-							'<textarea id="layer1" class="form-control layer-raw" rows="4"></textarea>' +
+							'<textarea spellcheck="false" id="layer1" class="form-control layer-raw" rows="4"></textarea>' +
 						'</div>' +
 					'</div>' );
 	}
@@ -216,7 +247,6 @@ function loadKeyboard( name ) {
 	$.getJSON("keyboard/" + name.toLowerCase() + ".json", function(json) {
 		keyboard = json;
 		tkg.init({
-			"keycode_map": keycode_map,
 			"max_layers": keyboard["max_layers"],
 			"max_fns": keyboard["max_fns"],
 			"matrix_rows": keyboard["matrix_rows"],

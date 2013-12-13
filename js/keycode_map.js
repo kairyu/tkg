@@ -398,20 +398,20 @@ var keycode_map = {
 	"KC_PSCREEN": {
 		"description": "PrintScreen",
 		"keycode": "0x46",
-		"label": [ "printscreen", "print screen", "prtsc", "print" ],
+		"label": [ "printscreen", "print screen", "prtsc", "print", "psc" ],
 		"short_name": "KC_PSCR"
 	},
 	"KC_SCROLLLOCK": {
 		"description": "Scroll Lock",
 		"keycode": "0x47",
-		"label": [ "scroll lock", "scrolllock", "scrlc" ],
+		"label": [ "scroll lock", "scrolllock", "scrlc", "scrlk" ],
 		"short_name": "KC_SLCK"
 	},
 	"KC_PAUSE": {
 		"description": "Pause and Break",
 		"keycode": "0x48",
-		"label": [ "pause" ],
-		"label_2": [ "break" ],
+		"label": [ "pause", "pus" ],
+		"label_2": [ "break", "brk" ],
 		"short_name": "KC_PAUS"
 	},
 	"KC_INSERT": {
