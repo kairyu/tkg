@@ -31,20 +31,20 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">TMK Keymap Generator</a>
+					<a id="home" class="navbar-brand" href="javascript:void(0)">TMK Keymap Generator</a>
 				</div>
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
 						<li>
-							<a href="#" lang="en">Help</a>
+							<a id="help" href="javascript:void(0)" lang="en">Help</a>
 						</li>
 						<li>
-							<a href="#" lang="en">About</a>
+							<a id="about" href="javascript:void(0)" lang="en">About</a>
 						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
-							<a href="#" id="change-lan" role="button" class="dropdown-toggle" data-toggle="dropdown"><span lang="en">Language</span> <b class="caret"></b>
+							<a href="javascript:void(0)" id="change-lan" role="button" class="dropdown-toggle" data-toggle="dropdown"><span lang="en">Language</span> <b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu" role="menu" aria-labelledby="change-lan">
 								<li role="presentation">
@@ -65,7 +65,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="container">
+		<div id="pg-home" class="container">
 			<form id="layer-form" class="form-horizontal" role="form">
 				<div class="form-group">
 					<label for="keyboard-type" lang="en" class="col-md-2 control-label">Keyboard</label>
@@ -93,6 +93,12 @@
 					</div>
 				</div>
 			</form>
+		</div>
+		<div id="pg-about" style="display:none;">
+			About
+		</div>
+		<div id="pg-help" style="display:none;">
+			Help
 		</div>
 	</div>
 	<div id="footer">

@@ -14,6 +14,28 @@ $(function() {
 		var name = this.value;
 		initialize( name );
 	});
+
+	// on page change
+	$('#home').click( function() {
+		location.hash = '';
+		$('#pg-home').show();
+		$('#pg-about').hide();
+		$('#pg-help').hide();
+	});
+
+	$('#about').click( function() {
+		location.hash = 'about';
+		$('#pg-home').hide();
+		$('#pg-about').show();
+		$('#pg-help').hide();
+	});
+
+	$('#help').click( function() {
+		location.hash = 'help';
+		$('#pg-home').hide();
+		$('#pg-about').hide();
+		$('#pg-help').show();
+	});
 	
 	// on change
 	$('#layer-form').on('change', '#layer-num', function() {
