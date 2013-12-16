@@ -140,7 +140,7 @@ $(function() {
 	});
 
 	// download
-	$('#dl_eep, #dl_h').click(function() {
+	$('#dl_eep, #dl_c').click(function() {
 		var id = $(this).attr('id');
 		var type = '';
 		var keymaps = [];
@@ -152,8 +152,8 @@ $(function() {
 			keymaps = tkg.getKeymapsHex();
 			fn_actions = tkg.getFnActionsHex();
 		}
-		else if ( id == 'dl_h' ) {
-			type = 'h';
+		else if ( id == 'dl_c' ) {
+			type = 'c';
 			keymaps = tkg.getKeymapsSymbol();
 			fn_actions = tkg.getFnActionsSymbol();
 		}
