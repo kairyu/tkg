@@ -62,4 +62,7 @@ body {
 #fn1 .col-md-1 {
 	padding: 0 2px;
 }
+.fn label.checkbox {
+	padding-top: 0;
+}
 
