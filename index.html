@@ -15,13 +15,11 @@
 	<script src="js/lang/zh-tc.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/keycode_map.js" charset="utf-8" type="text/javascript" ></script>
 	<script src="js/action_map.js" charset="utf-8" type="text/javascript" ></script>
-	<script src="js/select2.js" charset="utf-8" type="text/javascript" ></script>
 	<script src="js/bootstrap-multiselect.js" charset="utf-8" type="text/javascript" ></script>
 	<script src="js/tkg.js" charset="utf-8" type="text/javascript" ></script>
 	<script src="js/main.js" charset="utf-8" type="text/javascript" ></script>
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/bootstrap-multiselect.css">
-	<link rel="stylesheet" href="css/select2.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>	
 <body>
@@ -90,56 +88,68 @@
 						<button id="switch-off" class="btn btn-primary active">OFF</button>
 					</div>
 				</div>
-				<div class="form-group">
+				<div id="fn0" class="form-group">
 					<label for="fn01" class="col-md-2 control-label">Fn0</label>
-					<div class="col-md-5">
-						<select id="fn01" multiple>
-							<option value="val1">val1</option>
-							<option value="val2">val2</option>
-							<option value="val3">val3</option>
-							<option value="val4">val4</option>
-							<option value="val5">val5</option>
-						</select>
-						<select id="fn02" multiple>
-							<option value="val1">val1</option>
-							<option value="val2">val2</option>
-							<option value="val3">val3</option>
-							<option value="val4">val4</option>
-							<option value="val5">val5</option>
-						</select>
-						<select id="fn03" multiple>
-							<option value="val1">val1</option>
-							<option value="val2">val2</option>
-							<option value="val3">val3</option>
-							<option value="val4">val4</option>
-							<option value="val5">val5</option>
-						</select>
+					<div class="row">
+						<div class="fn">
+							<select id="fn01" multiple="multiple">
+								<option value="val1">val1</option>
+								<option value="val2">val2</option>
+								<option value="val3">val3</option>
+								<option value="val4">val4</option>
+								<option value="val5">val5</option>
+							</select>
+						</div>
+						<div class="col-md-1">
+							<select id="fn02" class="form-control">
+								<option value="val1">val1</option>
+								<option value="val2">val2</option>
+								<option value="val3">val3</option>
+								<option value="val4">val4</option>
+								<option value="val5">val5</option>
+							</select>
+						</div>
+						<div class="col-md-1">
+							<select id="fn03" class="form-control">
+								<option value="val1">val1</option>
+								<option value="val2">val2</option>
+								<option value="val3">val3</option>
+								<option value="val4">val4</option>
+								<option value="val5">val5</option>
+							</select>
+						</div>
 					</div>
 				</div>
-				<div class="form-group">
+				<div id="fn1" class="form-group">
 					<label for="fn11" class="col-md-2 control-label">Fn1</label>
-					<div class="col-md-5">
-						<select id="fn11" multiple="multiple">
-							<option value="val1">val1</option>
-							<option value="val2">val2</option>
-							<option value="val3">val3</option>
-							<option value="val4">val4</option>
-							<option value="val5">val5</option>
-						</select>
-						<select id="fn12" multiple="multiple">
-							<option value="val1">val1</option>
-							<option value="val2">val2</option>
-							<option value="val3">val3</option>
-							<option value="val4">val4</option>
-							<option value="val5">val5</option>
-						</select>
-						<select id="fn13" multiple="multiple">
-							<option value="val1">val1</option>
-							<option value="val2">val2</option>
-							<option value="val3">val3</option>
-							<option value="val4">val4</option>
-							<option value="val5">val5</option>
-						</select>
+					<div class="row">
+						<div class="fn">
+							<select id="fn11" multiple="multiple">
+								<option value="val1">val1</option>
+								<option value="val2">val2</option>
+								<option value="val3">val3</option>
+								<option value="val4">val4</option>
+								<option value="val5">val5</option>
+							</select>
+						</div>
+						<div class="col-md-1">
+							<select id="fn12" class="form-control">
+								<option value="val1">val1</option>
+								<option value="val2">val2</option>
+								<option value="val3">val3</option>
+								<option value="val4">val4</option>
+								<option value="val5">val5</option>
+							</select>
+						</div>
+						<div class="col-md-1">
+							<select id="fn13" class="form-control">
+								<option value="val1">val1</option>
+								<option value="val2">val2</option>
+								<option value="val3">val3</option>
+								<option value="val4">val4</option>
+								<option value="val5">val5</option>
+							</select>
+						</div>
 					</div>
 				</div>
 				<div class="form-group">

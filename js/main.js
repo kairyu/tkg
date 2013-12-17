@@ -20,10 +20,7 @@ $(function() {
 	});
 
 	// initialize function keys
-	$('#fn01, #fn02, #fn03').select2({
-		width: '32%'
-	});
-	$('#fn11, #fn12, #fn13').multiselect();
+	$('#fn01, #fn11').multiselect();
 
 	// on page change
 	$('#home').click( function() {

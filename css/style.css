@@ -54,3 +54,12 @@ body {
 #dl_eep {
 	margin-bottom: 15px;
 }
+.fn {
+	float: left;
+	padding: 0 2px 0 15px;
+}
+#fn0 .col-md-1,
+#fn1 .col-md-1 {
+	padding: 0 2px;
+}
+
