@@ -1,6 +1,7 @@
 var action_map = {
 	"ACTION_NO": {
-		"group": "none",
+		"group": "None",
+		"name": "None",
 		"description": "",
 		"code": "0x0000"
 	},
@@ -11,19 +12,20 @@ var action_map = {
 	},
 	*/
 	"ACTION_KEY": {
-		"group": "Kay action",
+		"group": "Key action",
 		"name": "Normal key",
 		"description": "Send key",
 		"code": function(key) {
 			return "0x00" + dechex(key, 2);
 		},
-		"param": [ "key" ]
+		"param": [ "key" ],
+		"default": [ 0 ]
 	},
 	"ACTION_MODS": {
-		"group": "Kay action",
+		"group": "Key action",
 		"name": "Modifier",
 		"description": "Send modifier",
-		"code": function(mods, lr) {
+		"code": function(lr, mods) {
 			if (lr) {
 				return "0x01" + dechex(mods & 0xF);
 			}
@@ -31,13 +33,14 @@ var action_map = {
 				return "0x00" + dechex(mods & 0xF);
 			}
 		},
-		"param": [ "mods", "lr" ]
+		"param": [ "lr", "mods" ],
+		"default": [ 0, 0 ]
 	},
 	"ACTION_MODS_KEY": {
-		"group": "Kay action",
+		"group": "Key action",
 		"name": "Modified key",
 		"description": "Send modifier and key",
-		"code": function(key, mods, lr) {
+		"code": function(lr, mods, key) {
 			if (lr) {
 				return "0x01" + dechex(mods & 0xF) + dechex(key, 2);
 			}
@@ -45,7 +48,8 @@ var action_map = {
 				return "0x00" + dechex(mods & 0xF) + dechex(key, 2);
 			}
 		},
-		"param": [ "key", "mods", "lr" ]
+		"param": [ "lr", "mods", "key" ],
+		"default": [ 0, 0, 0 ]
 	},
 	"ACTION_DEFAULT_LAYER_SET": {
 		"group": "Layer action",
@@ -59,7 +63,8 @@ var action_map = {
 				return "";
 			}
 		},
-		"param": [ "layer" ]
+		"param": [ "layer" ],
+		"default": [ 0 ]
 	},
 	"ACTION_LAYER_CLEAR": {
 		"group": "Layer advanced action",
@@ -70,7 +75,8 @@ var action_map = {
 				return "0x8" + on + "00";
 			}
 		},
-		"param": [ "on" ]
+		"param": [ "on" ],
+		"default": [ 1 ]
 	},
 	"ACTION_LAYER_MOMENTARY": {
 		"group": "Layer action",
@@ -88,7 +94,8 @@ var action_map = {
 				return "";
 			}
 		},
-		"param": [ "layer" ]
+		"param": [ "layer" ],
+		"default": [ 1 ]
 	},
 	"ACTION_LAYER_TOGGLE": {
 		"group": "Layer action",
@@ -102,7 +109,8 @@ var action_map = {
 				return "";
 			}
 		},
-		"param": [ "layer" ]
+		"param": [ "layer" ],
+		"default": [ 1 ]
 	},
 	"ACTION_LAYER_INVERT": {
 		"group": "Layer advanced action",
@@ -116,7 +124,8 @@ var action_map = {
 				return "";
 			}
 		},
-		"param": [ "layer", "on" ]
+		"param": [ "layer", "on" ],
+		"default": [ 1, 1 ]
 	},
 	"ACTION_LAYER_ON": {
 		"group": "Layer action",
@@ -130,7 +139,8 @@ var action_map = {
 				return "";
 			}
 		},
-		"param": [ "layer", "on" ]
+		"param": [ "layer", "on" ],
+		"default": [ 1, 2 ]
 	},
 	"ACTION_LAYER_OFF": {
 		"group": "Layer action",
@@ -144,7 +154,8 @@ var action_map = {
 				return "";
 			}
 		},
-		"param": [ "layer", "on" ]
+		"param": [ "layer", "on" ],
+		"default": [ 1, 2 ]
 	},
 	"ACTION_LAYER_SET": {
 		"group": "Layer action",
@@ -158,7 +169,8 @@ var action_map = {
 				return "";
 			}
 		},
-		"param": [ "layer" ]
+		"param": [ "layer" ],
+		"default": [ 1 ]
 	},
 	"ACTION_LAYER_ON_OFF": {
 		"group": "Layer advanced action",
@@ -176,7 +188,8 @@ var action_map = {
 				return "";
 			}
 		},
-		"param": [ "layer" ]
+		"param": [ "layer" ],
+		"default": [ 1 ]
 	},
 	"ACTION_LAYER_OFF_ON": {
 		"group": "Layer advanced action",
@@ -194,7 +207,8 @@ var action_map = {
 				return "";
 			}
 		},
-		"param": [ "layer" ]
+		"param": [ "layer" ],
+		"default": [ 1 ]
 	},
 	"ACTION_LAYER_SET_CLEAR": {
 		"group": "Layer advanced action",
@@ -212,7 +226,8 @@ var action_map = {
 				return "";
 			}
 		},
-		"param": [ "layer" ]
+		"param": [ "layer" ],
+		"default": [ 1 ]
 	},
 	"ACTION_BACKLIGHT_INCREASE": {
 		"group": "Backlight action",

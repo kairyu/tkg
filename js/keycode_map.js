@@ -1,16 +1,19 @@
 var keycode_map = {
 	"KC_NO": {
+		"name": "None",
 		"description": "Reserved (no event indicated)",
 		"keycode": "0x00",
 		"label": [ "no" ]
 	},
 	/*
 	"KC_ROLL_OVER": {
+		"name": "ErrorRollOver",
 		"description": "ErrorRollOver",
 		"keycode": "0x01"
 	},
 	*/
 	"KC_TRANSPARENT": {
+		"name": "Transparent",
 		"description": "Transparent",
 		"keycode": "0x01",
 		"label": [ "" ],
@@ -18,234 +21,278 @@ var keycode_map = {
 		"short_name": "KC_TRNS"
 	},
 	"KC_POST_FAIL":	{
+		"name": "POSTFail",
 		"description": "POSTFail",
 		"keycode": "0x02"
 	},
 	"KC_UNDEFINED": {
+		"name": "ErrorUndefined",
 		"description": "ErrorUndefined",
 		"keycode": "0x03"
 	},
 	"KC_A": {
+		"name": "a and A",
 		"description": "a and A",
 		"keycode": "0x04",
 		"label": [ "a" ]
 	},
 	"KC_B": {
+		"name": "b and B",
 		"description": "b and B",
 		"keycode": "0x05",
 		"label": [ "b" ]
 	},
 	"KC_C": {
+		"name": "c and C",
 		"description": "c and C",
 		"keycode": "0x06",
 		"label": [ "c" ]
 	},
 	"KC_D": {
+		"name": "d and D",
 		"description": "d and D",
 		"keycode": "0x07",
 		"label": [ "d" ]
 	},
 	"KC_E": {
+		"name": "e and E",
 		"description": "e and E",
 		"keycode": "0x08",
 		"label": [ "e" ]
 	},
 	"KC_F": {
+		"name": "f and F",
 		"description": "f and F",
 		"keycode": "0x09",
 		"label": [ "f" ]
 	},
 	"KC_G": {
+		"name": "g and G",
 		"description": "g and G",
 		"keycode": "0x0A",
 		"label": [ "g" ]
 	},
 	"KC_H": {
+		"name": "h and H",
 		"description": "h and H",
 		"keycode": "0x0B",
 		"label": [ "h" ]
 	},
 	"KC_I": {
+		"name": "i and I",
 		"description": "i and I",
 		"keycode": "0x0C",
 		"label": [ "i" ]
 	},
 	"KC_J": {
+		"name": "j and J",
 		"description": "j and J",
 		"keycode": "0x0D",
 		"label": [ "j" ]
 	},
 	"KC_K": {
+		"name": "k and K",
 		"description": "k and K",
 		"keycode": "0x0E",
 		"label": [ "k" ]
 	},
 	"KC_L": {
+		"name": "l and L",
 		"description": "l and L",
 		"keycode": "0x0F",
 		"label": [ "l" ]
 	},
 	"KC_M": {
+		"name": "m and M",
 		"description": "m and M",
 		"keycode": "0x10",
 		"label": [ "m" ]
 	},
 	"KC_N": {
+		"name": "n and N",
 		"description": "n and N",
 		"keycode": "0x11",
 		"label": [ "n" ]
 	},
 	"KC_O": {
+		"name": "o and O",
 		"description": "o and O",
 		"keycode": "0x12",
 		"label": [ "o" ]
 	},
 	"KC_P": {
+		"name": "p and P",
 		"description": "p and P",
 		"keycode": "0x13",
 		"label": [ "p" ]
 	},
 	"KC_Q": {
+		"name": "q and Q",
 		"description": "q and Q",
 		"keycode": "0x14",
 		"label": [ "q" ]
 	},
 	"KC_R": {
+		"name": "r and R",
 		"description": "r and R",
 		"keycode": "0x15",
 		"label": [ "r" ]
 	},
 	"KC_S": {
+		"name": "s and S",
 		"description": "s and S",
 		"keycode": "0x16",
 		"label": [ "s" ]
 	},
 	"KC_T": {
+		"name": "t and T",
 		"description": "t and T",
 		"keycode": "0x17",
 		"label": [ "t" ]
 	},
 	"KC_U": {
+		"name": "u and U",
 		"description": "u and U",
 		"keycode": "0x18",
 		"label": [ "u" ]
 	},
 	"KC_V": {
+		"name": "v and V",
 		"description": "v and V",
 		"keycode": "0x19",
 		"label": [ "v" ]
 	},
 	"KC_W": {
+		"name": "w and W",
 		"description": "w and W",
 		"keycode": "0x1A",
 		"label": [ "w" ]
 	},
 	"KC_X": {
+		"name": "x and X",
 		"description": "x and X",
 		"keycode": "0x1B",
 		"label": [ "x" ]
 	},
 	"KC_Y": {
+		"name": "y and Y",
 		"description": "y and Y",
 		"keycode": "0x1C",
 		"label": [ "y" ]
 	},
 	"KC_Z": {
+		"name": "z and Z",
 		"description": "z and Z",
 		"keycode": "0x1D",
 		"label": [ "z" ]
 	},
 	"KC_1": {
+		"name": "1 and !",
 		"description": "1 and !",
 		"keycode": "0x1E",
 		"label": [ "!" ],
 		"label_2": [ "1" ]
 	},
 	"KC_2": {
+		"name": "2 and @",
 		"description": "2 and @",
 		"keycode": "0x1F",
 		"label": [ "@", "\"" ],
 		"label_2": [ "2" ]
 	},
 	"KC_3": {
+		"name": "3 and #",
 		"description": "3 and #",
 		"keycode": "0x20",
 		"label": [ "#", "£" ],
 		"label_2": [ "3" ]
 	},
 	"KC_4": {
+		"name": "4 and $",
 		"description": "4 and $",
 		"keycode": "0x21",
 		"label": [ "$" ],
 		"label_2": [ "4" ]
 	},
 	"KC_5": {
+		"name": "5 and %",
 		"description": "5 and %",
 		"keycode": "0x22",
 		"label": [ "%" ],
 		"label_2": [ "5" ]
 	},
 	"KC_6": {
+		"name": "6 and ^",
 		"description": "6 and ^",
 		"keycode": "0x23",
 		"label": [ "^", "&" ],
 		"label_2": [ "6" ]
 	},
 	"KC_7": {
+		"name": "7 and &",
 		"description": "7 and &",
 		"keycode": "0x24",
 		"label": [ "&", "'" ],
 		"label_2": [ "7" ]
 	},
 	"KC_8": {
+		"name": "8 and *",
 		"description": "8 and *",
 		"keycode": "0x25",
 		"label": [ "*", "(" ],
 		"label_2": [ "8" ]
 	},
 	"KC_9": {
+		"name": "9 and (",
 		"description": "9 and (",
 		"keycode": "0x26",
 		"label": [ "(", ")" ],
 		"label_2": [ "9" ]
 	},
 	"KC_0": {
+		"name": "0 and )",
 		"description": "0 and )",
 		"keycode": "0x27",
 		"label": [ ")", "" ],
 		"label_2": [ "0" ]
 	},
 	"KC_ENTER": {
-		"description": "Return (ENTER)",
+		"name": "Enter",
+		"description": "Enter (Return)",
 		"keycode": "0x28",
 		"label": [ "enter", "return" ],
 		"label_priority": [ "enter", "return" ],
 		"short_name": "KC_ENT"
 	},
 	"KC_ESCAPE": {
-		"description": "ESCAPE",
+		"name": "Esc",
+		"description": "Esc (Escape)",
 		"keycode": "0x29",
 		"label": [ "escape", "esc" ],
 		"short_name": "KC_ESC"
 	},
 	"KC_BSPACE": {
-		"description": "DELETE (Backspace)",
+		"name": "Backspace",
+		"description": "Backspace (Delete)",
 		"keycode": "0x2A",
 		"label": [ "delete", "backspace", "back space", "bs" ],
 		"short_name": "KC_BSPC"
 	},
 	"KC_TAB": {
+		"name": "Tab",
 		"description": "Tab",
 		"keycode": "0x2B",
 		"label": [ "tab" ]
 	},
 	"KC_SPACE": {
+		"name": "Spacebar",
 		"description": "Spacebar",
 		"keycode": "0x2C",
 		"label": [ "spacebar", "space", "spc", "" ],
 		"short_name": "KC_SPC"
 	},
 	"KC_MINUS": {
+		"name": "- and _",
 		"description": "- and _",
 		"keycode": "0x2D",
 		"label": [ "_", "&mdash;", "=" ],
@@ -253,6 +300,7 @@ var keycode_map = {
 		"short_name": "KC_MINS"
 	},
 	"KC_EQUAL": {
+		"name": "= and +",
 		"description": "= and +",
 		"keycode": "0x2E",
 		"label": [ [ "+" ], [ "~" ] ],
@@ -260,6 +308,7 @@ var keycode_map = {
 		"short_name": "KC_EQL"
 	},
 	"KC_LBRACKET": {
+		"name": "[ and {",
 		"description": "[ and {",
 		"keycode": "0x2F",
 		"label": [ "{" ],
@@ -267,6 +316,7 @@ var keycode_map = {
 		"short_name": "KC_LBRC"
 	},
 	"KC_RBRACKET": {
+		"name": "] and }",
 		"description": "] and }",
 		"keycode": "0x30",
 		"label": [ "}" ],
@@ -274,6 +324,7 @@ var keycode_map = {
 		"short_name": "KC_RBRC"
 	},
 	"KC_BSLASH": {
+		"name": "\\ and |",
 		"description": "\\ and |",
 		"keycode": "0x31",
 		"label": [ "|" ],
@@ -282,6 +333,7 @@ var keycode_map = {
 		"short_name": "KC_BSLS"
 	},
 	"KC_NONUS_HASH": {
+		"name": "Non-US # and ~",
 		"description": "Non-US # and ~",
 		"keycode": "0x32",
 		"label": [ "~" ],
@@ -289,6 +341,7 @@ var keycode_map = {
 		"short_name": "KC_NUHS"
 	},
 	"KC_SCOLON": {
+		"name": "; and :",
 		"description": "; and :",
 		"keycode": "0x33",
 		"label": [ [ ":" ], [ "*" ] ],
@@ -296,6 +349,7 @@ var keycode_map = {
 		"short_name": "KC_SCLN"
 	},
 	"KC_QUOTE": {
+		"name": "' and \"",
 		"description": "' and \"",
 		"keycode": "0x34",
 		"label": [ [ "\"", "@" ], [ "+" ] ],
@@ -303,6 +357,7 @@ var keycode_map = {
 		"short_name": "KC_QUOT"
 	},
 	"KC_GRAVE": {
+		"name": "` and ~",
 		"description": "`(grave accent) and ~(tilde)",
 		"keycode": "0x35",
 		"label": [ "~", "¬" ],
@@ -310,6 +365,7 @@ var keycode_map = {
 		"short_name": "KC_GRV"
 	},
 	"KC_COMMA": {
+		"name": ", and <",
 		"description": ", and <",
 		"keycode": "0x36",
 		"label": [ "<" ],
@@ -317,12 +373,14 @@ var keycode_map = {
 		"short_name": "KC_COMM"
 	},
 	"KC_DOT": {
+		"name": ". and >",
 		"description": ". and >",
 		"keycode": "0x37",
 		"label": [ ">" ],
 		"label_2": [ "." ]
 	},
 	"KC_SLASH": {
+		"name": "/ and ?",
 		"description": "/ and ?",
 		"keycode": "0x38",
 		"label": [ "?" ],
@@ -330,84 +388,100 @@ var keycode_map = {
 		"short_name": "KC_SLSH"
 	},
 	"KC_CAPSLOCK": {
+		"name": "Caps Lock",
 		"description": "Caps Lock",
 		"keycode": "0x39",
 		"label": [ "capslock", "caps lock", "caps" ],
 		"short_name": "KC_CAPS"
 	},
 	"KC_F1": {
+		"name": "F1",
 		"description": "F1",
 		"keycode": "0x3A",
 		"label": [ "f1" ]
 	},
 	"KC_F2": {
+		"name": "F2",
 		"description": "F2",
 		"keycode": "0x3B",
 		"label": [ "f2" ]
 	},
 	"KC_F3": {
+		"name": "F3",
 		"description": "F3",
 		"keycode": "0x3C",
 		"label": [ "f3" ]
 	},
 	"KC_F4": {
+		"name": "F4",
 		"description": "F4",
 		"keycode": "0x3D",
 		"label": [ "f4" ]
 	},
 	"KC_F5": {
+		"name": "F5",
 		"description": "F5",
 		"keycode": "0x3E",
 		"label": [ "f5" ]
 	},
 	"KC_F6": {
+		"name": "F6",
 		"description": "F6",
 		"keycode": "0x3F",
 		"label": [ "f6" ]
 	},
 	"KC_F7": {
+		"name": "F7",
 		"description": "F7",
 		"keycode": "0x40",
 		"label": [ "f7" ]
 	},
 	"KC_F8": {
+		"name": "F8",
 		"description": "F8",
 		"keycode": "0x41",
 		"label": [ "f8" ]
 	},
 	"KC_F9": {
+		"name": "F9",
 		"description": "F9",
 		"keycode": "0x42",
 		"label": [ "f9" ]
 	},
 	"KC_F10": {
+		"name": "F10",
 		"description": "F10",
 		"keycode": "0x43",
 		"label": [ "f10" ]
 	},
 	"KC_F11": {
+		"name": "F11",
 		"description": "F11",
 		"keycode": "0x44",
 		"label": [ "f11" ]
 	},
 	"KC_F12": {
+		"name": "F12",
 		"description": "F12",
 		"keycode": "0x45",
 		"label": [ "f12" ]
 	},
 	"KC_PSCREEN": {
-		"description": "PrintScreen",
+		"name": "Print Screen",
+		"description": "Print Screen",
 		"keycode": "0x46",
 		"label": [ "printscreen", "print screen", "prtsc", "print", "psc" ],
 		"short_name": "KC_PSCR"
 	},
 	"KC_SCROLLLOCK": {
+		"name": "Scroll Lock",
 		"description": "Scroll Lock",
 		"keycode": "0x47",
 		"label": [ "scroll lock", "scrolllock", "scrlc", "scrlk" ],
 		"short_name": "KC_SLCK"
 	},
 	"KC_PAUSE": {
+		"name": "Pause and Break",
 		"description": "Pause and Break",
 		"keycode": "0x48",
 		"label": [ "pause", "pus" ],
@@ -415,67 +489,79 @@ var keycode_map = {
 		"short_name": "KC_PAUS"
 	},
 	"KC_INSERT": {
+		"name": "Insert",
 		"description": "Insert",
 		"keycode": "0x49",
 		"label": [ "insert", "ins" ],
 		"short_name": "KC_INT"
 	},
 	"KC_HOME": {
+		"name": "Home",
 		"description": "Home",
 		"keycode": "0x4A",
 		"label": [ "home" ]
 	},
 	"KC_PGUP": {
+		"name": "PageUp",
 		"description": "PageUp",
 		"keycode": "0x4B",
 		"label": [ "pageup", "page up", "pgup" ]
 	},
 	"KC_DELETE": {
-		"description": "Delete Forward",
+		"name": "Delete",
+		"description": "Delete (Delete Forward)",
 		"keycode": "0x4C",
 		"label": [ "delete", "del" ],
 		"label_priority": [ "delete" ],
 		"short_name": "KC_DEL"
 	},
 	"KC_END": {
+		"name": "End",
 		"description": "End",
 		"keycode": "0x4D",
 		"label": [ "end" ]
 	},
 	"KC_PGDOWN": {
+		"name": "PageDown",
 		"description": "PageDown",
 		"keycode": "0x4E",
 		"label": [ "pagedown", "page down", "pgdn" ],
 		"short_name": "KC_PGDN"
 	},
 	"KC_RIGHT": {
+		"name": "→ (Right)",
 		"description": "RightArrow",
 		"keycode": "0x4F",
 		"label": [ "right", "→", "&#9656;" ],
 		"short_name": "KC_RGHT"
 	},
 	"KC_LEFT": {
+		"name": "← (Left)",
 		"description": "LeftArrow",
 		"keycode": "0x50",
 		"label": [ "left", "←", "&#9666;" ]
 	},
 	"KC_DOWN": {
+		"name": "↓ (Down)",
 		"description": "DownArrow",
 		"keycode": "0x51",
 		"label": [ "down", "↓", "&#9662;" ]
 	},
 	"KC_UP": {
+		"name": "↑ (Up)",
 		"description": "UpArrow",
 		"keycode": "0x52",
 		"label": [ "up", "↑", "&#9652;" ]
 	},
 	"KC_NUMLOCK": {
+		"name": "Num Lock and Clear",
 		"description": "Num Lock and Clear",
 		"keycode": "0x53",
 		"label": [ "num lock", "numlock", "nmlck" ],
 		"short_name": "KC_NLCK"
 	},
 	"KC_KP_SLASH": {
+		"name": "Keypad /",
 		"description": "Keypad /",
 		"keycode": "0x54",
 		"label": [ [ "/" ], [ "p/" ] ],
@@ -483,6 +569,7 @@ var keycode_map = {
 		"short_name": "KC_PSLS"
 	},
 	"KC_KP_ASTERISK": {
+		"name": "Keypad *",
 		"description": "Keypad *",
 		"keycode": "0x55",
 		"label": [ [ "*" ], [ "p*" ] ],
@@ -490,6 +577,7 @@ var keycode_map = {
 		"short_name": "KC_PAST"
 	},
 	"KC_KP_MINUS": {
+		"name": "Keypad -",
 		"description": "Keypad -",
 		"keycode": "0x56",
 		"label": [ [ "-", "&ndash;" ], [ "p-" ] ],
@@ -497,6 +585,7 @@ var keycode_map = {
 		"short_name": "KC_PMNS"
 	},
 	"KC_KP_PLUS": {
+		"name": "Keypad +",
 		"description": "Keypad +",
 		"keycode": "0x57",
 		"label": [ [ "+" ], [ "p+" ] ],
@@ -504,13 +593,15 @@ var keycode_map = {
 		"short_name": "KC_PPLS"
 	},
 	"KC_KP_ENTER": {
-		"description": "Keypad ENTER",
+		"name": "Keypad Enter",
+		"description": "Keypad Enter",
 		"keycode": "0x58",
 		"label": [ [ "enter" ], [ "penter" ] ],
 		"label_2": [ [ "" ], [] ],
 		"short_name": "KC_PENT"
 	},
 	"KC_KP_1": {
+		"name": "Keypad 1 and End",
 		"description": "Keypad 1 and End",
 		"keycode": "0x59",
 		"label": [ [ "1" ], [ "p1" ] ],
@@ -518,6 +609,7 @@ var keycode_map = {
 		"short_name": "KC_P1"
 	},
 	"KC_KP_2": {
+		"name": "Keypad 2 and Down",
 		"description": "Keypad 2 and DownArrow",
 		"keycode": "0x5A",
 		"label": [ [ "2" ], [ "p2" ] ],
@@ -525,6 +617,7 @@ var keycode_map = {
 		"short_name": "KC_P1"
 	},
 	"KC_KP_3": {
+		"name": "Keypad 3 and PageDown",
 		"description": "Keypad 3 and PageDown",
 		"keycode": "0x5B",
 		"label": [ [ "3" ], [ "p3" ] ],
@@ -532,6 +625,7 @@ var keycode_map = {
 		"short_name": "KC_P3"
 	},
 	"KC_KP_4": {
+		"name": "Keypad 4 and Left",
 		"description": "Keypad 4 and LeftArrow",
 		"keycode": "0x5C",
 		"label": [ [ "4" ], [ "p4" ] ],
@@ -539,6 +633,7 @@ var keycode_map = {
 		"short_name": "KC_P4"
 	},
 	"KC_KP_5": {
+		"name": "Keypad 5",
 		"description": "Keypad 5",
 		"keycode": "0x5D",
 		"label": [ [ "5" ], [ "p5" ] ],
@@ -546,6 +641,7 @@ var keycode_map = {
 		"short_name": "KC_P5"
 	},
 	"KC_KP_6": {
+		"name": "Keypad 6 and Right",
 		"description": "Keypad 6 and RightArrow",
 		"keycode": "0x5E",
 		"label": [ [ "6" ], [ "p6" ] ],
@@ -553,6 +649,7 @@ var keycode_map = {
 		"short_name": "KC_P1"
 	},
 	"KC_KP_7": {
+		"name": "Keypad 7 and Home",
 		"description": "Keypad 7 and Home",
 		"keycode": "0x5F",
 		"label": [ [ "7" ], [ "p7" ] ],
@@ -560,6 +657,7 @@ var keycode_map = {
 		"short_name": "KC_P7"
 	},
 	"KC_KP_8": {
+		"name": "Keypad 8 and Up",
 		"description": "Keypad 8 and UpArrow",
 		"keycode": "0x60",
 		"label": [ [ "8" ], [ "p8" ] ],
@@ -567,6 +665,7 @@ var keycode_map = {
 		"short_name": "KC_P8"
 	},
 	"KC_KP_9": {
+		"name": "Keypad 9 and PageUp",
 		"description": "Keypad 9 and PageUp",
 		"keycode": "0x61",
 		"label": [ [ "9" ], [ "p9" ] ],
@@ -574,6 +673,7 @@ var keycode_map = {
 		"short_name": "KC_P9"
 	},
 	"KC_KP_0": {
+		"name": "Keypad 0 and Insert",
 		"description": "Keypad 0 and Insert",
 		"keycode": "0x62",
 		"label": [ [ "0" ], [ "p0" ] ],
@@ -581,6 +681,7 @@ var keycode_map = {
 		"short_name": "KC_P0"
 	},
 	"KC_KP_DOT": {
+		"name": "Keypad . and Delete",
 		"description": "Keypad . and Delete",
 		"keycode": "0x63",
 		"label": [ [ "." ], [ "p." ] ],
@@ -588,6 +689,7 @@ var keycode_map = {
 		"short_name": "KC_PDOT"
 	},
 	"KC_NONUS_BSLASH": {
+		"name": "Non-US \\ and |",
 		"description": "Non-US \\ and |",
 		"keycode": "0x64",
 		"label": [ "|" ],
@@ -595,7 +697,8 @@ var keycode_map = {
 		"short_name": "KC_NUBS"
 	},
 	"KC_APPLICATION": {
-		"description": "Application",
+		"name": "Application",
+		"description": "Application (Menu)",
 		"keycode": "0x65",
 		"label": [ "app", "menu" ],
 		"label_priority": [ "menu" ],

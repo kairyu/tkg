@@ -54,7 +54,7 @@ body {
 #dl_eep {
 	margin-bottom: 15px;
 }
-.fn {
+.fn-action {
 	float: left;
 	padding: 0 2px 0 15px;
 }
@@ -62,7 +62,24 @@ body {
 #fn1 .col-md-1 {
 	padding: 0 2px;
 }
-.fn label.checkbox {
+.fn-action label.checkbox {
 	padding-top: 0;
 }
 
+.multiselect-container {
+	max-height: 200px;
+	overflow-y: scroll;
+}
+.multiselect-container input[type="radio"] {
+	display: none;
+}
+.multiselect-container .radio {
+	padding-top: 0;
+}
+.multiselect-container .multiselect-group {
+	white-space: nowrap;
+}
+
+.multiselect-group {
+	text-decoration: underline;
+}

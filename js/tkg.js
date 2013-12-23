@@ -9,6 +9,8 @@ function TKG() {
 	var _keycode_map = {};
 	var _keycode_map_reversed = {};
 	var _action_map = {};
+	var _fn_options = {}
+	var _action_options = [];
 	var _max_layers = 0;
 	var _max_fns = 0;
 	var _matrix_rows = 0;
@@ -36,12 +38,17 @@ function TKG() {
 		_keycode_map_reversed = _generateReversedKeycodeMap(_keycode_map);
 		_consoleLog("keycode_map_reversed:");
 		_consoleLog(_keycode_map_reversed);
+		_fn_options["lr"] = _generateLrOptions();
+		_fn_options["mods"] = _generateModsOptions();
+		_fn_options["key"] = _generateKeyOptions(_keycode_map);
 	}
 
 	var _setActionMap = function(action_map) {
 		_action_map = action_map;
 		_consoleLog("action_map:");
 		_consoleLog(_action_map);
+		_fn_options["action"] = _generateActionOptions(_action_map);
+		_fn_options["on"] = _generateOnOptions();
 	}
 
 	var _init = function(object) {
@@ -53,6 +60,8 @@ function TKG() {
 		_matrix_map = object["matrix_map"];
 		// init variables
 		_initVariables();
+		// generate options
+		_fn_options["layer"] = _generateLayerOptions(_max_layers);
 	}
 
 	var _initVariables = function() {
@@ -131,6 +140,77 @@ function TKG() {
 			}
 		}
 		return keycode_map_reversed;
+	}
+
+	var _generateActionOptions = function(action_map) {
+		var action_options = {};
+		for (var symbol in action_map) {
+			var action = action_map[symbol];
+			var group = action["group"];
+			var name = action["name"];
+			var description = action["description"];
+			if (action_options[group]) {
+				action_options[group].push({
+					"value": symbol,
+					"text": name,
+					"title": description
+				});
+			}
+			else {
+				action_options[group] = [{
+					"value": symbol,
+					"text": name,
+					"title": description
+				}];
+			}
+		}
+		return action_options;
+	}
+
+	var _generateLayerOptions = function(max_layers) {
+		var layer_options = [];
+		for (var i = 0; i < max_layers; i++) {
+			layer_options.push({
+				"value": i,
+				"text": i,
+				"title": i
+			});
+		}
+		return layer_options;
+	}
+
+	var _generateOnOptions = function() {
+		return [ { "value": 1, "text": "Press", "title": "On pressing key" },
+			{ "value": 2, "text": "Release", "title": "On releasing key" },
+			{ "value": 3, "text": "Both", "title": "On both pressing and releasing" } ];
+	}
+
+	var _generateLrOptions = function() {
+		return [ { "value": 0, "text": "Left", "title": "Left" },
+			{ "value": 1, "text": "Right", "title": "Right" } ];
+	}
+
+	var _generateModsOptions = function() {
+		return [ { "value": 1, "text": "Ctrl", "title": "Ctrl" },
+			{ "value": 2, "text": "Shift", "title": "Shift" },
+			{ "value": 4, "text": "Alt", "title": "Alt" },
+			{ "value": 8, "text": "Win/Command/Meta", "title": "GUI" } ];
+	}
+
+	var _generateKeyOptions = function(keycode_map) {
+		var key_options = [];
+		for (var symbol in keycode_map) {
+			var key = keycode_map[symbol];
+			var code = parseInt(key["keycode"], 16);
+			if (code == 0 || (code >= parseInt("0x04", 16) && code <= parseInt("0x65", 16))) {
+				key_options.push({
+					"value": code,
+					"text": key["name"],
+					"title": key["description"]
+				});
+			}
+		}
+		return key_options;
 	}
 
 	var _smartPush = function(target, value) {
@@ -234,17 +314,16 @@ function TKG() {
 			_consoleLog(fns_2);
 			_consoleLog(_fns);
 			if (_fns[0]) {
-				_fns[0]["symbol"] = "ACTION_LAYER_MOMENTARY";
-				_fns[0]["param"] = [ layer_number + 1 ];
+				_setFns(0, { "action": "ACTION_LAYER_MOMENTARY", "args": [ layer_number + 1 ] });
 			}
 			if (_fns[1]) {
-				_fns[1]["symbol"] = "ACTION_BACKLIGHT_TOGGLE";
+				_setFns(1, { "action": "ACTION_BACKLIGHT_TOGGLE" });
 			}
 			if (_fns[2]) {
-				_fns[2]["symbol"] = "ACTION_BACKLIGHT_DECREASE";
+				_setFns(2, { "action": "ACTION_BACKLIGHT_DECREASE" });
 			}
 			if (_fns[3]) {
-				_fns[3]["symbol"] = "ACTION_BACKLIGHT_INCREASE";
+				_setFns(3, { "action": "ACTION_BACKLIGHT_INCREASE" });
 			}
 		}
 
@@ -516,7 +595,7 @@ function TKG() {
 				}
 				// set key properties
 				if (alt_symbol) {
-					_setPropertiesBySymbol(key, alt_symbol);
+					_setKeyPropertiesBySymbol(key, alt_symbol);
 				}
 			}
 			// unknown label
@@ -663,11 +742,12 @@ function TKG() {
 					if (fn_number >= _max_fns) {
 						_raiseError(error, "fn_out_of_bounds", symbol, key);
 						symbol = "KC_TRANSPARENT";
-						_setPropertiesBySymbol(key, symbol);
+						_setKeyPropertiesBySymbol(key, symbol);
 					}
 					else {
 						fns[fn_number] = {};
-						_setPropertiesBySymbol(fns[fn_number], symbol);
+						_setKeyPropertiesBySymbol(fns[fn_number], symbol);
+						_setFnPropertiesBySymbol(fns[fn_number], "ACTION_NO");
 					}
 				}
 			}
@@ -758,12 +838,12 @@ function TKG() {
 			var hex = "0x0000";
 			if (fns[i]) {
 				var fn = fns[i];
-				if (fn["symbol"]) {
-					var symbol = fn["symbol"];
-					if (_action_map[symbol]) {
-						var code = _action_map[symbol]["code"];
+				if (fn["action"]) {
+					var action = fn["action"];
+					if (_action_map[action]) {
+						var code = _action_map[action]["code"];
 						if (_.isFunction(code)) {
-							hex = code.apply(code, fn["param"]);
+							hex = code.apply(code, fn["args"]);
 						}
 						else {
 							hex = code;
@@ -781,9 +861,9 @@ function TKG() {
 		for (var i in fns) {
 			if (fns[i]) {
 				var fn = fns[i];
-				if (fn["symbol"]) {
-					var symbol = fn["symbol"];
-					var array = [ symbol ];
+				if (fn["action"]) {
+					var action = fn["action"];
+					var array = [ action ];
 					if (fn["param"]) {
 						array = array.concat(fn["param"]);
 					}
@@ -825,29 +905,39 @@ function TKG() {
 		return index;
 	}
 
-	var _setPropertiesBySymbol = function(object, symbol) {
-		object["symbol"] = symbol;
-		object["keycode"] = _keycode_map[symbol]["keycode"];
+	var _setKeyPropertiesBySymbol = function(key, symbol) {
+		key["symbol"] = symbol;
+		key["keycode"] = _keycode_map[symbol]["keycode"];
 		if (_keycode_map[symbol]["short_name"]) {
-			object["short_name"] = _keycode_map[symbol]["short_name"];
+			key["short_name"] = _keycode_map[symbol]["short_name"];
 		}
-		return object;
+		return key;
+	}
+
+	var _setFnPropertiesBySymbol = function(fn, symbol) {
+		fn["action"] = symbol;
+		if (_action_map[symbol]["param"]) {
+			fn["param"] = _action_map[symbol]["param"];
+			fn["default"] = _action_map[symbol]["default"];
+			fn["args"] = [];
+		}
+		return fn;
 	}
 
 	var _consoleError = function(message) {
-		if (_debug > _ERROR) {
+		if (_debug >= _ERROR) {
 			console.error(message);
 		}
 	}
 
 	var _consoleWarn = function(message) {
-		if (_debug > _WARNING) {
+		if (_debug >= _WARNING) {
 			console.warn(message);
 		}
 	}
 
 	var _consoleLog = function(message) {
-		if (_debug > _INFO) {
+		if (_debug >= _INFO) {
 			console.log(message);
 		}
 	}
@@ -884,8 +974,47 @@ function TKG() {
 		return _layers[layer_number]["warn"];
 	}
 
-	var _getFns = function() {
-		return _fns;
+	var _getFns = function(index) {
+		if (arguments.length) {
+			return _fns[index];
+		}
+		else {
+			return _fns;
+		}
+	}
+
+	var _setFns = function(index, object) {
+		var fn = _fns[index];
+		if (object["action"]) {
+			var symbol = object["action"];
+			fn["action"] = symbol;
+			if (_action_map[symbol]) {
+				var action = _action_map[symbol];
+				if (action["param"]) {
+					fn["param"] = action["param"];
+					if (object["args"]) {
+						fn["args"] = object["args"];
+					}
+					else {
+						fn["args"] = action["default"];
+					}
+				}
+				else {
+					delete fn["param"];
+					delete fn["args"];
+				}
+			}
+		}
+		return fn;
+	}
+
+	var _getFnOptions = function(item) {
+		if (item) {
+			return _fn_options[item];
+		}
+		else {
+			return _fn_options;
+		}
 	}
 
 	var _getKeymapsHex = function() {
@@ -917,6 +1046,8 @@ function TKG() {
 	this.getError = _getError;
 	this.getWarn = _getWarn;
 	this.getFns = _getFns;
+	this.setFns = _setFns;
+	this.getFnOptions = _getFnOptions;
 	this.getKeymapsHex = _getKeymapsHex;
 	this.getKeymapsSymbol = _getKeymapsSymbol;
 	this.getFnActionsHex = _getFnActionsHex;
