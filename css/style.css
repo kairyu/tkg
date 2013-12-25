@@ -54,7 +54,7 @@ body {
 #dl_eep {
 	margin-bottom: 15px;
 }
-.fn-action {
+.fn-row {
 	float: left;
 	padding: 0 2px 0 15px;
 }
@@ -64,6 +64,12 @@ body {
 }
 .fn-action label.checkbox {
 	padding-top: 0;
+}
+.fn-action,
+.fn-param-control {
+	display: table-cell;
+	vertical-align: top;
+	padding: 0 15px 0 0;
 }
 
 .multiselect-container {

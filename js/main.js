@@ -289,18 +289,17 @@ function appendFns() {
 			$('<div>').attr({ "class": "form-group"  }).append(
 				$('<label>').attr({ "for": "fn" + index + "-action", "class": "col-md-2 control-label" }).text("Fn" + index)
 			).append(
-				$('<div>').attr({ "id": "fn" + index, "class": "row" })
+				$('<div>').attr({ "id": "fn" + index, "class": "fn-row col-md-10" })
 			)
 		);
 	}
-	$('#fn-wrapper .row').fn();
+	$('#fn-wrapper .fn-row').fn();
 }
 
 function appendFnParams(id) {
 	var $row = $('#fn-wrapper #' + id);
 	var $action = $row.find('.fn-action');
 	$action.nextAll().remove();
-	console.log($action.siblings());
 	var index = Number(id.slice(2));
 	var fn = tkg.getFns(index);
 	var action = fn["action"];
@@ -312,41 +311,49 @@ function appendFnParams(id) {
 			var arg = args[i];
 			switch (param[i]) {
 				case "layer":
-					$params = $params.add($('<div>').attr({ "class": "fn-param-layer input-group btn-group" }).append(
+					$params = $params.add($('<div>').attr({ "class": "fn-param-control fn-param-layer" }).append(
+						$('<div>').attr({ "class": "input-group btn-group" }).append(
 							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("layer")
 						).append(
 							makeSelect({ "id": id + "-param-layer" }, tkg.getFnOptions("layer"), arg)
-						));
+						)
+					));
 					break;
 				case "on":
-					$params = $params.add($('<div>').attr({ "class": "fn-param-on input-group btn-group" }).append(
+					$params = $params.add($('<div>').attr({ "class": "fn-param-control fn-param-on" }).append(
+						$('<div>').attr({ "class": "input-group btn-group" }).append(
 							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("when")
 						).append(
 							makeSelect({ "id": id + "-param-on" }, tkg.getFnOptions("on"), arg)
-						));
+						)
+					));
 					break;
 				case "lr":
 					continue;
 				case "mods":
-					$params = $params.add($('<div>').attr({ "class": "fn-param-mods input-group btn-group" }).append(
+					$params = $params.add($('<div>').attr({ "class": "fn-param-control fn-param-mods" }).append(
+						$('<div>').attr({ "class": "input-group btn-group" }).append(
 							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("modifier")
 						).append(
-							makeSelect({ "id": id + "-param-lr" }, tkg.getFnOptions("lr"), arg)
+							makeSelect({ "id": id + "-param-lr", "class": "btn" }, tkg.getFnOptions("lr"), arg)
 						).append(
-							makeSelect({ "id": id + "-param-mods", "multiple": "multiple" }, tkg.getFnOptions("mods"), arg)
-						));
+							makeSelect({ "id": id + "-param-mods", "class": "btn", "multiple": "multiple" }, tkg.getFnOptions("mods"), arg)
+						)
+					));
 					break;
 				case "key":
-					console.log(tkg.getFnOptions("key"));
-					$params = $params.add($('<div>').attr({ "class": "fn-param-key input-group btn-group" }).append(
+					$params = $params.add($('<div>').attr({ "class": "fn-param-control fn-param-key" }).append(
+						$('<div>').attr({ "class": "input-group btn-group" }).append(
 							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("key")
 						).append(
 							makeSelect({ "id": id + "-param-key" }, tkg.getFnOptions("key"), arg)
-						));
+						)
+					));
 					break;
 			}
 		}
 		$row.append($params);
+		window.lang.run();
 		$row.find('.fn-param-layer select').multiselect({
 			buttonTitle: function(options, select) {
 				var $selected = $(options[0]);
@@ -375,6 +382,9 @@ function appendFnParams(id) {
 			buttonTitle: function(options, select) {
 				var $selected = $(options[0]);
 				return $selected.attr('title');
+			},
+			afterChange: function() {
+				window.lang.run();
 			}
 		});
 		$row.find('.fn-param-key select').multiselect({
@@ -384,6 +394,7 @@ function appendFnParams(id) {
 				return $selected.attr('title');
 			}
 		});
+		window.lang.run();
 	}
 }
 
@@ -403,6 +414,7 @@ function makeSelect(attr, data, current, breakword) {
 					text = data;
 					title = data;
 				}
+				/*
 				if (breakword) {
 					var words = text.split(" ");
 					for (var i = 0; i < words.length; i++) {
@@ -413,16 +425,18 @@ function makeSelect(attr, data, current, breakword) {
 				else {
 					text = '<span lang="en">' + text + '</span>';
 				}
+				*/
 				return $('<option>').attr({
 					"value": value,
 					"title": title,
+					"lang": "en",
 					"selected": (value == current)
 				}).text(text);
 			}
 			var $options = $();
 			for (var index in data) {
 				if (_.isArray(data[index])) {
-					var $optgroup = $('<optgroup>', { "label": index });
+					var $optgroup = $('<optgroup>', { "label": index, "lang": "en" });
 					var $sub_options = $();
 					for (var i = 0; i < data[index].length; i++) {
 						$sub_options = $sub_options.add(makeOption(data[index][i], current, breakword));
@@ -444,15 +458,17 @@ $.fn.fn = function() {
 		var index = Number(id.slice(2));
 		var fn = tkg.getFns(index);
 		var $action = $('<div>').attr({ "class": "fn-action" }).append(
-			makeSelect({ "id": id + "-action" }, tkg.getFnOptions("action"), fn["action"], true)
+			makeSelect({ "id": id + "-action", "class": "multiselect" }, tkg.getFnOptions("action"), fn["action"], true)
 		);
 		$(this).empty().append($action);
+		window.lang.run();
 		$(this).find('.fn-action select').multiselect({
 			buttonText: function(options, select) {
 				var $selected = $(options[0]);
 				var group = $selected.parent().attr('label');
-				return (group != 'None' ? group + ' > ' : '') +
-					$selected.text() + ' <b class="caret"></b>';
+				var value = $selected.attr('value');
+				return (value != 'ACTION_NO' ? '<span lang="en">' + group + '</span> > ' : '') +
+					'<span lang="en">' + $selected.text() + '</span> <b class="caret"></b>';
 			},
 			buttonTitle: function(options, select) {
 				var $selected = $(options[0]);
@@ -463,8 +479,15 @@ $.fn.fn = function() {
 					"action": $(element).val()
 				});
 				appendFnParams(id);
-			}
+			},
+			buttonWidth: '100%'
 		});
+		//$(this).find('.fn-action .btn-group').css('width', '100%');
 		appendFnParams(id);
 	});
+}
+
+function onLangChange(lang) {
+	window.lang.change(lang);
+	$('.fn-action select').multiselect('rebuild');
 }
