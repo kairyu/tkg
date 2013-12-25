@@ -1,9 +1,13 @@
 jquery_lang_js.prototype.lang.jp = {
+	// Menu
 	'Help':'ヘルプ',
 	'About':'サイトについて',
 	'Language':'言語',
+	// Main
 	'Keyboard':'キーボード',
 	'Simple Mode':'簡単モード',
+	'ON':'オン',
+	'OFF':'オフ',
 	'Composite Layer':'複合レイヤー',
 	'Detail':'詳細',
 	'Number of Layers':'レイヤー数',
@@ -20,5 +24,43 @@ jquery_lang_js.prototype.lang.jp = {
 	'Name':'名前',
 	'Description':'説明',
 	'Max Layers':'最大レイヤー数',
-	'Max Fns':'最大Fnキー数'
+	'Max Fns':'最大Fnキー数',
+	// Fn action
+	'None':'なし',
+	'No action':'何もしない',
+	'Key action':'キーアクション',
+	'Normal key':'一般キー',
+	'Modifier key':'修飾キー',
+	'Modified key':'コンビネーションキー',
+	'Layer action':'レイヤーアクション',
+	'Set default':'既定レイヤー設定',
+	'Momentary':'モーメンタリー',
+	'Toggle':'オン／オフ',
+	'On':'オン',
+	'Off':'オフ',
+	'Set':'セット',
+	'Layer advanced action':'上級レイヤーアクション',
+	'Clear all':'全てクリア',
+	'Invert':'反転',
+	'On then off':'オンしてからオフ',
+	'Off then on':'オフしてからオン',
+	'Set then clear':'セットしてからクリア',
+	'Backlight action':'バックライトアクション',
+	'Increase':'明るさを上げる',
+	'Decrease':'明るさを下げる',
+	'Toogle':'オン／オフ',
+	'Step':'ステップ',
+	// Fn layer
+	'layer':'レイヤー',
+	// Fn on
+	'when':'タイミング',
+	'Press':'押す',
+	'Release':'放す',
+	'Both':'両方',
+	// Fn modifier
+	'modifier':'修飾キー',
+	'Left':'左',
+	'Right':'右',
+	// Fn key
+	'key':'一般キー'
 }

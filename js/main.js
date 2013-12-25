@@ -188,14 +188,23 @@ function initialize( name ) {
 
 	$('#kbd-info').popover('destroy');
 
+	$('#kbd-info-dummy').html(
+		'<strong><span lang="en">Name</span>: </strong>' + keyboard['name'] + '<br/>' +
+		'<strong><span lang="en">Description</span>: </strong>' + keyboard['description'] + '<br/>' +
+		'<strong><span lang="en">Max Layers</span>: </strong>' + keyboard['max_layers'] + '<br/>' + 
+		'<strong><span lang="en">Max Fns</span>: </strong>' + keyboard['max_fns']
+	);
+
 	// show keyboard help info
 	$('#kbd-info').popover({
 		html: true,
 		trigger: 'hover',
-		content: '<strong><span lang="en">Name: </span></strong>' + keyboard['name'] + '<br/>' +
-				'<strong><span lang="en">Description: </span></strong>' + keyboard['description'] + '<br/>' +
-				'<strong><span lang="en">Max Layers: </span></strong>' + keyboard['max_layers'] + '<br/>' + 
-				'<strong><span lang="en">Max Fns: </span></strong>' + keyboard['max_fns']
+		//content: $('#kbd-info-dymmy').html()
+		content: 
+			'<strong><span lang="en">Name</span>: </strong>' + keyboard['name'] + '<br/>' +
+			'<strong><span lang="en">Description</span>: </strong>' + keyboard['description'] + '<br/>' +
+			'<strong><span lang="en">Max Layers</span>: </strong>' + keyboard['max_layers'] + '<br/>' + 
+			'<strong><span lang="en">Max Fns</span>: </strong>' + keyboard['max_fns']
 	});
 
 	$('#kbd-info').on('shown.bs.popover', function() {
@@ -311,7 +320,7 @@ function appendFnParams(id) {
 			var arg = args[i];
 			switch (param[i]) {
 				case "layer":
-					$params = $params.add($('<div>').attr({ "class": "fn-param-control fn-param-layer" }).append(
+					$params = $params.add($('<div>').attr({ "class": "fn-param fn-param-layer" }).append(
 						$('<div>').attr({ "class": "input-group btn-group" }).append(
 							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("layer")
 						).append(
@@ -320,7 +329,7 @@ function appendFnParams(id) {
 					));
 					break;
 				case "on":
-					$params = $params.add($('<div>').attr({ "class": "fn-param-control fn-param-on" }).append(
+					$params = $params.add($('<div>').attr({ "class": "fn-param fn-param-on" }).append(
 						$('<div>').attr({ "class": "input-group btn-group" }).append(
 							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("when")
 						).append(
@@ -331,7 +340,7 @@ function appendFnParams(id) {
 				case "lr":
 					continue;
 				case "mods":
-					$params = $params.add($('<div>').attr({ "class": "fn-param-control fn-param-mods" }).append(
+					$params = $params.add($('<div>').attr({ "class": "fn-param fn-param-mods" }).append(
 						$('<div>').attr({ "class": "input-group btn-group" }).append(
 							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("modifier")
 						).append(
@@ -342,7 +351,7 @@ function appendFnParams(id) {
 					));
 					break;
 				case "key":
-					$params = $params.add($('<div>').attr({ "class": "fn-param-control fn-param-key" }).append(
+					$params = $params.add($('<div>').attr({ "class": "fn-param fn-param-key" }).append(
 						$('<div>').attr({ "class": "input-group btn-group" }).append(
 							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("key")
 						).append(
@@ -490,4 +499,5 @@ $.fn.fn = function() {
 function onLangChange(lang) {
 	window.lang.change(lang);
 	$('.fn-action select').multiselect('rebuild');
+	$('.fn-param select').multiselect('rebuild');
 }

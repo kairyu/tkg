@@ -1,9 +1,13 @@
 jquery_lang_js.prototype.lang.zh_sc = {
+	// Menu
 	'Help':'帮助',
 	'About':'关于',
 	'Language':'语言',
+	// Main
 	'Keyboard':'键盘',
 	'Simple Mode':'简单模式',
+	'ON':'开',
+	'OFF':'关',
 	'Composite Layer':'复合层',
 	'Detail':'详细',
 	'Number of Layers':'层数',
@@ -17,8 +21,47 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Layer7':'第7层',
 	'Download':'下载',
 	'file':'文件',
+	// Keyboard description
 	'Name':'名称',
 	'Description':'描述',
 	'Max Layers':'最大层数',
-	'Max Fns':'最大Fn键数'
+	'Max Fns':'最大Fn键数',
+	// Fn action
+	'None':'无',
+	'No action':'无操作',
+	'Key action':'按键操作',
+	'Normal key':'通常按键',
+	'Modifier key':'修饰键',
+	'Modified key':'组合键',
+	'Layer action':'层操作',
+	'Set default':'设置默认层',
+	'Momentary':'瞬时开启',
+	'Toggle':'开关',
+	'On':'开启',
+	'Off':'关闭',
+	'Set':'设置',
+	'Layer advanced action':'层高级操作',
+	'Clear all':'清除全部状态',
+	'Invert':'反转状态',
+	'On then off':'开启后关闭',
+	'Off then on':'关闭后开启',
+	'Set then clear':'设置后清除',
+	'Backlight action':'背光操作',
+	'Increase':'提高亮度',
+	'Decrease':'降低亮度',
+	'Toogle':'开关',
+	'Step':'步进',
+	// Fn layer
+	'layer':'层',
+	// Fn on
+	'when':'触发',
+	'Press':'按下',
+	'Release':'抬起',
+	'Both':'按下和抬起',
+	// Fn modifier
+	'modifier':'修饰键',
+	'Left':'左',
+	'Right':'右',
+	// Fn key
+	'key':'按键'
 }
