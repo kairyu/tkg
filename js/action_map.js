@@ -2,7 +2,7 @@ var action_map = {
 	"ACTION_NO": {
 		"group": "None",
 		"name": "None",
-		"description": "",
+		"description": "No action",
 		"code": "0x0000"
 	},
 	/*
@@ -23,7 +23,7 @@ var action_map = {
 	},
 	"ACTION_MODS": {
 		"group": "Key action",
-		"name": "Modifier",
+		"name": "Modifier key",
 		"description": "Send modifier",
 		"code": function(lr, mods) {
 			if (lr) {

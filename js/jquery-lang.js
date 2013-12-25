@@ -67,29 +67,29 @@ jquery_lang_js.prototype.run = function () {
 			
 			if (langElem.attr('lang') == this.defaultLang) {
 				var titleText = langElem.attr('title');
-				if (titleText || langElem.is("input")) {
-					if (titleText) {
-						langElem.data('deftexttitle', titleText);
-					}
-					if (langElem.is("input")) {
-						// An input element
-						switch (langElem.attr('type')) {
-							case 'button':
-							case 'submit':
-								langElem.data('deftext', langElem.val());
-							break;
+				if (titleText) {
+					langElem.data('deftexttitle', titleText);
+				}
+				if (langElem.is("input")) {
+					// An input element
+					switch (langElem.attr('type')) {
+						case 'button':
+						case 'submit':
+							langElem.data('deftext', langElem.val());
+						break;
 
-							case 'email':
-							case 'password':
-							case 'text':
-								// Check for a placeholder text value
-								var plText = langElem.attr('placeholder');
-								if (plText) {
-									langElem.data('deftext', plText);
-								}
-							break;
-						}
+						case 'email':
+						case 'password':
+						case 'text':
+							// Check for a placeholder text value
+							var plText = langElem.attr('placeholder');
+							if (plText) {
+								langElem.data('deftext', plText);
+							}
+						break;
 					}
+				} else if (langElem.is("optgroup")) {
+					langElem.data('deftext', langElem.attr('label'));
 				} else {
 					// Not an input element
 					langElem.data('deftext', langElem.html());
@@ -107,7 +107,7 @@ jquery_lang_js.prototype.run = function () {
 			this.change(lsLang);
 		}
 		else
-			this.change(this.currentLang);			
+			this.change(this.currentLang);
 	}
 }
 
@@ -178,6 +178,17 @@ jquery_lang_js.prototype.change = function (lang) {
 								}
 							break;
 						}
+					} else if (langElem.is("optgroup")) {
+						var currentText = langElem.attr('label');
+						var defaultLangText = langElem.data('deftext');
+						
+						var newText = this.lang[lang][defaultLangText] || currentText;
+						var newHtml = currentText.replace(currentText, newText);
+						langElem.attr('label', newHtml);
+
+						if (currentText != newHtml) {
+							langElem.attr('lang', lang);
+						}
 					} else {
 						// Not an input element
 						var currentText = langElem.html();
@@ -224,6 +235,8 @@ jquery_lang_js.prototype.change = function (lang) {
 							langElem.attr('placeholder', langElem.data('deftext'));
 						break;
 					}
+				} else if (langElem.is("optgroup")) {
+					langElem.attr('label', langElem.data('deftext'));
 				} else {
 					langElem.html(langElem.data('deftext'));
 				}

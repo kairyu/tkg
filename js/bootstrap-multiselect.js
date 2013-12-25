@@ -45,6 +45,7 @@
 
         this.options.multiple = this.$select.attr('multiple') === "multiple";
         this.options.onChange = $.proxy(this.options.onChange, this);
+        this.options.afterChange = $.proxy(this.options.afterChange, this);
         this.options.onDropdownShow = $.proxy(this.options.onDropdownShow, this);
         this.options.onDropdownHide = $.proxy(this.options.onDropdownHide, this);
 
@@ -107,6 +108,8 @@
             onChange : function(option, checked) {
 
             },
+	    afterChange: function() {
+	    },
             // Triggered immediately when dropdown shown
             onDropdownShow: function(event) {
 
@@ -298,6 +301,7 @@
                 this.$select.change();
                 this.options.onChange($option, checked);
                 this.updateButtonText();
+		this.options.afterChange();
 
                 if(this.options.preventInputChangeEvent) {
                     return false;
@@ -589,6 +593,7 @@
             }
 
             this.updateButtonText();
+	    this.options.afterChange();
         },
 
         // Deselect an option by its value or using an array of values.
