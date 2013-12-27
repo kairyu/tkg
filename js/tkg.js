@@ -300,29 +300,38 @@ function TKG() {
 			_consoleLog("layer_2:");
 			_consoleLog(layer_2);
 		}
+
+		// set layer
+		_layers[layer_number] = layer;
+		if (_simple_mode) {
+			_layers[layer_number + 1] = layer_2;
+		}
 		
 		// parse fns from layer
 		fns = _parseFns(layer);
-		_fns = _.extend(_fns, fns);
+		fns = _mergeFns(_fns, fns);
+		_consoleLog(JSON.stringify(fns));
+		_fns = _cleanFns(fns, _layers);
 		_consoleLog("fns:");
-		_consoleLog(fns);
-		_consoleLog(_fns);
+		_consoleLog(JSON.stringify(fns));
+		_consoleLog(JSON.stringify(_fns));
 		if (_simple_mode) {
 			fns_2 = _parseFns(layer_2);
-			_fns = _.extend(_fns, fns_2);
+			fns_2 = _mergeFns(_fns, fns_2);
+			_fns = _cleanFns(fns_2, _layers);
 			_consoleLog("fns_2:");
 			_consoleLog(fns_2);
 			_consoleLog(_fns);
-			if (_fns[0]) {
+			if (_fns[0] && _fns[0]["action"] == "ACTION_NO") {
 				_setFns(0, { "action": "ACTION_LAYER_MOMENTARY", "args": [ layer_number + 1 ] });
 			}
-			if (_fns[1]) {
+			if (_fns[1] && _fns[1]["action"] == "ACTION_NO") {
 				_setFns(1, { "action": "ACTION_BACKLIGHT_TOGGLE" });
 			}
-			if (_fns[2]) {
+			if (_fns[2] && _fns[2]["action"] == "ACTION_NO") {
 				_setFns(2, { "action": "ACTION_BACKLIGHT_DECREASE" });
 			}
-			if (_fns[3]) {
+			if (_fns[3] && _fns[3]["action"] == "ACTION_NO") {
 				_setFns(3, { "action": "ACTION_BACKLIGHT_INCREASE" });
 			}
 		}
@@ -362,12 +371,10 @@ function TKG() {
 		_consoleLog(_fn_actions_symbol);
 
 		// set variables
-		_layers[layer_number] = layer;
 		_matrices[layer_number] = matrix;
 		_keymaps_hex[layer_number] = keymap_hex;
 		_keymaps_symbol[layer_number] = keymap_symbol;
 		if (_simple_mode) {
-			_layers[layer_number + 1] = layer_2;
 			_matrices[layer_number + 1] = matrix_2;
 			_keymaps_hex[layer_number + 1] = keymap_hex_2;
 			_keymaps_symbol[layer_number + 1] = keymap_symbol_2;
@@ -755,6 +762,43 @@ function TKG() {
 		return fns;
 	}
 
+	var _mergeFns = function(fns1, fns2) {
+		var fns = fns1;
+		_consoleLog(JSON.stringify(fns));
+		for (var index in fns2) {
+			var fn = fns[index] || false;
+			var fn2 = fns2[index];
+			if (!fn || fn2["action"] != "ACTION_NO") {
+				fns[index] = fn2;
+			}
+		}
+		_consoleLog(JSON.stringify(fns));
+		return fns;
+	}
+
+	var _cleanFns = function(fns, layers) {
+		var fns_cleaned = [];
+		for (var layer_number in layers) {
+			var layer = layers[layer_number];
+			if (layer["keys"]) {
+				var keys = layer["keys"];
+				for (var i = 0; i < keys.length; i++) {
+					var key = keys[i];
+					if (key["symbol"]) {
+						var symbol = key["symbol"];
+						if (symbol.search(/^KC_FN/) != -1) {
+							var fn_number = symbol.slice(5);
+							if (fns[fn_number]) {
+								fns_cleaned[fn_number] = fns[fn_number];
+							}
+						}
+					}
+				}
+			}
+		}
+		return fns_cleaned;
+	}
+
 	var _parseMatrix = function(layer) {
 		var matrix = [];
 		var error = layer["error"];
@@ -987,6 +1031,9 @@ function TKG() {
 		var fn = _fns[index];
 		if (object["action"]) {
 			var symbol = object["action"];
+			if (fn["action"] == symbol && !object["args"]) {
+				return fn;
+			}
 			fn["action"] = symbol;
 			if (_action_map[symbol]) {
 				var action = _action_map[symbol];

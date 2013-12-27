@@ -267,7 +267,6 @@ function loadKeyboard( name ) {
 			"matrix_cols": keyboard["matrix_cols"],
 			"matrix_map": keyboard["matrix_map"]
 		});
-		console.log(keyboard);
 	}).fail(function(d, textStatus, error) {
 		console.error("getJSON failed, status: " + textStatus + ", error: "+error)
 	});
@@ -309,7 +308,7 @@ function appendFnParams(id) {
 	var $row = $('#fn-wrapper #' + id);
 	var $action = $row.find('.fn-action');
 	$action.nextAll().remove();
-	var index = Number(id.slice(2));
+	var index = $row.data('index');
 	var fn = tkg.getFns(index);
 	var action = fn["action"];
 	if (fn["param"]) {
@@ -318,6 +317,7 @@ function appendFnParams(id) {
 		var $params = $();
 		for (var i = 0; i < param.length; i++) {
 			var arg = args[i];
+			$row.data(param[i], arg);
 			switch (param[i]) {
 				case "layer":
 					$params = $params.add($('<div>').attr({ "class": "fn-param fn-param-layer" }).append(
@@ -346,7 +346,11 @@ function appendFnParams(id) {
 						).append(
 							makeSelect({ "id": id + "-param-lr", "class": "btn" }, tkg.getFnOptions("lr"), arg)
 						).append(
-							makeSelect({ "id": id + "-param-mods", "class": "btn", "multiple": "multiple" }, tkg.getFnOptions("mods"), arg)
+							makeSelect({ "id": id + "-param-mods", "class": "btn", "multiple": "multiple" },
+								tkg.getFnOptions("mods"),
+								arg,
+								function(value, current) { return Boolean(Number(current) & Number(value)); }
+							)
 						)
 					));
 					break;
@@ -363,19 +367,41 @@ function appendFnParams(id) {
 		}
 		$row.append($params);
 		window.lang.run();
+		// layer param
 		$row.find('.fn-param-layer select').multiselect({
 			buttonTitle: function(options, select) {
 				var $selected = $(options[0]);
 				return $selected.attr('title');
+			},
+			onChange: function(element, checked) {
+				$row.data('layer', Number($(element).val()));
+				onFnParamsChange(id);
 			}
 		});
+		// on param
 		$row.find('.fn-param-on select').multiselect({
 			buttonTitle: function(options, select) {
 				var $selected = $(options[0]);
 				return $selected.attr('title');
+			},
+			onChange: function(element, checked) {
+				$row.data('on', Number($(element).val()));
+				onFnParamsChange(id);
 			}
 		});
-		$row.find('.fn-param-mods select').multiselect({
+		// lr param
+		$row.find('.fn-param-mods select:first').multiselect({
+			buttonTitle: function(options, select) {
+				var $selected = $(options[0]);
+				return $selected.attr('title');
+			},
+			onChange: function(element, checked) {
+				$row.data('lr', Number($(element).val()));
+				onFnParamsChange(id);
+			}
+		});
+		// mods param
+		$row.find('.fn-param-mods select:last').multiselect({
 			buttonText: function(options, select) {
 				if (options.length == 0) {
 					return '<span lang="en">None</span> <b class="caret"></b>';
@@ -394,23 +420,55 @@ function appendFnParams(id) {
 			},
 			afterChange: function() {
 				window.lang.run();
+			},
+			onChange: function(element, checked) {
+				var value = Number($(element).val());
+				if (!checked) {
+					value = -value;
+				}
+				var mods = $row.data('mods');
+				mods += value;
+				$row.data('mods', mods);
+				onFnParamsChange(id);
 			}
 		});
+		// key param
 		$row.find('.fn-param-key select').multiselect({
 			enableCaseInsensitiveFiltering: true,
 			buttonTitle: function(options, select) {
 				var $selected = $(options[0]);
 				return $selected.attr('title');
+			},
+			onChange: function(element, checked) {
+				$row.data('key', Number($(element).val()));
+				onFnParamsChange(id);
 			}
 		});
-		window.lang.run();
+		onFnParamsChange(id);
 	}
 }
 
-function makeSelect(attr, data, current, breakword) {
+function onFnParamsChange(id) {
+	window.lang.run();
+	var $row = $('#fn-wrapper #' + id);
+	var index = $row.data('index');
+	var action = $row.data('action');
+	var fn = tkg.getFns(index);
+	var param = fn["param"];
+	var args = [];
+	for (var i = 0; i < param.length; i++) {
+		args.push($row.data(param[i]));
+	}
+	tkg.setFns(index, {
+		"action": action,
+		"args": args
+	});
+}
+
+function makeSelect(attr, data, current, selected) {
 	return $('<select>').attr(attr).append(
 		(function() {
-			function makeOption(data, current, breakword) {
+			function makeOption(data, current, selected) {
 				var value;
 				var text;
 				if (_.isObject(data)) {
@@ -423,23 +481,16 @@ function makeSelect(attr, data, current, breakword) {
 					text = data;
 					title = data;
 				}
-				/*
-				if (breakword) {
-					var words = text.split(" ");
-					for (var i = 0; i < words.length; i++) {
-						words[i] = '<span lang="en">' + words[i] + '<span>';
-					}
-					text = words.join(" ");
+				if (!_.isFunction(selected)) {
+					selected = function(value, current) {
+						return value == current;
+					};
 				}
-				else {
-					text = '<span lang="en">' + text + '</span>';
-				}
-				*/
 				return $('<option>').attr({
 					"value": value,
 					"title": title,
 					"lang": "en",
-					"selected": (value == current)
+					"selected": selected.call(selected, value, current)
 				}).text(text);
 			}
 			var $options = $();
@@ -448,13 +499,13 @@ function makeSelect(attr, data, current, breakword) {
 					var $optgroup = $('<optgroup>', { "label": index, "lang": "en" });
 					var $sub_options = $();
 					for (var i = 0; i < data[index].length; i++) {
-						$sub_options = $sub_options.add(makeOption(data[index][i], current, breakword));
+						$sub_options = $sub_options.add(makeOption(data[index][i], current, selected));
 					}
 					$optgroup.append($sub_options);
 					$options = $options.add($optgroup);
 				}
 				else {
-					$options = $options.add(makeOption(data[index], current, breakword));
+					$options = $options.add(makeOption(data[index], current, selected));
 				}
 			}
 			return $options;
@@ -463,15 +514,20 @@ function makeSelect(attr, data, current, breakword) {
 
 $.fn.fn = function() {
 	return this.each(function() {
-		var id = $(this).attr('id');
+		var $row = $(this);
+		var id = $row.attr('id');
 		var index = Number(id.slice(2));
 		var fn = tkg.getFns(index);
+		var action = fn["action"];
+		$row.removeData();
+		$row.data('index', index);
+		$row.data('action', action);
 		var $action = $('<div>').attr({ "class": "fn-action" }).append(
-			makeSelect({ "id": id + "-action", "class": "multiselect" }, tkg.getFnOptions("action"), fn["action"], true)
+			makeSelect({ "id": id + "-action", "class": "multiselect" }, tkg.getFnOptions("action"), action)
 		);
-		$(this).empty().append($action);
+		$row.empty().append($action);
 		window.lang.run();
-		$(this).find('.fn-action select').multiselect({
+		$row.find('.fn-action select').multiselect({
 			buttonText: function(options, select) {
 				var $selected = $(options[0]);
 				var group = $selected.parent().attr('label');
@@ -484,16 +540,26 @@ $.fn.fn = function() {
 				return $selected.attr('title');
 			},
 			onChange: function(element, checked) {
-				tkg.setFns(index, {
-					"action": $(element).val()
-				});
-				appendFnParams(id);
+				$row.data('action', $(element).val());
+				onFnActionChange(id);
 			},
-			buttonWidth: '100%'
 		});
-		//$(this).find('.fn-action .btn-group').css('width', '100%');
-		appendFnParams(id);
+		onFnActionChange(id);
 	});
+}
+
+function onFnActionChange(id) {
+	var $row = $('#fn-wrapper #' + id);
+	var index = $row.data('index');
+	var action = $row.data('action');
+	$row.removeData();
+	$row.data('index', index);
+	$row.data('action', action);
+	tkg.setFns(index, {
+		"action": action
+	});
+	console.error(tkg.getFns(index));
+	appendFnParams(id);
 }
 
 function onLangChange(lang) {
