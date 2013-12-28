@@ -153,6 +153,11 @@
 
         buildContainer: function() {
             this.$container = $(this.options.buttonContainer);
+            if (this.options.buttonWidth) {
+                this.$container.css({
+                    'width' : this.options.buttonWidth
+                });
+            }
             this.$container.on('show.bs.dropdown', this.options.onDropdownShow);
             this.$container.on('hide.bs.dropdown', this.options.onDropdownHide);
         },

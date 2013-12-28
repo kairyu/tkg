@@ -1,3 +1,24 @@
+function emptyFns() {
+	$('#fn-wrapper').empty();
+}
+
+function appendFns() {
+	emptyFns();
+	var fns = tkg.getFns();
+	console.log(fns);
+	for (var index in fns) {
+		var fn = fns[index];
+		$('#fn-wrapper').append(
+			$('<div>').attr({ "class": "form-group"  }).append(
+				$('<label>').attr({ "for": "fn" + index + "-action", "class": "col-md-2 control-label" }).text("Fn" + index)
+			).append(
+				$('<div>').attr({ "id": "fn" + index, "class": "fn-row col-md-10" })
+			)
+		);
+	}
+	$('#fn-wrapper .fn-row').fn();
+}
+
 $.fn.fn = function() {
 	return this.each(function() {
 		var $row = $(this);
@@ -45,27 +66,6 @@ function onFnActionChange(id) {
 		"action": action
 	});
 	appendFnParams(id);
-}
-
-function emptyFns() {
-	$('#fn-wrapper').empty();
-}
-
-function appendFns() {
-	emptyFns();
-	var fns = tkg.getFns();
-	console.log(fns);
-	for (var index in fns) {
-		var fn = fns[index];
-		$('#fn-wrapper').append(
-			$('<div>').attr({ "class": "form-group"  }).append(
-				$('<label>').attr({ "for": "fn" + index + "-action", "class": "col-md-2 control-label" }).text("Fn" + index)
-			).append(
-				$('<div>').attr({ "id": "fn" + index, "class": "fn-row col-md-10" })
-			)
-		);
-	}
-	$('#fn-wrapper .fn-row').fn();
 }
 
 function appendFnParams(id) {

@@ -13,6 +13,10 @@ $(function() {
 	tkg.setActionMap(action_map);
 	tkg.setSimpleMode(simple_mode);
 	initialize( $('#keyboard-sel:first-child').val() );
+
+	$('#keyboard-sel').multiselect({
+		buttonWidth: "100%"
+	});
 	
 	$('#keyboard-sel').on('change', function() {
 		var name = this.value;

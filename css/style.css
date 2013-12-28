@@ -68,6 +68,9 @@ body {
 	padding: 0 15px 0 0;
 }
 
+.multiselect {
+	text-align: left;
+}
 .multiselect-container {
 	max-height: 200px;
 	overflow-y: scroll;
