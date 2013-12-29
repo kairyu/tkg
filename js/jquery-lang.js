@@ -90,6 +90,8 @@ jquery_lang_js.prototype.run = function () {
 					}
 				} else if (langElem.is("optgroup")) {
 					langElem.data('deftext', langElem.attr('label'));
+				} else if (langElem.is("textarea")) {
+					langElem.data('deftext', langElem.attr('placeholder'));
 				} else {
 					// Not an input element
 					langElem.data('deftext', langElem.html());
@@ -189,6 +191,17 @@ jquery_lang_js.prototype.change = function (lang) {
 						if (currentText != newHtml) {
 							langElem.attr('lang', lang);
 						}
+					} else if (langElem.is("textarea")) {
+						var currentText = langElem.attr('placeholder');
+						var defaultLangText = langElem.data('deftext');
+						
+						var newText = this.lang[lang][defaultLangText] || currentText;
+						var newHtml = currentText.replace(currentText, newText);
+						langElem.attr('placeholder', newHtml);
+						
+						if (currentText != newHtml) {
+							langElem.attr('lang', lang);
+						}
 					} else {
 						// Not an input element
 						var currentText = langElem.html();
@@ -237,6 +250,8 @@ jquery_lang_js.prototype.change = function (lang) {
 					}
 				} else if (langElem.is("optgroup")) {
 					langElem.attr('label', langElem.data('deftext'));
+				} else if (langElem.is("textarea")) {
+					langElem.attr('placeholder', langElem.data('deftext'));
 				} else {
 					langElem.html(langElem.data('deftext'));
 				}

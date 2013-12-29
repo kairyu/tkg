@@ -13,13 +13,13 @@
 	<script src="js/lang/jp.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/lang/zh-sc.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/lang/zh-tc.js" charset="utf-8" type="text/javascript"></script>
-	<script src="js/keycode_map.js" charset="utf-8" type="text/javascript" ></script>
-	<script src="js/action_map.js" charset="utf-8" type="text/javascript" ></script>
-	<script src="js/bootstrap-multiselect.js" charset="utf-8" type="text/javascript" ></script>
-	<script src="js/tkg.js" charset="utf-8" type="text/javascript" ></script>
-	<script src="js/main.js" charset="utf-8" type="text/javascript" ></script>
-	<script src="js/layer.js" charset="utf-8" type="text/javascript" ></script>
-	<script src="js/fn.js" charset="utf-8" type="text/javascript" ></script>
+	<script src="js/keycode_map.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/action_map.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/bootstrap-multiselect.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/tkg.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/layer.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/fn.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/main.js" charset="utf-8" type="text/javascript"></script>
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/bootstrap-multiselect.css">
 	<link rel="stylesheet" href="css/style.css">
@@ -70,7 +70,7 @@
 			</div>
 		</div>
 		<div id="pg-home" class="container">
-			<form id="layer-form" class="form-horizontal" role="form">
+			<form id="config-form" class="form-horizontal" role="form">
 				<div class="form-group">
 					<label for="keyboard-sel" lang="en" class="col-md-2 control-label">Keyboard</label>
 					<div class="col-md-2">
@@ -91,12 +91,14 @@
 						<button id="switch-off" class="btn btn-primary active" lang="en">OFF</button>
 					</div>
 				</div>
+				<div id="layer-wrapper">
+				</div>
 				<div id="fn-wrapper">
 				</div>
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-5">
-						<button id="dl_eep" type="button" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> <span lang="en">Download</span> .eep <span lang="en">file</span></button>
-						<button id="dl_c" type="button" class="btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> <span lang="en">Download</span> .c <span lang="en">file</span></button>
+						<button id="dl_eep" type="button" class="dl-btn btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> <span lang="en">Download</span> .eep <span lang="en">file</span></button>
+						<button id="dl_c" type="button" class="dl-btn btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> <span lang="en">Download</span> .c <span lang="en">file</span></button>
 					</div>
 				</div>
 			</form>

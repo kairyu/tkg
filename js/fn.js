@@ -5,7 +5,6 @@ function emptyFns() {
 function appendFns() {
 	emptyFns();
 	var fns = tkg.getFns();
-	console.log(fns);
 	for (var index in fns) {
 		var fn = fns[index];
 		$('#fn-wrapper').append(

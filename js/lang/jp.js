@@ -19,6 +19,7 @@ jquery_lang_js.prototype.lang.jp = {
 	'Layer5':'レイヤー5',
 	'Layer6':'レイヤー6',
 	'Layer7':'レイヤー7',
+	'Paste raw data here':'Row Data をここに貼り付けてください',
 	'Download':'ダウンロード',
 	'file':'ファイル',
 	'Name':'名前',

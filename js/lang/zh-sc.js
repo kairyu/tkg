@@ -19,6 +19,7 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Layer5':'第5层',
 	'Layer6':'第6层',
 	'Layer7':'第7层',
+	'Paste raw data here':'请将 Raw Data 粘贴于此处',
 	'Download':'下载',
 	'file':'文件',
 	// Keyboard description

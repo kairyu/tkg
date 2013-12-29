@@ -230,7 +230,7 @@ function TKG() {
 
 	var _parseLayer = function(layer_number, raw_string) {
 		// console log
-		if (_simple_mode) {
+		if (!_simple_mode) {
 			_consoleLog("Parse layer");
 			_consoleLog("layer_number: " + layer_number);
 		}
@@ -253,22 +253,6 @@ function TKG() {
 			}
 		}
 
-		// clear when raw string is empty
-		if (!raw_string) {
-			_layers[layer_number] = {};
-			_matrices[layer_number] = [];
-			_layers[layer_number]["error"] = {};
-			_layers[layer_number]["warn"] = {};
-			_initKeymaps(layer_number);
-			if (_simple_mode) {
-				_layers[layer_number + 1] = {};
-				_matrices[layer_number + 1] = [];
-				_layers[layer_number + 1]["error"] = {};
-				_layers[layer_number + 1]["warn"] = {};
-				_initKeymaps(layer_number + 1);
-			}
-		}
-
 		var layer = {};
 		var fns = [];
 		var matrix = [];
@@ -282,23 +266,44 @@ function TKG() {
 			var keymap_symbol_2 = [];
 		}
 
-		// parse raw string to keys
-		layer = _parseRawString(raw_string);
-		if (_simple_mode) {
-			layer_2 = _parseRawString(raw_string);
-		}
-		if (!_.isEmpty(layer["error"])) {
-			return _ERROR;
-		}
+		if (raw_string) {
+			/*
+			_layers[layer_number] = {};
+			_matrices[layer_number] = [];
+			_layers[layer_number]["error"] = {};
+			_layers[layer_number]["warn"] = {};
+			_initKeymaps(layer_number);
+			if (_simple_mode) {
+				_layers[layer_number + 1] = {};
+				_matrices[layer_number + 1] = [];
+				_layers[layer_number + 1]["error"] = {};
+				_layers[layer_number + 1]["warn"] = {};
+				_initKeymaps(layer_number + 1);
+			}
+			return 0;
+			*/
 
-		// parse keycode from label
-		layer = _parseKeycode(layer, "top", "bottom");
-		_consoleLog("layer:");
-		_consoleLog(layer);
-		if (_simple_mode) {
-			layer_2 = _parseKeycode(layer_2, "side_print", "side_print_secondary");
-			_consoleLog("layer_2:");
-			_consoleLog(layer_2);
+			// parse raw string to keys
+			layer = _parseRawString(raw_string);
+			if (_simple_mode) {
+				layer_2 = _parseRawString(raw_string);
+			}
+			if (!_.isEmpty(layer["error"])) {
+				return _ERROR;
+			}
+
+			// parse keycode from label
+			layer = _parseKeycode(layer, "top", "bottom");
+			_consoleLog("layer:");
+			_consoleLog(layer);
+			if (_simple_mode) {
+				layer_2 = _parseKeycode(layer_2, "side_print", "side_print_secondary");
+				_consoleLog("layer_2:");
+				_consoleLog(layer_2);
+			}
+		}
+		else {
+			// clear when raw string is empty
 		}
 
 		// set layer
@@ -310,11 +315,10 @@ function TKG() {
 		// parse fns from layer
 		fns = _parseFns(layer);
 		fns = _mergeFns(_fns, fns);
-		_consoleLog(JSON.stringify(fns));
 		_fns = _cleanFns(fns, _layers);
 		_consoleLog("fns:");
-		_consoleLog(JSON.stringify(fns));
-		_consoleLog(JSON.stringify(_fns));
+		_consoleLog(fns);
+		_consoleLog(_fns);
 		if (_simple_mode) {
 			fns_2 = _parseFns(layer_2);
 			fns_2 = _mergeFns(_fns, fns_2);
@@ -735,7 +739,7 @@ function TKG() {
 
 	var _parseFns = function(layer) {
 		var fns = [];
-		var keys = layer["keys"];
+		var keys = layer["keys"] || [];
 		var error = layer["error"];
 		var warn = layer["warn"];
 		for (var i = 0; i < keys.length; i++) {
@@ -803,20 +807,16 @@ function TKG() {
 		var matrix = [];
 		var error = layer["error"];
 		var warn = layer["warn"];
-
-		// check keys property
-		if (!layer["keys"] || !_.isArray(layer["keys"])) {
-			_raiseError(error, "general", "Invalid key data", layer["keys"]);
-			return matrix;
-		}
+		var keys = layer["keys"] || [];
 
 		// init matrix
-		for (var i = 0; i < _matrix_rows; i++) {
-			matrix[i] = [];
+		if (keys) {
+			for (var i = 0; i < _matrix_rows; i++) {
+				matrix[i] = [];
+			}
 		}
 
 		// parse matrix from position
-		var keys = layer["keys"];
 		for (var i = 0; i < keys.length; i++) {
 			var key = keys[i];
 			var index = _positionToIndex(key["x"], key["y"], key["w"], key["h"], key["x2"], key["w2"]);
