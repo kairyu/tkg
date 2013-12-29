@@ -1,4 +1,5 @@
 jquery_lang_js.prototype.lang.zh_sc = {
+	'This website is under construction, any feature will be removed or be modified at any time without advance notice.':'本网站正在建设中，任何功能都将有可能被随时删除或修改，恕不另行通知。',
 	// Menu
 	'Help':'帮助',
 	'About':'关于',

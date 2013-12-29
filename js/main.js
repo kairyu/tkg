@@ -173,7 +173,8 @@ function initForm(simple_mode) {
 }
 
 function appendNotification() {
-	$('.navbar-fixed-top').prepend('<div id="notification"><div id="notification-inner">This website is under construction, any feature will be removed or be modified at any time without advance notice.</div></div>');
+	$('.navbar-fixed-top').prepend('<div id="notification"><div id="notification-inner" lang="en">This website is under construction, any feature will be removed or be modified at any time without advance notice.</div></div>');
+	window.lang.run();
 }
 
 function showNotification() {

@@ -1,4 +1,5 @@
 jquery_lang_js.prototype.lang.jp = {
+	'This website is under construction, any feature will be removed or be modified at any time without advance notice.':'このウェブサイトは建設中で、いずれかの機能は事前予告なしに変更、または削除されることがあります。',
 	// Menu
 	'Help':'ヘルプ',
 	'About':'サイトについて',
