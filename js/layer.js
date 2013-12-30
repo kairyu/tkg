@@ -175,30 +175,38 @@ function onLayerChange(event) {
 
 function setupLayerPopover(id) {
 	var $layer = $('#' + id);
+	var has_popover = false;
 	var error = $layer.data('error');
 	var warning = $layer.data('warning');
 	var info = $layer.data('info');
 	var $content = $('<div>');
 	if (error && !_.isEmpty(error)) {
 		$content.append(appendLayerError(error));
+		has_popover = true;
 	}
 	if (warning && !_.isEmpty(warning)) {
 		$content.append(appendLayerWarning(warning));
+		has_popover = true;
 	}
-	$layer.popover('destroy').popover({
-		html: true,
-		trigger: 'focus',
-		//trigger: 'manual',
-		content: $content.html()
-	});//.popover('show');
+	$layer.popover('destroy');
+	if (has_popover) {
+		// setup popover
+		$layer.popover({
+			html: true,
+			trigger: 'focus',
+			//trigger: 'manual',
+			content: $content.html()
+		});//.popover('show');
 
-	// setup tooltip of keys
-	$('.popover li.key').tooltip({
-		trigger: 'hover',
-		placement: 'bottom',
-		html: true,
-		delay: { show: 500, hide: 100 }
-	});
+		// setup tooltip of keys
+		$('.popover li.key').tooltip({
+			trigger: 'hover',
+			placement: 'bottom',
+			html: true,
+			delay: { show: 500, hide: 100 }
+		});
+	}
+
 }
 
 function appendLayerError(error) {

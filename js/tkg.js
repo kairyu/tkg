@@ -1044,17 +1044,17 @@ function TKG() {
 
 	var _getError = function(layer_number) {
 		if (layer_number > _max_layers) { return false; }
-		return _layers[layer_number]["error"];
+		return _layers[layer_number]["error"] || {};
 	}
 
 	var _getWarning = function(layer_number) {
 		if (layer_number > _max_layers) { return false; }
-		return _layers[layer_number]["warn"];
+		return _layers[layer_number]["warn"] || {};
 	}
 
 	var _getInfo = function(layer_number) {
 		if (layer_number > _max_layers) { return false; }
-		return _layers[layer_number]["info"];
+		return _layers[layer_number]["info"] || {};
 	}
 
 	var _getFns = function(index) {
