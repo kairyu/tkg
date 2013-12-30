@@ -88,3 +88,41 @@ body {
 .multiselect-group {
 	text-decoration: underline;
 }
+
+.layer .popover {
+	max-width: 400px;
+}
+
+.popover .general {
+	white-space: nowrap;
+}
+.popover ul {
+	list-style-type: none;
+	padding-left: 0;
+	width: 360px;
+}
+.popover li.key {
+	display: inline-block;
+	min-width: 40px;
+	height: 40px;
+	padding: 4px;
+	margin: 0 4px 4px 0;
+	border: 1px solid #adadad;
+	background-color: #f7f7f7;
+	-webkit-border-radius: 3px 3px 3px 3px;
+	border-radius: 3px 3px 3px 3px;
+	font-size: 0.8em;
+	vertical-align: top;
+}
+.popover li.key:hover {
+	background-color: #efefef;
+}
+.popover li.key span {
+	display: block;
+}
+.popover .tooltip-inner {
+	text-align: left;
+}
+.popover .unknown-label .top-label {
+	color: #b94a48;
+}

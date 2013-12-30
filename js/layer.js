@@ -83,9 +83,11 @@ function appendLayers(simple_mode) {
 			// translate
 			window.lang.run();
 		});
-	
-
 	}
+	// translate popover
+	$('#layer-wrapper .layer').on('shown.bs.popover', function() {
+		window.lang.run();
+	});
 }
 
 function makeLayer(index) {
@@ -136,7 +138,7 @@ function onLayerChange(event) {
 	else {
 		layer_number = id.slice(5);
 	}
-	var retval = tkg.parseLayer(layer_number, raw);
+	var state = tkg.parseLayer(layer_number, raw);
 	var div = $(this).parent();
 	// clear validation states
 	var class_names = [ "has-success", "has-warning", "has-error" ];
@@ -148,7 +150,7 @@ function onLayerChange(event) {
 	}
 	// set validation state
 	if (raw != "") {
-		switch (retval) {
+		switch (state) {
 			case tkg.NONE:
 				div.addClass("has-success");
 				break;
@@ -160,6 +162,117 @@ function onLayerChange(event) {
 				break;
 		}
 	}
+
+	// set data for popover
+	$layer.data('error', tkg.getError(layer_number));
+	$layer.data('warning', tkg.getWarning(layer_number));
+	$layer.data('info', tkg.getInfo(layer_number));
+	setupLayerPopover(id);
+
 	appendFns();
 	updateDownloadButtonState();
+}
+
+function setupLayerPopover(id) {
+	var $layer = $('#' + id);
+	var error = $layer.data('error');
+	var warning = $layer.data('warning');
+	var info = $layer.data('info');
+	var $content = $('<div>');
+	if (error && !_.isEmpty(error)) {
+		$content.append(appendLayerError(error));
+	}
+	if (warning && !_.isEmpty(warning)) {
+		$content.append(appendLayerWarning(warning));
+	}
+	$layer.popover('destroy').popover({
+		html: true,
+		trigger: 'focus',
+		//trigger: 'manual',
+		content: $content.html()
+	});//.popover('show');
+
+	// setup tooltip of keys
+	$('.popover li.key').tooltip({
+		trigger: 'hover',
+		placement: 'bottom',
+		html: true,
+		delay: { show: 500, hide: 100 }
+	});
+}
+
+function appendLayerError(error) {
+	var $content = $('<h4>').attr({ "class": "text-danger", "lang": "en" }).text("ERROR");
+	for (var type in error) {
+		switch (type) {
+			case "general":
+				$content.append(
+					$('<h5>').attr({ "class": "text-danger", "lang": "en" }).text("General"),
+					$('<p>').attr({ "class": "general" }).append($('<span>').attr({ "lang": "en" }).text(error[type]))
+				);
+				break;
+			case "unknown_label":
+				var keys = error[type];
+				$content.append(
+					$('<h5>').attr({ "class": "text-danger", "lang": "en" }).text("Unknown label"),
+					$('<div>').attr({ "class": "unknown-label" }).append(makeKeyList(keys))
+				);
+				break;
+			case "no_matching_keycode":
+				var keys = error[type];
+				$content.append(
+					$('<h5>').attr({ "class": "text-danger", "lang": "en" }).text("No matching key"),
+					$('<div>').attr({ "class": "no-matching-keycode" }).append(makeKeyList(keys))
+				);
+				break;
+			case "matrix_missmapping":
+				var keys = error[type];
+				$content.append(
+					$('<h5>').attr({ "class": "text-danger", "lang": "en" }).text("Position mismatch"),
+					$('<div>').attr({ "class": "matrix-missmapping" }).append(makeKeyList(keys))
+				);
+				break;
+		}
+	}
+	return $content;
+}
+
+function appendLayerWarning(warning) {
+	var $content = $('<h4>').attr({ "class": "text-warning", "lang": "en" }).text("WARNING");
+	for (var type in warning) {
+		switch (type) {
+			case "fn_out_of_bounds":
+				var keys = warning[type];
+				$content.append(
+					$('<h5>').attr({ "class": "text-warning", "lang": "en" }).text("Invalid Fn key"),
+					$('<div>').attr({ "class": "fn-out-of-bounds" }).append(makeKeyList(keys))
+				);
+				break;
+		}
+	}
+	return $content;
+}
+
+function makeKeyList(keys, top_property, bottom_property) {
+	top_property = top_property || "top";
+	bottom_property = bottom_property || "bottom";
+	var $list = $('<ul>');
+	for (var i = 0; i < keys.length; i++) {
+		$list.append(makeKey(keys[i], top_property, bottom_property));
+	}
+	return $list;
+}
+
+function makeKey(key, top_property, bottom_property) {
+	var label = key["label"];
+	var top_label = label[top_property] || "";
+	var bottom_label = label[bottom_property] || "";
+	var tooltip = "x: " + key["x"] + "<br>" + "y: " + key["y"];
+	return $('<li>').attr({
+			"class": "key",
+			"data-title": tooltip
+		}).append(
+			$('<span>').attr({ "class": "top-label" }).text(top_label),
+			$('<span>').attr({ "class": "bottom-label" }).text(bottom_label)
+		);
 }

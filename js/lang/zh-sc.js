@@ -23,6 +23,15 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Paste raw data here':'请将 Raw Data 粘贴于此处',
 	'Download':'下载',
 	'file':'文件',
+	// Layer popover
+	'ERROR':'错误',
+	'General':'通常',
+	'Invalid raw data':'无效的 Raw Data',
+	'Unknown label':'未知标签',
+	'No matching key':'没有匹配的按键',
+	'Position mismatch':'位置不匹配',
+	'Invalid Fn key':'无效的 Fn 键',
+	'WARNING':'警告',
 	// Keyboard description
 	'Name':'名称',
 	'Description':'描述',

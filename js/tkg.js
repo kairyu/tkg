@@ -3,8 +3,9 @@ function TKG() {
 	const _NONE = 0;
 	const _ERROR = 1;
 	const _WARNING = 2;
-	const _INFO = 3;
-	var _debug = _INFO;
+	const _DEBUG = 4;
+	const _INFO = 8;
+	var _log = _ERROR | _WARNING | _DEBUG | _INFO;
 	var _simple_mode = true;
 	var _keycode_map = {};
 	var _keycode_map_reversed = {};
@@ -33,11 +34,11 @@ function TKG() {
 
 	var _setKeycodeMap = function(keycode_map) {
 		_keycode_map = keycode_map;
-		_consoleLog("keycode_map:");
-		_consoleLog(_keycode_map);
+		_consoleInfo("keycode_map:");
+		_consoleInfo(_keycode_map);
 		_keycode_map_reversed = _generateReversedKeycodeMap(_keycode_map);
-		_consoleLog("keycode_map_reversed:");
-		_consoleLog(_keycode_map_reversed);
+		_consoleInfo("keycode_map_reversed:");
+		_consoleInfo(_keycode_map_reversed);
 		_fn_options["lr"] = _generateLrOptions();
 		_fn_options["mods"] = _generateModsOptions();
 		_fn_options["key"] = _generateKeyOptions(_keycode_map);
@@ -45,8 +46,8 @@ function TKG() {
 
 	var _setActionMap = function(action_map) {
 		_action_map = action_map;
-		_consoleLog("action_map:");
-		_consoleLog(_action_map);
+		_consoleInfo("action_map:");
+		_consoleInfo(_action_map);
 		_fn_options["action"] = _generateActionOptions(_action_map);
 		_fn_options["on"] = _generateOnOptions();
 	}
@@ -111,8 +112,8 @@ function TKG() {
 								}
 								keycode_map_reversed[label] = _smartPush(keycode_map_reversed[label], symbol);
 								if (conflicted) {
-									_consoleLog("Conflicted label: " + label);
-									_consoleLog(keycode_map_reversed[label]);
+									_consoleDebug("Conflicted label: " + label);
+									_consoleDebug(keycode_map_reversed[label]);
 								}
 							}
 						}
@@ -125,8 +126,8 @@ function TKG() {
 							}
 							keycode_map_reversed[label] = _smartPush(keycode_map_reversed[label], symbol);
 							if (conflicted) {
-								_consoleLog("Conflicted label: " + label);
-								_consoleLog(keycode_map_reversed[label]);
+								_consoleDebug("Conflicted label: " + label);
+								_consoleDebug(keycode_map_reversed[label]);
 							}
 						}
 						else {
@@ -231,11 +232,11 @@ function TKG() {
 	var _parseLayer = function(layer_number, raw_string) {
 		// console log
 		if (!_simple_mode) {
-			_consoleLog("Parse layer");
-			_consoleLog("layer_number: " + layer_number);
+			_consoleInfo("Parse layer");
+			_consoleInfo("layer_number: " + layer_number);
 		}
 		else {
-			_consoleLog("Parse layer simple mode");
+			_consoleInfo("Parse layer simple mode");
 		}
 
 		// check layer_number parameter
@@ -267,39 +268,24 @@ function TKG() {
 		}
 
 		if (raw_string) {
-			/*
-			_layers[layer_number] = {};
-			_matrices[layer_number] = [];
-			_layers[layer_number]["error"] = {};
-			_layers[layer_number]["warn"] = {};
-			_initKeymaps(layer_number);
-			if (_simple_mode) {
-				_layers[layer_number + 1] = {};
-				_matrices[layer_number + 1] = [];
-				_layers[layer_number + 1]["error"] = {};
-				_layers[layer_number + 1]["warn"] = {};
-				_initKeymaps(layer_number + 1);
-			}
-			return 0;
-			*/
-
 			// parse raw string to keys
 			layer = _parseRawString(raw_string);
 			if (_simple_mode) {
 				layer_2 = _parseRawString(raw_string);
 			}
 			if (!_.isEmpty(layer["error"])) {
+				_layers[layer_number] = layer;
 				return _ERROR;
 			}
 
 			// parse keycode from label
 			layer = _parseKeycode(layer, "top", "bottom");
-			_consoleLog("layer:");
-			_consoleLog(layer);
+			_consoleInfo("layer:");
+			_consoleInfo(layer);
 			if (_simple_mode) {
 				layer_2 = _parseKeycode(layer_2, "side_print", "side_print_secondary");
-				_consoleLog("layer_2:");
-				_consoleLog(layer_2);
+				_consoleInfo("layer_2:");
+				_consoleInfo(layer_2);
 			}
 		}
 		else {
@@ -316,16 +302,16 @@ function TKG() {
 		fns = _parseFns(layer);
 		fns = _mergeFns(_fns, fns);
 		_fns = _cleanFns(fns, _layers);
-		_consoleLog("fns:");
-		_consoleLog(fns);
-		_consoleLog(_fns);
+		_consoleInfo("fns:");
+		_consoleInfo(fns);
+		_consoleInfo(_fns);
 		if (_simple_mode) {
 			fns_2 = _parseFns(layer_2);
 			fns_2 = _mergeFns(_fns, fns_2);
 			_fns = _cleanFns(fns_2, _layers);
-			_consoleLog("fns_2:");
-			_consoleLog(fns_2);
-			_consoleLog(_fns);
+			_consoleInfo("fns_2:");
+			_consoleInfo(fns_2);
+			_consoleInfo(_fns);
 			if (_fns[0] && _fns[0]["action"] == "ACTION_NO") {
 				_setFns(0, { "action": "ACTION_LAYER_MOMENTARY", "args": [ layer_number + 1 ] });
 			}
@@ -342,37 +328,37 @@ function TKG() {
 
 		// parse matrix from position
 		matrix = _parseMatrix(layer);
-		_consoleLog("matrix:");
-		_consoleLog(matrix);
+		_consoleInfo("matrix:");
+		_consoleInfo(matrix);
 		if (_simple_mode) {
 			matrix_2 = _parseMatrix(layer_2);
-			_consoleLog("matrix_2:");
-			_consoleLog(matrix_2);
+			_consoleInfo("matrix_2:");
+			_consoleInfo(matrix_2);
 		}
 
 		// generate keymap from matrix
 		keymap_hex = _generateKeymapHex(matrix);
 		keymap_symbol = _generateKeymapSymbol(matrix);
-		_consoleLog("keymap_hex:");
-		_consoleLog(keymap_hex);
-		_consoleLog("keymap_symbol:");
-		_consoleLog(keymap_symbol);
+		_consoleInfo("keymap_hex:");
+		_consoleInfo(keymap_hex);
+		_consoleInfo("keymap_symbol:");
+		_consoleInfo(keymap_symbol);
 		if (_simple_mode) {
 			keymap_hex_2 = _generateKeymapHex(matrix_2);
 			keymap_symbol_2 = _generateKeymapSymbol(matrix_2);
-			_consoleLog("keymap_hex_2:");
-			_consoleLog(keymap_hex_2);
-			_consoleLog("keymap_symbol_2:");
-			_consoleLog(keymap_symbol_2);
+			_consoleInfo("keymap_hex_2:");
+			_consoleInfo(keymap_hex_2);
+			_consoleInfo("keymap_symbol_2:");
+			_consoleInfo(keymap_symbol_2);
 		}
 
 		// generate fn actions
 		_fn_actions_hex = _generateFnActionsHex(_fns);
 		_fn_actions_symbol = _generateFnActionsSymbol(_fns);
-		_consoleLog("fn_actions_hex:");
-		_consoleLog(_fn_actions_hex);
-		_consoleLog("fn_actions_symbol:");
-		_consoleLog(_fn_actions_symbol);
+		_consoleInfo("fn_actions_hex:");
+		_consoleInfo(_fn_actions_hex);
+		_consoleInfo("fn_actions_symbol:");
+		_consoleInfo(_fn_actions_symbol);
 
 		// set variables
 		_matrices[layer_number] = matrix;
@@ -384,38 +370,43 @@ function TKG() {
 			_keymaps_symbol[layer_number + 1] = keymap_symbol_2;
 		}
 
-		// return value
-		var retval = 0;
+		// return state
+		var state = _NONE;
 		if (!_.isEmpty(layer["warn"])) {
-			retval = _WARNING;
+			state = _WARNING;
+			if (_simple_mode) {
+				if (!_.isEmpty(layer_2["warn"])) {
+					state = _WARNING;
+				}
+			}
 		}
 		if (!_.isEmpty(layer["error"])) {
-			retval = _ERROR;
-		}
-		if (_simple_mode) {
-			if (!_.isEmpty(layer_2["warn"])) {
-				retval = _WARNING;
-			}
-			if (!_.isEmpty(layer_2["error"])) {
-				retval = _ERROR;
+			state = _ERROR;
+			if (_simple_mode) {
+				if (!_.isEmpty(layer_2["error"])) {
+					state = _ERROR;
+				}
 			}
 		}
-		return retval;
+		return state;
 	}
 
 	var _parseRawString = function(raw_string) {
 		var layer = {};
 		var error = {};
 		var warn = {};
+		var info = {};
 
 		// parse raw string to object
 		var raw;
 		try{
 			eval("raw = [" + raw_string + "]");
 		} catch (e) {
-			_raiseError(error, "general", "Invalid raw data", raw_string);
+			var message = "Invalid raw data";
+			_raiseError(error, "general", message, message, raw_string);
 			layer["error"] = error;
 			layer["warn"] = warn;
+			layer["info"] = info;
 			return layer;
 		}
 
@@ -431,9 +422,11 @@ function TKG() {
 		var stepped = false;
 		var rowspan = false;
 		if (!_.isArray(raw)) {
-			_raiseError(error, "general", "Invalid raw data", raw);
+			var message = "Invalid raw data";
+			_raiseError(error, "general", message, message, raw_string);
 			layer["error"] = error;
 			layer["warn"] = warn;
+			layer["info"] = info;
 			return layer;
 		}
 		for (var i = 0; i < raw.length; i++) {
@@ -505,24 +498,27 @@ function TKG() {
 		}
 
 		if (keys.length == 0) {
-			_raiseError(error, "general", "Invalid raw data", raw);
+			var message = "Invalid raw data";
+			_raiseError(error, "general", message, message, raw_string);
 		}
 		else {
 			layer["keys"] = keys;
 		}
 		layer["error"] = error;
 		layer["warn"] = warn;
+		layer["info"] = info;
 		return layer;
 	}
 
 	var _parseKeycode = function(layer, label_property, label_property_2) {
 		var error = layer["error"];
 		var warn = layer["warn"];
+		var info = layer["info"];
 
 		// check keys property
 		if (!layer["keys"] || !_.isArray(layer["keys"])) {
-			_raiseError(error, "general", "Invalid key data", layer["keys"]);
-			layer["error"] = error;
+			var message = "Invalid key data";
+			_raiseError(error, "general", message, message, layer["keys"]);
 			return layer;
 		}
 		
@@ -544,8 +540,8 @@ function TKG() {
 			}
 			else {
 				label = "";
-				_raiseWarn(warn, "no_valid_label", key["x"] + "," + key["y"], key);
-				//continue;
+				_consoleDebug("No valid label: " + key["x"] + "," + key["y"]);
+				_consoleDebug(key);
 			}
 			if (label_property_2 && key["label"][label_property_2]) {
 				label_2 = key["label"][label_property_2].toLowerCase();
@@ -564,7 +560,7 @@ function TKG() {
 					}
 					else {
 						var message = label + (label_2 ? "\n" + label_2 : "");
-						_raiseError(error, "no_matching_keycode", message, key);
+						_raiseError(error, "no_matching_keycode", key, message, key);
 					}
 				}
 				// conflicted
@@ -580,8 +576,8 @@ function TKG() {
 					}
 					// check alternative symbols
 					if (alt_symbols.length == 0) {
-						_consoleError("Unexpected error: no alternative symbols");
-						_consoleError(symbol);
+						var message = label + (label_2 ? "\n" + label_2 : "");
+						_raiseError(error, "no_matching_keycode", key, message, key);
 					}
 					// solved
 					else if (alt_symbols.length == 1) {
@@ -597,10 +593,11 @@ function TKG() {
 						}
 						if (alt_symbols_round2.length == 1) {
 							alt_symbol = alt_symbols_round2[0];
-							_raiseWarn(warn, "solved_conflict", label + " -> " + alt_symbol, alt_symbols);
+							var message = label + " -> " + alt_symbol;
+							_raiseInfo(info, "solved_conflict", alt_symbols, message, alt_symbols);
 						}
 						else {
-							_raiseError(error, "unsolved_conflict", label, key);
+							_raiseError(error, "unsolved_conflict", key, label, key);
 						}
 					}
 				}
@@ -611,7 +608,7 @@ function TKG() {
 			}
 			// unknown label
 			else {
-				_raiseError(error, "unknown_label", label, key);
+				_raiseError(error, "unknown_label", key, label, key);
 			}
 		}
 
@@ -645,7 +642,7 @@ function TKG() {
 				}
 			}
 			else {
-				_consoleWarn("No such label property: " + property_name);
+				_consoleDebug("No such label property: " + property_name);
 				return false;
 			}
 		}
@@ -742,6 +739,7 @@ function TKG() {
 		var keys = layer["keys"] || [];
 		var error = layer["error"];
 		var warn = layer["warn"];
+		var info = layer["info"];
 		for (var i = 0; i < keys.length; i++) {
 			var key = keys[i];
 			if (key["symbol"]) {
@@ -751,7 +749,7 @@ function TKG() {
 					var fn_number = symbol.slice(5);
 					// fn out of bounds
 					if (fn_number >= _max_fns) {
-						_raiseError(error, "fn_out_of_bounds", symbol, key);
+						_raiseWarn(warn, "fn_out_of_bounds", key, symbol, key);
 						symbol = "KC_TRANSPARENT";
 						_setKeyPropertiesBySymbol(key, symbol);
 					}
@@ -768,7 +766,6 @@ function TKG() {
 
 	var _mergeFns = function(fns1, fns2) {
 		var fns = fns1;
-		_consoleLog(JSON.stringify(fns));
 		for (var index in fns2) {
 			var fn = fns[index] || false;
 			var fn2 = fns2[index];
@@ -776,7 +773,6 @@ function TKG() {
 				fns[index] = fn2;
 			}
 		}
-		_consoleLog(JSON.stringify(fns));
 		return fns;
 	}
 
@@ -807,6 +803,7 @@ function TKG() {
 		var matrix = [];
 		var error = layer["error"];
 		var warn = layer["warn"];
+		var info = layer["info"];
 		var keys = layer["keys"] || [];
 
 		// init matrix
@@ -832,7 +829,7 @@ function TKG() {
 				matrix[row][col] = symbol;
 			}
 			else {
-				_raiseError(error, "matrix_missmapping", index, key);
+				_raiseError(error, "matrix_missmapping", key, index, key);
 			}
 		}
 
@@ -969,42 +966,79 @@ function TKG() {
 	}
 
 	var _consoleError = function(message) {
-		if (_debug >= _ERROR) {
-			console.error(message);
+		if (Boolean(_log & _ERROR)) {
+			if (_.isObject(message)) {
+				console.error(message);
+			}
+			else {
+				console.error("ERROR: " + message);
+			}
 		}
 	}
 
 	var _consoleWarn = function(message) {
-		if (_debug >= _WARNING) {
-			console.warn(message);
+		if (Boolean(_log & _WARNING)) {
+			if (_.isObject(message)) {
+				console.warn(message);
+			}
+			else {
+				console.warn("WARN: " + message);
+			}
 		}
 	}
 
-	var _consoleLog = function(message) {
-		if (_debug >= _INFO) {
-			console.log(message);
+	var _consoleDebug = function(message) {
+		if (Boolean(_log & _DEBUG)) {
+			if (_.isObject(message)) {
+				console.log(message);
+			}
+			else {
+				console.log("DEBUG: " + message);
+			}
 		}
 	}
 
-	var _raiseError = function(object, type, message, dump) {
+	var _consoleInfo = function(message) {
+		if (Boolean(_log & _INFO)) {
+			if (_.isObject(message)) {
+				console.log(message);
+			}
+			else {
+				console.log("INFO: " + message);
+			}
+		}
+	}
+
+	var _raiseError = function(object, type, push, message, dump) {
 		if (!object[type]) {
 			object[type] = [];
 		}
-		object[type].push(message);
+		object[type].push(push);
 		_consoleError(type + ": " + message);
 		if (dump) {
 			_consoleError(dump);
 		}
 	}
 
-	var _raiseWarn = function(object, type, message, dump) {
+	var _raiseWarn = function(object, type, push, message, dump) {
 		if (!object[type]) {
 			object[type] = [];
 		}
-		object[type].push(message);
+		object[type].push(push);
 		_consoleWarn(type + ": " + message);
 		if (dump) {
 			_consoleWarn(dump);
+		}
+	}
+
+	var _raiseInfo = function(object, type, push, message, dump) {
+		if (!object[type]) {
+			object[type] = [];
+		}
+		object[type].push(push);
+		_consoleInfo(type + ": " + message);
+		if (dump) {
+			_consoleInfo(dump);
 		}
 	}
 
@@ -1013,9 +1047,14 @@ function TKG() {
 		return _layers[layer_number]["error"];
 	}
 
-	var _getWarn = function(layer_number) {
+	var _getWarning = function(layer_number) {
 		if (layer_number > _max_layers) { return false; }
 		return _layers[layer_number]["warn"];
+	}
+
+	var _getInfo = function(layer_number) {
+		if (layer_number > _max_layers) { return false; }
+		return _layers[layer_number]["info"];
 	}
 
 	var _getFns = function(index) {
@@ -1084,6 +1123,7 @@ function TKG() {
 	this.NONE = _NONE;
 	this.ERROR = _ERROR;
 	this.WARNING = _WARNING;
+	this.DEBUG = _DEBUG;
 	this.INFO = _INFO;
 	this.init = _init;
 	this.setKeycodeMap = _setKeycodeMap;
@@ -1091,7 +1131,8 @@ function TKG() {
 	this.setSimpleMode = _setSimpleMode;
 	this.parseLayer = _parseLayer;
 	this.getError = _getError;
-	this.getWarn = _getWarn;
+	this.getWarning = _getWarning;
+	this.getInfo = _getInfo;
 	this.getFns = _getFns;
 	this.setFns = _setFns;
 	this.getFnOptions = _getFnOptions;
