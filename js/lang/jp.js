@@ -29,7 +29,7 @@ jquery_lang_js.prototype.lang.jp = {
 	'Max Fns':'最大Fnキー数',
 	// Layer popover
 	'ERROR':'エラー',
-	'General':'一般',
+	'General':'全般',
 	'Invalid raw data':'無効な Raw Data',
 	'Unknown label':'不明なラベル',
 	'No matching key':'適合なキーが見つからない',
