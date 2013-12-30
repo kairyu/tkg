@@ -179,13 +179,19 @@ function setupLayerPopover(id) {
 	var error = $layer.data('error');
 	var warning = $layer.data('warning');
 	var info = $layer.data('info');
+	var top_prop = "top";
+	var bottom_prop = "bottom";
 	var $content = $('<div>');
 	if (error && !_.isEmpty(error)) {
-		$content.append(appendLayerError(error));
+		$content.append(appendLayerError(error, top_prop, bottom_prop));
 		has_popover = true;
 	}
 	if (warning && !_.isEmpty(warning)) {
-		$content.append(appendLayerWarning(warning));
+		$content.append(appendLayerWarning(warning, top_prop, bottom_prop));
+		has_popover = true;
+	}
+	if (info && !_.isEmpty(info)) {
+		$content.append(appendLayerInfo(info, top_prop, bottom_prop));
 		has_popover = true;
 	}
 	$layer.popover('destroy');
@@ -198,18 +204,20 @@ function setupLayerPopover(id) {
 			content: $content.html()
 		});//.popover('show');
 
-		// setup tooltip of keys
-		$('.popover li.key').tooltip({
-			trigger: 'hover',
-			placement: 'bottom',
-			html: true,
-			delay: { show: 500, hide: 100 }
+		$layer.on('shown.bs.popover', function() {
+			// setup tooltip of keys
+			$('.popover li.key').tooltip({
+				trigger: 'hover',
+				placement: 'bottom',
+				html: true,
+				delay: { show: 500, hide: 100 }
+			});
 		});
 	}
 
 }
 
-function appendLayerError(error) {
+function appendLayerError(error, top_prop, bottom_prop) {
 	var $content = $('<h4>').attr({ "class": "text-danger", "lang": "en" }).text("ERROR");
 	for (var type in error) {
 		switch (type) {
@@ -223,21 +231,28 @@ function appendLayerError(error) {
 				var keys = error[type];
 				$content.append(
 					$('<h5>').attr({ "class": "text-danger", "lang": "en" }).text("Unknown label"),
-					$('<div>').attr({ "class": "unknown-label" }).append(makeKeyList(keys))
+					$('<div>').attr({ "class": "unknown-label" }).append(makeKeyList(keys, function(key) {
+						console.log(key);
+						return "x: " + key["x"] + "<br>" + "y: " + key["y"];
+					}, top_prop, bottom_prop))
 				);
 				break;
 			case "no_matching_keycode":
 				var keys = error[type];
 				$content.append(
 					$('<h5>').attr({ "class": "text-danger", "lang": "en" }).text("No matching key"),
-					$('<div>').attr({ "class": "no-matching-keycode" }).append(makeKeyList(keys))
+					$('<div>').attr({ "class": "no-matching-keycode" }).append(makeKeyList(keys, function(key) {
+						return "x: " + key["x"] + "<br>" + "y: " + key["y"];
+					}, top_prop, bottom_prop))
 				);
 				break;
 			case "matrix_missmapping":
 				var keys = error[type];
 				$content.append(
 					$('<h5>').attr({ "class": "text-danger", "lang": "en" }).text("Position mismatch"),
-					$('<div>').attr({ "class": "matrix-missmapping" }).append(makeKeyList(keys))
+					$('<div>').attr({ "class": "matrix-missmapping" }).append(makeKeyList(keys, function(key) {
+						return "x: " + key["x"] + "<br>" + "y: " + key["y"];
+					}, top_prop, bottom_prop))
 				);
 				break;
 		}
@@ -245,7 +260,7 @@ function appendLayerError(error) {
 	return $content;
 }
 
-function appendLayerWarning(warning) {
+function appendLayerWarning(warning, top_prop, bottom_prop) {
 	var $content = $('<h4>').attr({ "class": "text-warning", "lang": "en" }).text("WARNING");
 	for (var type in warning) {
 		switch (type) {
@@ -253,7 +268,9 @@ function appendLayerWarning(warning) {
 				var keys = warning[type];
 				$content.append(
 					$('<h5>').attr({ "class": "text-warning", "lang": "en" }).text("Invalid Fn key"),
-					$('<div>').attr({ "class": "fn-out-of-bounds" }).append(makeKeyList(keys))
+					$('<div>').attr({ "class": "fn-out-of-bounds" }).append(makeKeyList(keys, function(key) {
+						return "x: " + key["x"] + "<br>" + "y: " + key["y"];
+					}, top_prop, bottom_prop))
 				);
 				break;
 		}
@@ -261,21 +278,79 @@ function appendLayerWarning(warning) {
 	return $content;
 }
 
-function makeKeyList(keys, top_property, bottom_property) {
-	top_property = top_property || "top";
-	bottom_property = bottom_property || "bottom";
+function appendLayerInfo(info, top_prop, bottom_prop) {
+	var $content = $('<h4>').attr({ "class": "text-info", "lang": "en" }).text("INFO");
+	for (var type in info) {
+		switch (type) {
+			case "solved_conflict":
+				var keys = info[type];
+				var keys_for_popover = reduceDuplicatedObjects(keys, function(source, target) {
+					if (source["symbol"] == target["symbol"]) {
+						if (source["label"][top_prop] == target["label"][top_prop]) {
+							if (source["label"][bottom_prop] && target["label"][bottom_prop]) {
+								return source["label"][bottom_prop] == target["label"][bottom_prop];
+							}
+							else {
+								return true;
+							}
+						}
+					}
+					return false;
+				}, [ "label", "symbol", "description" ]);
+				$content.append(
+					$('<h5>').attr({ "class": "text-info", "lang": "en" }).text("Solved conflict"),
+					$('<div>').attr({ "class": "solved-conflicit" }).append(makeKeyList(keys_for_popover, function(key) {
+						return key["description"];
+					}))
+				);
+				break;
+		}
+	}
+	return $content;
+}
+
+function reduceDuplicatedObjects(objects, equal, properties) {
+	var reduced = [];
+	for (var i = 0; i < objects.length; i++) {
+		var found = false;
+		for (var j = 0; j < reduced.length; j++) {
+			if (equal.call(equal, objects[i], reduced[j])) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			var object = {};
+			for (var j = 0; j < properties.length; j++) {
+				var prop = properties[j];
+				object[prop] = objects[i][prop];
+			}
+			reduced.push(object);
+		}
+	}
+	return reduced;
+}
+
+function makeKeyList(keys, tooltip, top_prop, bottom_prop) {
+	top_prop = top_prop || "top";
+	bottom_prop = bottom_prop || "bottom";
 	var $list = $('<ul>');
 	for (var i = 0; i < keys.length; i++) {
-		$list.append(makeKey(keys[i], top_property, bottom_property));
+		var key = keys[i];
+		if (_.isFunction(tooltip)) {
+			$list.append(makeKey(key, tooltip.call(key, key), top_prop, bottom_prop));
+		}
+		else {
+			$list.append(makeKey(key, tooltip, top_prop, bottom_prop));
+		}
 	}
 	return $list;
 }
 
-function makeKey(key, top_property, bottom_property) {
+function makeKey(key, tooltip, top_prop, bottom_prop) {
 	var label = key["label"];
-	var top_label = label[top_property] || "";
-	var bottom_label = label[bottom_property] || "";
-	var tooltip = "x: " + key["x"] + "<br>" + "y: " + key["y"];
+	var top_label = label[top_prop] || "";
+	var bottom_label = label[bottom_prop] || "";
 	return $('<li>').attr({
 			"class": "key",
 			"data-title": tooltip

@@ -27,6 +27,17 @@ jquery_lang_js.prototype.lang.jp = {
 	'Description':'説明',
 	'Max Layers':'最大レイヤー数',
 	'Max Fns':'最大Fnキー数',
+	// Layer popover
+	'ERROR':'エラー',
+	'General':'一般',
+	'Invalid raw data':'無効な Raw Data',
+	'Unknown label':'不明なラベル',
+	'No matching key':'適合なキーが見つからない',
+	'Position mismatch':'不適合な位置',
+	'WARNING':'警告',
+	'Invalid Fn key':'無効な Fn キー',
+	'INFO':'情報',
+	'Solved conflict':'解決された競合',
 	// Fn action
 	'None':'なし',
 	'No action':'何もしない',

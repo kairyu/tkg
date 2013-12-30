@@ -30,8 +30,10 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Unknown label':'未知标签',
 	'No matching key':'没有匹配的按键',
 	'Position mismatch':'位置不匹配',
-	'Invalid Fn key':'无效的 Fn 键',
 	'WARNING':'警告',
+	'Invalid Fn key':'无效的 Fn 键',
+	'INFO':'提示',
+	'Solved conflict':'已解决的冲突',
 	// Keyboard description
 	'Name':'名称',
 	'Description':'描述',

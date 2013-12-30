@@ -1330,7 +1330,7 @@ var keycode_map = {
 		"label_priority": [ "alt" ]
 	},
 	"KC_LGUI": {
-		"description": "Left GUI(Windows/Apple/Meta key)",
+		"description": "Left GUI (Windows/Apple/Meta key)",
 		"keycode": "0xE3",
 		"label": [ "gui", "win", "command", "comm", "meta", "lgui", "lwin", "lcommand", "lcomm", "lmeta" ],
 		"label_priority": [ "gui", "win", "command", "comm", "meta" ]
@@ -1353,7 +1353,7 @@ var keycode_map = {
 		"label": [ "alt", "ralt", "altgr" ]
 	},
 	"KC_RGUI": {
-		"description": "Right GUI(Windows/Apple/Meta key)",
+		"description": "Right GUI (Windows/Apple/Meta key)",
 		"keycode": "0xE7",
 		"label": [ "gui", "win", "command", "comm", "meta", "rgui", "rwin", "rcommand", "rcomm", "rmeta" ]
 	},

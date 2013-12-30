@@ -594,7 +594,7 @@ function TKG() {
 						if (alt_symbols_round2.length == 1) {
 							alt_symbol = alt_symbols_round2[0];
 							var message = label + " -> " + alt_symbol;
-							_raiseInfo(info, "solved_conflict", alt_symbols, message, alt_symbols);
+							_raiseInfo(info, "solved_conflict", key, message, alt_symbols);
 						}
 						else {
 							_raiseError(error, "unsolved_conflict", key, label, key);
@@ -949,6 +949,7 @@ function TKG() {
 	var _setKeyPropertiesBySymbol = function(key, symbol) {
 		key["symbol"] = symbol;
 		key["keycode"] = _keycode_map[symbol]["keycode"];
+		key["description"] = _keycode_map[symbol]["description"];
 		if (_keycode_map[symbol]["short_name"]) {
 			key["short_name"] = _keycode_map[symbol]["short_name"];
 		}
