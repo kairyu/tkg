@@ -224,6 +224,7 @@ function setupLayerPopover(id) {
 	}
 
 	$layer.popover('destroy');
+	$layer.nextAll().remove();
 	if (has_popover) {
 		// setup popover
 		$layer.popover({
@@ -235,7 +236,7 @@ function setupLayerPopover(id) {
 
 		$layer.on('shown.bs.popover', function() {
 			// setup tooltip of keys
-			$('.popover li.key').tooltip({
+			$layer.parent().find('li.key').tooltip('destroy').tooltip({
 				trigger: 'hover',
 				placement: 'bottom',
 				html: true,

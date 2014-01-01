@@ -273,6 +273,7 @@ function TKG() {
 			if (_simple_mode) {
 				layer_2 = _parseRawString(raw_string);
 			}
+			/*
 			if (!_.isEmpty(layer["error"])) {
 				_layers[layer_number] = layer;
 				if (_simple_mode) {
@@ -280,6 +281,7 @@ function TKG() {
 				}
 				return _ERROR;
 			}
+			*/
 
 			// parse keycode from label
 			layer = _parseKeycode(layer, "top", "bottom");
@@ -520,8 +522,8 @@ function TKG() {
 
 		// check keys property
 		if (!layer["keys"] || !_.isArray(layer["keys"])) {
-			var message = "Invalid key data";
-			_raiseError(error, "general", message, message, layer["keys"]);
+			//var message = "Invalid key data";
+			//_raiseError(error, "general", message, message, layer["keys"]);
 			return layer;
 		}
 		
