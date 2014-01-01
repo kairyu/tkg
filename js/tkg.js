@@ -275,6 +275,9 @@ function TKG() {
 			}
 			if (!_.isEmpty(layer["error"])) {
 				_layers[layer_number] = layer;
+				if (_simple_mode) {
+					_layers[layer_number + 1] = layer_2;
+				}
 				return _ERROR;
 			}
 
@@ -1044,17 +1047,39 @@ function TKG() {
 	}
 
 	var _getError = function(layer_number) {
+		layer_number = Number(layer_number);
 		if (layer_number > _max_layers) { return false; }
-		return _layers[layer_number]["error"] || {};
+		if (_simple_mode) {
+			return [ _layers[layer_number]["error"] || {},
+				_layers[layer_number + 1]["error"] || {} ];
+		}
+		else {
+			return _layers[layer_number]["error"] || {};
+		}
 	}
 
 	var _getWarning = function(layer_number) {
+		layer_number = Number(layer_number);
 		if (layer_number > _max_layers) { return false; }
-		return _layers[layer_number]["warn"] || {};
+		if (_simple_mode) {
+			return [ _layers[layer_number]["warn"] || {},
+				_layers[layer_number + 1]["warn"] || {} ];
+		}
+		else {
+			return _layers[layer_number]["warn"] || {};
+		}
 	}
 
 	var _getInfo = function(layer_number) {
+		layer_number = Number(layer_number);
 		if (layer_number > _max_layers) { return false; }
+		if (_simple_mode) {
+			return [ _layers[layer_number]["info"] || {},
+				_layers[layer_number + 1]["info"] || {} ];
+		}
+		else {
+			return _layers[layer_number]["info"] || {};
+		}
 		return _layers[layer_number]["info"] || {};
 	}
 

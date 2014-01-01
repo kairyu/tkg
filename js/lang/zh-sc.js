@@ -24,6 +24,8 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Download':'下载',
 	'file':'文件',
 	// Layer popover
+	'Normal Layer':'通常层',
+	'Fn Layer':'Fn 层',
 	'ERROR':'错误',
 	'General':'通常',
 	'Invalid raw data':'无效的 Raw Data',

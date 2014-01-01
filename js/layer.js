@@ -179,21 +179,50 @@ function setupLayerPopover(id) {
 	var error = $layer.data('error');
 	var warning = $layer.data('warning');
 	var info = $layer.data('info');
-	var top_prop = "top";
-	var bottom_prop = "bottom";
+	var simple_mode = (id == "composite-layer");
+	var top_prop = [ "top", "side_print" ];
+	var bottom_prop = [ "bottom", "side_print_secondary" ];
 	var $content = $('<div>');
-	if (error && !_.isEmpty(error)) {
-		$content.append(appendLayerError(error, top_prop, bottom_prop));
-		has_popover = true;
+
+	if (simple_mode) {
+		var header = [ "Normal Layer", "Fn Layer" ];
+		for (var i = 0; i < 2; i++) {
+			has_popover = false;
+			var $sub_layer = $('<div>').append(
+				$('<h4>').attr({ "class": "", "lang": "en" }).text(header[i])
+			);
+			if (error[i] && !_.isEmpty(error[i])) {
+				$sub_layer.append(appendLayerError(error[i], top_prop[i], bottom_prop[i]));
+				has_popover = true;
+			}
+			if (warning[i] && !_.isEmpty(warning[i])) {
+				$sub_layer.append(appendLayerWarning(warning[i], top_prop[i], bottom_prop[i]));
+				has_popover = true;
+			}
+			if (info[i] && !_.isEmpty(info[i])) {
+				$sub_layer.append(appendLayerInfo(info[i], top_prop[i], bottom_prop[i]));
+				has_popover = true;
+			}
+			if (has_popover) {
+				$content.append($sub_layer);
+			}
+		}
 	}
-	if (warning && !_.isEmpty(warning)) {
-		$content.append(appendLayerWarning(warning, top_prop, bottom_prop));
-		has_popover = true;
+	else {
+		if (error && !_.isEmpty(error)) {
+			$content.append(appendLayerError(error, top_prop[0], bottom_prop[0]));
+			has_popover = true;
+		}
+		if (warning && !_.isEmpty(warning)) {
+			$content.append(appendLayerWarning(warning, top_prop[0], bottom_prop[0]));
+			has_popover = true;
+		}
+		if (info && !_.isEmpty(info)) {
+			$content.append(appendLayerInfo(info, top_prop[0], bottom_prop[0]));
+			has_popover = true;
+		}
 	}
-	if (info && !_.isEmpty(info)) {
-		$content.append(appendLayerInfo(info, top_prop, bottom_prop));
-		has_popover = true;
-	}
+
 	$layer.popover('destroy');
 	if (has_popover) {
 		// setup popover
@@ -301,7 +330,7 @@ function appendLayerInfo(info, top_prop, bottom_prop) {
 					$('<h5>').attr({ "class": "text-info", "lang": "en" }).text("Solved conflict"),
 					$('<div>').attr({ "class": "solved-conflicit" }).append(makeKeyList(keys_for_popover, function(key) {
 						return key["description"];
-					}))
+					}, top_prop, bottom_prop))
 				);
 				break;
 		}

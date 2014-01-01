@@ -28,6 +28,8 @@ jquery_lang_js.prototype.lang.jp = {
 	'Max Layers':'最大レイヤー数',
 	'Max Fns':'最大Fnキー数',
 	// Layer popover
+	'Normal Layer':'ノーマルレイヤー',
+	'Fn Layer':'Fn レイヤー',
 	'ERROR':'エラー',
 	'General':'全般',
 	'Invalid raw data':'無効な Raw Data',
