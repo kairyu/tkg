@@ -77,6 +77,7 @@ function appendFnParams(id) {
 	if (fn["param"]) {
 		var param = fn["param"];
 		var args = fn["args"];
+		var lr;
 		var $params = $();
 		for (var i = 0; i < param.length; i++) {
 			var arg = args[i];
@@ -101,18 +102,19 @@ function appendFnParams(id) {
 					));
 					break;
 				case "lr":
+					lr = arg;
 					continue;
 				case "mods":
 					$params = $params.add($('<div>').attr({ "class": "fn-param fn-param-mods" }).append(
 						$('<div>').attr({ "class": "input-group btn-group" }).append(
 							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("modifier")
 						).append(
-							makeSelect({ "id": id + "-param-lr", "class": "btn" }, tkg.getFnOptions("lr"), arg)
+							makeSelect({ "id": id + "-param-lr", "class": "btn" }, tkg.getFnOptions("lr"), lr)
 						).append(
 							makeSelect({ "id": id + "-param-mods", "class": "btn", "multiple": "multiple" },
-								tkg.getFnOptions("mods"),
+								tkg.getFnOptions("mod"),
 								arg,
-								function(value, current) { return Boolean(Number(current) & Number(value)); }
+								function(value, current) { return _.indexOf(current, value) != -1; }
 							)
 						)
 					));
@@ -136,8 +138,8 @@ function appendFnParams(id) {
 				var $selected = $(options[0]);
 				return $selected.attr('title');
 			},
-			onChange: function(element, checked) {
-				$row.data('layer', Number($(element).val()));
+			onChange: function(option, checked) {
+				$row.data('layer', $(option).val());
 				onFnParamsChange(id);
 			}
 		});
@@ -147,8 +149,8 @@ function appendFnParams(id) {
 				var $selected = $(options[0]);
 				return $selected.attr('title');
 			},
-			onChange: function(element, checked) {
-				$row.data('on', Number($(element).val()));
+			onChange: function(option, checked) {
+				$row.data('on', $(option).val());
 				onFnParamsChange(id);
 			}
 		});
@@ -158,8 +160,8 @@ function appendFnParams(id) {
 				var $selected = $(options[0]);
 				return $selected.attr('title');
 			},
-			onChange: function(element, checked) {
-				$row.data('lr', Number($(element).val()));
+			onChange: function(option, checked) {
+				$row.data('lr', $(option).val());
 				onFnParamsChange(id);
 			}
 		});
@@ -184,13 +186,11 @@ function appendFnParams(id) {
 			afterChange: function() {
 				window.lang.run();
 			},
-			onChange: function(element, checked) {
-				var value = Number($(element).val());
-				if (!checked) {
-					value = -value;
-				}
-				var mods = $row.data('mods');
-				mods += value;
+			onChange: function(option, checked) {
+				var mods = [];
+				this.$select.find('option:selected').each(function() {
+					mods.push($(this).val());
+				});
 				$row.data('mods', mods);
 				onFnParamsChange(id);
 			}
@@ -202,8 +202,8 @@ function appendFnParams(id) {
 				var $selected = $(options[0]);
 				return $selected.attr('title');
 			},
-			onChange: function(element, checked) {
-				$row.data('key', Number($(element).val()));
+			onChange: function(option, checked) {
+				$row.data('key', $(option).val());
 				onFnParamsChange(id);
 			}
 		});
@@ -214,6 +214,7 @@ function appendFnParams(id) {
 function onFnParamsChange(id) {
 	window.lang.run();
 	var $row = $('#fn-wrapper #' + id);
+	console.log($row.data());
 	var index = $row.data('index');
 	var action = $row.data('action');
 	var fn = tkg.getFns(index);

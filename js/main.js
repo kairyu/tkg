@@ -10,7 +10,7 @@ $(function() {
 	showNotification();
 
 	tkg.setKeycodeMap(keycode_map);
-	tkg.setActionMap(action_map);
+	tkg.setFnMaps(action_map, lr_map, mod_map, on_map);
 	tkg.setSimpleMode(_simple_mode);
 
 	$('#keyboard-sel').multiselect({

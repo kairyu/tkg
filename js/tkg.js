@@ -10,6 +10,9 @@ function TKG() {
 	var _keycode_map = {};
 	var _keycode_map_reversed = {};
 	var _action_map = {};
+	var _lr_map = {};
+	var _mod_map = {};
+	var _on_map = {};
 	var _fn_options = {}
 	var _action_options = [];
 	var _max_layers = 0;
@@ -39,17 +42,26 @@ function TKG() {
 		_keycode_map_reversed = _generateReversedKeycodeMap(_keycode_map);
 		_consoleInfo("keycode_map_reversed:");
 		_consoleInfo(_keycode_map_reversed);
-		_fn_options["lr"] = _generateLrOptions();
-		_fn_options["mods"] = _generateModsOptions();
 		_fn_options["key"] = _generateKeyOptions(_keycode_map);
 	}
 
-	var _setActionMap = function(action_map) {
+	var _setFnMaps = function(action_map, lr_map, mod_map, on_map) {
 		_action_map = action_map;
+		_lr_map = lr_map;
+		_mod_map = mod_map;
+		_on_map = on_map;
 		_consoleInfo("action_map:");
 		_consoleInfo(_action_map);
+		_consoleInfo("lr_map:");
+		_consoleInfo(_lr_map);
+		_consoleInfo("mod_map:");
+		_consoleInfo(_mod_map);
+		_consoleInfo("on_map:");
+		_consoleInfo(_on_map);
 		_fn_options["action"] = _generateActionOptions(_action_map);
-		_fn_options["on"] = _generateOnOptions();
+		_fn_options["lr"] = _generateLrOptions(_lr_map);
+		_fn_options["mod"] = _generateModOptions(_mod_map);
+		_fn_options["on"] = _generateOnOptions(_on_map);
 	}
 
 	var _init = function(object) {
@@ -144,58 +156,79 @@ function TKG() {
 	}
 
 	var _generateActionOptions = function(action_map) {
-		var action_options = {};
+		var options = {};
 		for (var symbol in action_map) {
 			var action = action_map[symbol];
 			var group = action["group"];
 			var name = action["name"];
 			var description = action["description"];
-			if (action_options[group]) {
-				action_options[group].push({
+			if (options[group]) {
+				options[group].push({
 					"value": symbol,
 					"text": name,
 					"title": description
 				});
 			}
 			else {
-				action_options[group] = [{
+				options[group] = [{
 					"value": symbol,
 					"text": name,
 					"title": description
 				}];
 			}
 		}
-		return action_options;
+		return options;
 	}
 
 	var _generateLayerOptions = function(max_layers) {
-		var layer_options = [];
+		var options = [];
 		for (var i = 0; i < max_layers; i++) {
-			layer_options.push({
+			options.push({
 				"value": i,
 				"text": i,
 				"title": i
 			});
 		}
-		return layer_options;
+		return options;
 	}
 
-	var _generateOnOptions = function() {
-		return [ { "value": 1, "text": "Press", "title": "On pressing key" },
-			{ "value": 2, "text": "Release", "title": "On releasing key" },
-			{ "value": 3, "text": "Both", "title": "On both pressing and releasing" } ];
+	var _generateOnOptions = function(on_map) {
+		var options = [];
+		for (var symbol in on_map) {
+			var on = on_map[symbol];
+			options.push({
+				"value": symbol,
+				"text": on["name"],
+				"title": on["description"]
+			});
+		}
+		return options;
 	}
 
-	var _generateLrOptions = function() {
-		return [ { "value": 0, "text": "Left", "title": "Left" },
-			{ "value": 1, "text": "Right", "title": "Right" } ];
+	var _generateLrOptions = function(lr_map) {
+		var options = [];
+		for (var symbol in lr_map) {
+			var lr = lr_map[symbol];
+			options.push({
+				"value": symbol,
+				"text": lr["name"],
+				"title": lr["description"]
+			});
+		}
+		return options;
 	}
 
-	var _generateModsOptions = function() {
-		return [ { "value": 1, "text": "Ctrl", "title": "Ctrl" },
-			{ "value": 2, "text": "Shift", "title": "Shift" },
-			{ "value": 4, "text": "Alt", "title": "Alt" },
-			{ "value": 8, "text": "Win/Command/Meta", "title": "GUI" } ];
+	var _generateModOptions = function(mod_map) {
+		var options = [];
+		for (var symbol in mod_map) {
+			var mod = mod_map[symbol];
+			options.push({
+				"value": symbol,
+				"text": mod["description"],
+				"title": mod["name"]
+			});
+		}
+		return options;
 	}
 
 	var _generateKeyOptions = function(keycode_map) {
@@ -205,7 +238,7 @@ function TKG() {
 			var code = parseInt(key["keycode"], 16);
 			if (code == 0 || (code >= parseInt("0x04", 16) && code <= parseInt("0x65", 16))) {
 				key_options.push({
-					"value": code,
+					"value": symbol,
 					"text": key["name"],
 					"title": key["description"]
 				});
@@ -1135,6 +1168,8 @@ function TKG() {
 
 	var _setFns = function(index, object) {
 		var fn = _fns[index];
+		_consoleInfo("Set Fn" + index + ":");
+		_consoleInfo(object);
 		if (object["action"]) {
 			var symbol = object["action"];
 			if (fn["action"] == symbol && !object["args"]) {
@@ -1158,6 +1193,8 @@ function TKG() {
 				}
 			}
 		}
+		_fn_actions_hex = _generateFnActionsHex(_fns);
+		_fn_actions_symbol = _generateFnActionsSymbol(_fns);
 		return fn;
 	}
 
@@ -1194,7 +1231,7 @@ function TKG() {
 	this.INFO = _INFO;
 	this.init = _init;
 	this.setKeycodeMap = _setKeycodeMap;
-	this.setActionMap = _setActionMap;
+	this.setFnMaps = _setFnMaps;
 	this.setSimpleMode = _setSimpleMode;
 	this.parseLayer = _parseLayer;
 	this.getError = _getError;

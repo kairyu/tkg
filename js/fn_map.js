@@ -16,40 +16,40 @@ var action_map = {
 		"name": "Normal key",
 		"description": "Send key",
 		"code": function(key) {
-			return "0x00" + dechex(key, 2);
+			return "0x00" + keyCode(key);
 		},
 		"param": [ "key" ],
-		"default": [ 0 ]
+		"default": [ "KC_NO" ]
 	},
 	"ACTION_MODS": {
 		"group": "Key action",
 		"name": "Modifier key",
 		"description": "Send modifier",
 		"code": function(lr, mods) {
-			if (lr) {
-				return "0x01" + dechex(mods & 0xF);
+			if (lrCode(lr)) {
+				return "0x01" + dechex(modsCode(mods) & 0xF);
 			}
 			else {
-				return "0x00" + dechex(mods & 0xF);
+				return "0x00" + dechex(modsCode(mods) & 0xF);
 			}
 		},
 		"param": [ "lr", "mods" ],
-		"default": [ 0, 0 ]
+		"default": [ "LR_LEFT", [] ]
 	},
 	"ACTION_MODS_KEY": {
 		"group": "Key action",
 		"name": "Modified key",
 		"description": "Send modifier and key",
 		"code": function(lr, mods, key) {
-			if (lr) {
-				return "0x01" + dechex(mods & 0xF) + dechex(key, 2);
+			if (lrCode(lr)) {
+				return "0x01" + dechex(modsCode(mods) & 0xF) + keyCode(key);
 			}
 			else {
-				return "0x00" + dechex(mods & 0xF) + dechex(key, 2);
+				return "0x00" + dechex(modsCode(mods) & 0xF) + keyCode(key);
 			}
 		},
 		"param": [ "lr", "mods", "key" ],
-		"default": [ 0, 0, 0 ]
+		"default": [ "LR_LEFT", [], "KC_NO" ]
 	},
 	"ACTION_DEFAULT_LAYER_SET": {
 		"group": "Layer action",
@@ -72,11 +72,11 @@ var action_map = {
 		"description": "Clear state of all layers",
 		"code": function(on) {
 			if (validOn(on)) {
-				return "0x8" + on + "00";
+				return "0x8" + onCode(on) + "00";
 			}
 		},
 		"param": [ "on" ],
-		"default": [ 1 ]
+		"default": [ "ON_RELEASE" ]
 	},
 	"ACTION_LAYER_MOMENTARY": {
 		"group": "Layer action",
@@ -118,14 +118,14 @@ var action_map = {
 		"description": "Invert current state of layer",
 		"code": function(layer, on) {
 			if (validLayer(layer) && validOn(on)) {
-				return "0x8" + dechex(8 + on) + dechex((layer / 4) << 1) + dechex(1 << (layer % 4));
+				return "0x8" + dechex(8 + onCode(on)) + dechex((layer / 4) << 1) + dechex(1 << (layer % 4));
 			}
 			else {
 				return "";
 			}
 		},
 		"param": [ "layer", "on" ],
-		"default": [ 1, 1 ]
+		"default": [ 1, "ON_PRESS" ]
 	},
 	"ACTION_LAYER_ON": {
 		"group": "Layer action",
@@ -133,14 +133,14 @@ var action_map = {
 		"description": "Turn layer on",
 		"code": function(layer, on) {
 			if (validLayer(layer) && validOn(on)) {
-				return "0x8" + dechex(4 + on) + dechex((layer / 4) << 1) + dechex(1 << (layer % 4));
+				return "0x8" + dechex(4 + onCode(on)) + dechex((layer / 4) << 1) + dechex(1 << (layer % 4));
 			}
 			else {
 				return "";
 			}
 		},
 		"param": [ "layer", "on" ],
-		"default": [ 1, 2 ]
+		"default": [ 1, "ON_RELEASE" ]
 	},
 	"ACTION_LAYER_OFF": {
 		"group": "Layer action",
@@ -148,29 +148,29 @@ var action_map = {
 		"description": "Turn layer off",
 		"code": function(layer, on) {
 			if (validLayer(layer) && validOn(on)) {
-				return "0x8" + dechex(0 + on) + dechex((layer / 4) << 1) + dechex(15 - (1 << (layer % 4)));
+				return "0x8" + dechex(0 + onCode(on)) + dechex((layer / 4) << 1) + dechex(15 - (1 << (layer % 4)));
 			}
 			else {
 				return "";
 			}
 		},
 		"param": [ "layer", "on" ],
-		"default": [ 1, 2 ]
+		"default": [ 1, "ON_RELEASE" ]
 	},
 	"ACTION_LAYER_SET": {
 		"group": "Layer action",
 		"name": "Set",
 		"description": "Turn on layer only",
-		"code": function (layer) {
-			if (validLayer(layer)) {
-				return "0x8" + dechex(12 + on) + dechex((layer / 4) << 1) + dechex(1 << (layer % 4));
+		"code": function (layer, on) {
+			if (validLayer(layer) && validOn(on)) {
+				return "0x8" + dechex(12 + onCode(on)) + dechex((layer / 4) << 1) + dechex(1 << (layer % 4));
 			}
 			else {
 				return "";
 			}
 		},
-		"param": [ "layer" ],
-		"default": [ 1 ]
+		"param": [ "layer", "on" ],
+		"default": [ 1, "ON_RELEASE" ]
 	},
 	"ACTION_LAYER_ON_OFF": {
 		"group": "Layer advanced action",
@@ -255,6 +255,26 @@ var action_map = {
 	}
 }
 
+function keyCode(key) {
+	return keycode_map[key]["code"].slice(2);
+}
+
+function modsCode(mods) {
+	var code = 0;
+	for (var i = 0; i < mods.length; i++) {
+		code |= mod_map[mods[i]]["code"];
+	}
+	return code;
+}
+
+function lrCode(lr) {
+	return lr_map[lr]["code"];
+}
+
+function onCode(on) {
+	return on_map[on]["code"];
+}
+
 function dechex(dec, pad) {
 	var hex = Number(dec).toString(16).toUpperCase();
 	pad = typeof(pad) === "undefined" || pad == null ? pad = 1 : pad;
@@ -269,5 +289,59 @@ function validLayer(layer) {
 }
 
 function validOn(on) {
-	return (on >= 1 && on <= 3);
+	return (onCode(on) >= 1 && onCode(on) <= 3);
+}
+
+var lr_map = {
+	"LR_LEFT": {
+		"name": "Left",
+		"description": "Left",
+		"code": 0
+	},
+	"LR_RIGHT": {
+		"name": "Right",
+		"description": "Right",
+		"code": 1
+	}
+}
+
+var mod_map = {
+	"MOD_CTRL": {
+		"name": "Ctrl",
+		"description": "Ctrl",
+		"code": 1
+	},
+	"MOD_ALT": {
+		"name": "Alt",
+		"description": "Alt",
+		"code": 2
+	},
+	"MOD_SHIFT": {
+		"name": "Shift",
+		"description": "Shift",
+		"code": 4
+	},
+	"MOD_GUI": {
+		"name": "GUI",
+		"description": "Win/Command/Meta",
+		"code": 8
+	}
+}
+
+var on_map = {
+	"ON_PRESS": {
+		"name": "Press",
+		"description": "On pressing key",
+		"code": 1
+	},
+	"ON_RELEASE": {
+		"name": "Release",
+		"description": "On releasing key",
+		"code": 2
+	},
+	"ON_BOTH": {
+		"name": "Both",
+		"description": "On both pressing and releasing",
+		"code": 3
+	}
 }
