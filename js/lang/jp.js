@@ -37,6 +37,7 @@ jquery_lang_js.prototype.lang.jp = {
 	'No matching key':'適合なキーが見つからない',
 	'Position mismatch':'不適合な位置',
 	'WARNING':'警告',
+	'Secondary label ignored':'セカンダリーラベルが無視された',
 	'Invalid Fn key':'無効な Fn キー',
 	'INFO':'情報',
 	'Solved conflict':'解決された競合',

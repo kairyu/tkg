@@ -294,6 +294,15 @@ function appendLayerWarning(warning, top_prop, bottom_prop) {
 	var $content = $('<h4>').attr({ "class": "text-warning", "lang": "en" }).text("WARNING");
 	for (var type in warning) {
 		switch (type) {
+			case "label_2_ignored":
+				var keys = warning[type];
+				$content.append(
+					$('<h5>').attr({ "class": "text-warning", "lang": "en" }).text("Secondary label ignored"),
+					$('<div>').attr({ "class": "label-2-ignored" }).append(makeKeyList(keys, function(key) {
+						return "x: " + key["x"] + "<br>" + "y: " + key["y"];
+					}, top_prop, bottom_prop))
+				);
+				break;
 			case "fn_out_of_bounds":
 				var keys = warning[type];
 				$content.append(

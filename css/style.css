@@ -92,17 +92,17 @@ body {
 .layer .popover {
 	max-width: 400px;
 }
-
-.popover .general {
-	white-space: nowrap;
-}
 .popover ul {
 	list-style-type: none;
-	padding-left: 0;
 	width: 360px;
+	overflow: auto;
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
 }
 .popover li.key {
-	display: inline-block;
+	display: block;
+	float: left;
 	min-width: 40px;
 	height: 40px;
 	padding: 4px;
@@ -112,6 +112,7 @@ body {
 	-webkit-border-radius: 3px 3px 3px 3px;
 	border-radius: 3px 3px 3px 3px;
 	font-size: 0.8em;
+	text-align: left;
 	vertical-align: top;
 }
 .popover li.key:hover {
@@ -123,6 +124,12 @@ body {
 .popover .tooltip-inner {
 	text-align: left;
 }
+.popover .general {
+	white-space: nowrap;
+}
 .popover .unknown-label .top-label {
+	color: #b94a48;
+}
+.popover .label-2-ignored .bottom-label {
 	color: #b94a48;
 }

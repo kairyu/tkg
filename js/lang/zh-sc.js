@@ -33,6 +33,7 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'No matching key':'没有匹配的按键',
 	'Position mismatch':'位置不匹配',
 	'WARNING':'警告',
+	'Secondary label ignored':'附标签被忽略',
 	'Invalid Fn key':'无效的 Fn 键',
 	'INFO':'提示',
 	'Solved conflict':'已解决的冲突',

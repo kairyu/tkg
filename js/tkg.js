@@ -292,6 +292,12 @@ function TKG() {
 				_consoleInfo("layer_2:");
 				_consoleInfo(layer_2);
 			}
+
+			// check warning
+			layer = _scanWarn(layer, "top", "bottom");
+			if (_simple_mode) {
+				layer_2 = _scanWarn(layer_2, "side_print", "side_print_secondary");
+			}
 		}
 		else {
 			// clear when raw string is empty
@@ -737,6 +743,39 @@ function TKG() {
 			_consoleError("Unknown label type");
 			return false;
 		}
+	}
+
+	var _scanWarn = function(layer, label_property, label_property_2) {
+		var keys = layer["keys"] || [];
+		var warn = layer["warn"];
+		for (var i = 0; i < keys.length; i++) {
+			var key = keys[i];
+			if (key["symbol"]) {
+				var symbol = key["symbol"];
+				var target = _keycode_map[symbol];
+				if (key["label"][label_property_2]) {
+					var label = key["label"][label_property];
+					var label_2 = key["label"][label_property_2];
+					var target_labels = target["label"];
+					if (_.isArray(target_labels[0])) {
+						for (var j = 0; j < target_labels.length; j++) {
+							if (_.indexOf(target_labels[j], label) != -1) {
+								if (!target["label_2"][j]) {
+									_raiseWarn(warn, "label_2_ignored", key, label_2, key);
+								}
+							}
+						}
+					}
+					else if (_.isString(target_labels[0])) {
+						if (!target["label_2"]) {
+							_raiseWarn(warn, "label_2_ignored", key, label_2, key);
+						}
+					}
+				}
+			}
+		}
+
+		return layer;
 	}
 
 	var _parseFns = function(layer) {
