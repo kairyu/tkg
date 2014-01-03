@@ -13,6 +13,7 @@ $keymaps = array();
 $fn_actions = array();
 $eeprom_size = 0;
 $file = '';
+$header = '';
 $filename = '';
 
 // check get
@@ -105,6 +106,9 @@ if ($filetype == 'c') {
 		// has cache
 		$file = $cache;
 	}
+	// prepend header
+	$header = generate_c_header();
+	$file = $header . $file;
 }
 
 // download
