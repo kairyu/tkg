@@ -282,7 +282,6 @@ function generate_keymaps_content($macro_name, $matrix_rows, $matrix_cols, $matr
 
 function generate_fn_actions_content($fn_actions) {
 	$content = "";
-	var_dump($fn_actions);
 	foreach ($fn_actions as $index => $fn) {
 		$action = array_shift($fn);
 		$params = $fn;
