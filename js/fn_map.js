@@ -256,7 +256,7 @@ var action_map = {
 }
 
 function keyCode(key) {
-	return keycode_map[key]["code"].slice(2);
+	return keycode_map[key]["keycode"].slice(2);
 }
 
 function modsCode(mods) {

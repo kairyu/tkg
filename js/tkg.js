@@ -950,46 +950,48 @@ function TKG() {
 		return keymap;
 	}
 
-	var _generateFnActionsHex = function(fns) {
-		fn_actions = [];
-		for (var i = 0; i < _max_fns; i++) {
+	var _generateFnActionsHex = function(fn) {
+		if (fn["action"]) {
 			var hex = "0x0000";
-			if (fns[i]) {
-				var fn = fns[i];
-				if (fn["action"]) {
-					var action = fn["action"];
-					if (_action_map[action]) {
-						var code = _action_map[action]["code"];
-						if (_.isFunction(code)) {
-							hex = code.apply(code, fn["args"]);
-						}
-						else {
-							hex = code;
-						}
-					}
+			var action = fn["action"];
+			if (_action_map[action]) {
+				var code = _action_map[action]["code"];
+				if (_.isFunction(code)) {
+					hex = code.apply(code, fn["args"]);
+				}
+				else {
+					hex = code;
 				}
 			}
-			fn_actions[i] = parseInt(hex, 16);
+			return parseInt(hex, 16);
 		}
-		return fn_actions;
+		else {
+			var fn_actions = [];
+			for (var i = 0; i < _max_fns; i++) {
+				if (fn[i]) {
+					fn_actions[i] = _generateFnActionsHex(fn[i]);
+				}
+			}
+			return fn_actions;
+		}
 	}
 
-	var _generateFnActionsSymbol = function(fns) {
-		fn_actions = [];
-		for (var i in fns) {
-			if (fns[i]) {
-				var fn = fns[i];
-				if (fn["action"]) {
-					var action = fn["action"];
-					var array = [ action ];
-					if (fn["param"]) {
-						array = array.concat(fn["param"]);
-					}
-					fn_actions[i] = array;
-				}
+	var _generateFnActionsSymbol = function(fn, index) {
+		if (fn["action"]) {
+			var action = fn["action"];
+			var array = [ action ];
+			if (fn["args"]) {
+				array = array.concat(fn["args"]);
 			}
+			return array;
 		}
-		return fn_actions;
+		else {
+			var fn_actions = [];
+			for (var i in fn) {
+				fn_actions[i] = _generateFnActionsSymbol(fn[i]);
+			}
+			return fn_actions;
+		}
 	}
 
 	var _parseLabelString = function(label_string) {
@@ -1192,9 +1194,9 @@ function TKG() {
 					delete fn["args"];
 				}
 			}
+			_fn_actions_hex[index] = _generateFnActionsHex(fn);
+			_fn_actions_symbol[index] = _generateFnActionsSymbol(fn);
 		}
-		_fn_actions_hex = _generateFnActionsHex(_fns);
-		_fn_actions_symbol = _generateFnActionsSymbol(_fns);
 		return fn;
 	}
 

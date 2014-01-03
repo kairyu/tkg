@@ -214,7 +214,6 @@ function appendFnParams(id) {
 function onFnParamsChange(id) {
 	window.lang.run();
 	var $row = $('#fn-wrapper #' + id);
-	console.log($row.data());
 	var index = $row.data('index');
 	var action = $row.data('action');
 	var fn = tkg.getFns(index);

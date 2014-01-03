@@ -83,7 +83,8 @@ const uint16_t fn_actions[] PROGMEM = {
 #endif
 
 EOF;
-	$file .= "\n};";
+	$file .= generate_fn_actions_content($fn_actions);
+	$file .= "};";
 	return $file;
 }
 
@@ -274,6 +275,42 @@ function generate_keymaps_content($macro_name, $matrix_rows, $matrix_cols, $matr
 				return substr($val, 3);
 			}, $array));
 		}, $matrix), $matrix_cols * 5 - 1);
+		$content .= "),\n";
+	}
+	return $content;
+}
+
+function generate_fn_actions_content($fn_actions) {
+	$content = "";
+	var_dump($fn_actions);
+	foreach ($fn_actions as $index => $fn) {
+		$action = array_shift($fn);
+		$params = $fn;
+		$lr = "L";
+		$content .= "    [$index] = $action(";
+		$content .= join_with_func_glur(function($current, $next) {
+			if ($current == "" || is_null($next)) {
+				return "";
+			}
+			else {
+				return ", ";
+			}
+		}, array_map(function($val) use (&$lr) {
+			if ($val == "LR_LEFT") {
+				$lr = "L";
+				return "";
+			}
+			else if ($val == "LR_RIGHT") {
+				$lr = "R";
+				return "";
+			}
+			else if (is_array($val)) {
+				return join(" | ", array_map(function($val) use ($lr) {
+					return substr($val, 0, 4) . $lr . substr($val, 4);
+				}, $val));
+			}
+			return $val;
+		}, $params));
 		$content .= "),\n";
 	}
 	return $content;

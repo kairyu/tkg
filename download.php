@@ -97,6 +97,7 @@ if ($filetype == 'c') {
 	)));
 	// check cache
 	$cache = check_cache('c', $hash);
+	$cache = null; //debug
 	if (is_null($cache)) {
 		// no cache
 		$file = generate_c_file($matrix_rows, $matrix_cols, $max_layers, $max_fns, $keymaps, $fn_actions);
