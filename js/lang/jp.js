@@ -78,5 +78,17 @@ jquery_lang_js.prototype.lang.jp = {
 	'Left':'左',
 	'Right':'右',
 	// Fn key
-	'key':'一般キー'
+	'key':'一般キー',
+	// Help
+	// About
+	'About TMK Keymap Generator':'TMK Keymap Generator について',
+	'TMK Keymap Generator, aka TKG, is a generator that can convert layout created by <a id="a-kle">keyboard-layout-editor</a> into an available keymap for <a id="a-tmk">TMK Keyboard Firmware Collection</a>.':'TMK Keymap Generator（略称してTKG）とは、<a id="a-kle">keyboard-layout-editor</a>で作成されたキーボード配列を<a id="a-tmk">TMKキーボードファームウェアコレクション</a>用のキーマップに変換できる一種のジェネレーターです。',
+	'You can make a keyboard layout by <a id="a-kle">keyboard-layout-editor</a> as you like, copy the Raw Data and paste them into TKG, set some Fn keys as you want, and click Download button then you will get the configurations what can works with your <a id="a-tmk">TMK Firmware</a> inside keyboard. It is quite easy to use.':'<a id="a-kle">keyboard-layout-editor</a>で好きなようにキーボード配列を作って、Raw DataをコピーしTKGに貼り付け、希望通りFnキーを設定し、あとはダウンロードボタンをクリックするだけで、<a id="a-tmk">TMKファームウェア</a>が搭載されたキーボード用の構成ファイルは出来上がります。簡単でしょう。',
+	'TKG is an open source software published under <a href="http://en.wikipedia.org/wiki/WTFPL">WTFPL</a>. You can find the codes on <a id="a-tkg">GitHub</a>.':'TKGは<a href="http://ja.wikipedia.org/wiki/WTFPL">WTFPL</a>のもとに公開されたオープンソースソフトウェアです。詳しくは<a id="a-tkg">GitHub</a>に。',
+	'Special Thanks':'感謝',
+	'<a id="a-kle-author">Ian Prest</a>, the author of <a id="a-kle">keyboard-layout-editor</a>.':'<a id="a-kle-author">Ian Prest</a>、<a id="a-kle">keyboard-layout-editor</a>の作者。',
+	'<a id="a-tmk-author">tmk</a>, the author of <a id="a-tmk">TMK Keyboard Firmware Collection</a>.':'<a id="a-tmk-author">tmk</a>、<a id="a-tmk">TMKキーボードファームウェアコレクション</a>の作者。',
+	'And also thanks to my <a id="a-wife">wife</a> and my newborn son.':'それに私の<a id="a-wife">妻</a>と生まれたばかりの息子にも感謝します。',
+	'Report Bugs':'バグ報告',
+	'If you found any bug, please contact me freely by <a id="a-mail">email</a>, or file a issue via <a id="a-issue">GitHub</a>. Any comments or requests are welcome too.':'バグを発見した場合は、気軽に私に<a id="a-mail">メール</a>などでお知らせください。或いは<a id="a-issue">GitHub</a>にてバグレポートを出しましょう。意見やリクエストなども勿論大歓迎です。',
 }

@@ -5,6 +5,15 @@ var _simple_mode = false;
 
 $(function() {
 
+	switchPage(location.hash.slice(1));
+
+	window.lang.beforeChange = function() {
+		detachLinks();
+	}
+	window.lang.afterChange = function() {
+		attachLinks();
+	}
+
 	$('.btn').button();
 
 	showNotification();
@@ -24,25 +33,8 @@ $(function() {
 	updateDownloadButtonState();
 
 	// on page change
-	$('#home').click( function() {
-		location.hash = '';
-		$('#pg-home').show();
-		$('#pg-about').hide();
-		$('#pg-help').hide();
-	});
-
-	$('#about').click( function() {
-		location.hash = 'about';
-		$('#pg-home').hide();
-		$('#pg-about').show();
-		$('#pg-help').hide();
-	});
-
-	$('#help').click( function() {
-		location.hash = 'help';
-		$('#pg-home').hide();
-		$('#pg-about').hide();
-		$('#pg-help').show();
+	$('.navbar-brand').click(function() {
+		switchPage($(this).attr('id'));
 	});
 	
 	// parse layer
@@ -104,6 +96,13 @@ $(function() {
 		$('#dl_form').submit();
 	});
 });
+
+function switchPage(id) {
+	if (id == 'home') id = '';
+	$('.page').hide();
+	$('#pg-' + (id || 'home')).show();
+	location.hash = '#' + id;
+}
 
 function initialize(name, simple_mode) {
 	var keyboard = loadKeyboard(name);
@@ -209,5 +208,36 @@ function updateDownloadButtonState() {
 	else {
 		$('.dl-btn').addClass('disabled');
 	}
+}
+
+var links = {
+	"a-kle": "http://www.keyboard-layout-editor.com",
+	"a-tmk": "https://github.com/tmk/tmk_keyboard",
+	"a-tkg": "https://github.com/kairyu/tkg",
+	"a-kle-author": "https://github.com/ijprest",
+	"a-tmk-author": "https://github.com/tmk",
+	"a-wife": "https://github.com/claireyu0328",
+	"a-mail": "mailto:kai1103@gmail.com",
+	"a-issue": "https://github.com/kairyu/tkg/issues",
+}
+
+function attachLinks() {
+	$('#pg-about a').each(function() {
+		var id = $(this).attr('id');
+		if (links[id]) {
+			$(this).attr('href', links[id]);
+			$(this).attr('target', '_blank');
+		}
+	});
+}
+
+function detachLinks() {
+	$('#pg-about a').each(function() {
+		var id = $(this).attr('id');
+		if (links[id]) {
+			$(this).removeAttr('href');
+			$(this).removeAttr('target');
+		}
+	});
 }
 

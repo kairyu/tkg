@@ -54,8 +54,14 @@ var jquery_lang_js = function () {
 jquery_lang_js.prototype.lang = {};
 jquery_lang_js.prototype.defaultLang = 'en';
 jquery_lang_js.prototype.currentLang = 'en';
+jquery_lang_js.prototype.beforeRun = function () {};
+jquery_lang_js.prototype.afterRun = function () {};
+jquery_lang_js.prototype.beforeChange = function () {};
+jquery_lang_js.prototype.afterChange = function () {};
 
 jquery_lang_js.prototype.run = function () {
+	this.beforeRun.call(this);
+
 	var langElems = $('[lang]');
 	var elemsLength = langElems.length;
 	
@@ -111,6 +117,8 @@ jquery_lang_js.prototype.run = function () {
 		else
 			this.change(this.currentLang);
 	}
+
+	this.afterRun.call(this);
 }
 
 jquery_lang_js.prototype.loadPack = function (packPath) {
@@ -118,6 +126,8 @@ jquery_lang_js.prototype.loadPack = function (packPath) {
 }
 	
 jquery_lang_js.prototype.change = function (lang) {
+	this.beforeChange.call(this);
+
 	//console.log('Changing language to ' + lang);
 	if (this.currentLang != lang) { this.update(lang); }
 	this.currentLang = lang;
@@ -258,6 +268,8 @@ jquery_lang_js.prototype.change = function (lang) {
 			}
 		});
 	}
+
+	this.afterChange.call(this);
 }
 // if text does not in language data???
 jquery_lang_js.prototype.convert = function (text, lang) {

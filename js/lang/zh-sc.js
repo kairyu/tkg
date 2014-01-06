@@ -79,5 +79,17 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Left':'左',
 	'Right':'右',
 	// Fn key
-	'key':'按键'
+	'key':'按键',
+	// Help
+	// About
+	'About TMK Keymap Generator':'关于 TMK Keymap Generator',
+	'TMK Keymap Generator, aka TKG, is a generator that can convert layout created by <a id="a-kle">keyboard-layout-editor</a> into an available keymap for <a id="a-tmk">TMK Keyboard Firmware Collection</a>.':'TMK Keymap Generator，简称TKG，是一个可以将由<a id="a-kle">keyboard-layout-editor</a>创建出的键盘布局转换为<a id="a-tmk">TMK键盘固件套装</a>可用的键表文件的生成器。',
+	'You can make a keyboard layout by <a id="a-kle">keyboard-layout-editor</a> as you like, copy the Raw Data and paste them into TKG, set some Fn keys as you want, and click Download button then you will get the configurations what can works with your <a id="a-tmk">TMK Firmware</a> inside keyboard. It is quite easy to use.':'您可以通过<a id="a-kle">keyboard-layout-editor</a>按照您的喜好创建一个键盘布局，然后复制它的Raw Data并粘贴到TKG中，接着设置您想要的Fn键，最后点击下载按钮您即可得到一份可以用于您的搭载<a id="a-tmk">TMK固件</a>的键盘的配置文件。使用起来非常简单。',
+	'TKG is an open source software published under <a href="http://en.wikipedia.org/wiki/WTFPL">WTFPL</a>. You can find the codes on <a id="a-tkg">GitHub</a>.':'TKG是一套遵循<a href="http://zh.wikipedia.org/wiki/WTFPL">WTFPL</a>许可证的开源软件。您可以在<a id="a-tkg">GitHub</a>上找到它的全部代码。',
+	'Special Thanks':'特别感谢',
+	'<a id="a-kle-author">Ian Prest</a>, the author of <a id="a-kle">keyboard-layout-editor</a>.':'<a id="a-kle-author">Ian Prest</a>，<a id="a-kle">keyboard-layout-editor</a>的作者。',
+	'<a id="a-tmk-author">tmk</a>, the author of <a id="a-tmk">TMK Keyboard Firmware Collection</a>.':'<a id="a-tmk-author">tmk</a>，<a id="a-tmk">TMK键盘固件套装</a>的作者。',
+	'And also thanks to my <a id="a-wife">wife</a> and my newborn son.':'此外还要特别感谢我的<a id="a-wife">妻子</a>和我刚出生的儿子。',
+	'Report Bugs':'报告错误',
+	'If you found any bug, please contact me freely by <a id="a-mail">email</a>, or file a issue via <a id="a-issue">GitHub</a>. Any comments or requests are welcome too.':'如果您在使用过程中发现本网站有任何问题，请毫不留情地通过<a id="a-mail">电子邮件</a>联系我，或通过<a id="a-issue">GitHub</a>提交您的问题。我也非常欢迎您提出您宝贵的建议或请求。',
 }

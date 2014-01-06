@@ -41,10 +41,10 @@
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
 						<li>
-							<a id="help" href="javascript:void(0)" lang="en">Help</a>
+							<a id="help" class="navbar-brand" href="javascript:void(0)" lang="en">Help</a>
 						</li>
 						<li>
-							<a id="about" href="javascript:void(0)" lang="en">About</a>
+							<a id="about" class="navbar-brand" href="javascript:void(0)" lang="en">About</a>
 						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
@@ -70,7 +70,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="pg-home" class="container">
+		<div id="pg-home" class="page container">
 			<form id="config-form" class="form-horizontal" role="form">
 				<div class="form-group">
 					<label for="keyboard-sel" lang="en" class="col-md-2 control-label">Keyboard</label>
@@ -104,11 +104,34 @@
 				</div>
 			</form>
 		</div>
-		<div id="pg-about" style="display:none;">
-			About
+		<div id="pg-about" class="page" style="display:none;">
+			<div class="col-md-offset-3 col-md-6">
+				<h3 lang="en">About TMK Keymap Generator</h3>
+				<p>
+					<span lang="en">TMK Keymap Generator, aka TKG, is a generator that can convert layout created by <a id="a-kle">keyboard-layout-editor</a> into an available keymap for <a id="a-tmk">TMK Keyboard Firmware Collection</a>.</span>
+				</p>
+				<p>
+					<span lang="en">You can make a keyboard layout by <a id="a-kle">keyboard-layout-editor</a> as you like, copy the Raw Data and paste them into TKG, set some Fn keys as you want, and click Download button then you will get the configurations what can works with your <a id="a-tmk">TMK Firmware</a> inside keyboard. It is quite easy to use.</span>
+				</p>
+				<p>
+				<span lang="en">TKG is an open source software published under <a href="http://en.wikipedia.org/wiki/WTFPL">WTFPL</a>. You can find the codes on <a id="a-tkg">GitHub</a>.</span>
+				</p>
+				<h4 lang="en">Special Thanks</h4>
+				<p>
+					<span lang="en"><a id="a-kle-author">Ian Prest</a>, the author of <a id="a-kle">keyboard-layout-editor</a>.</span><br/>
+					<span lang="en"><a id="a-tmk-author">tmk</a>, the author of <a id="a-tmk">TMK Keyboard Firmware Collection</a>.</span><br/>
+					<span lang="en">And also thanks to my <a id="a-wife">wife</a> and my newborn son.</span>
+				</p>
+				<h4 lang="en">Report Bugs</h4>
+				<p>
+					<span lang="en">If you found any bug, please contact me freely by <a id="a-mail">email</a>, or file a issue via <a id="a-issue">GitHub</a>. Any comments or requests are welcome too.</span>
+				</p>
+			</div>
 		</div>
-		<div id="pg-help" style="display:none;">
-			Help
+		<div id="pg-help" class="page" style="display:none;">
+			<div class="col-md-offset-2 col-md-5">
+				<h3 lang="en">Help</h3>
+			</div>
 		</div>
 	</div>
 	<div id="footer">
