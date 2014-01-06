@@ -80,6 +80,10 @@ jquery_lang_js.prototype.lang.jp = {
 	// Fn key
 	'key':'一般キー',
 	// Help
+	'Available Labels':'識別可能なラベル',
+	'Case-insensitive':'大文字・小文字を区別しない',
+	'Key':'キー',
+	'Labels':'ラベル',
 	// About
 	'About TMK Keymap Generator':'TMK Keymap Generator について',
 	'TMK Keymap Generator, aka TKG, is a generator that can convert layout created by <a id="a-kle">keyboard-layout-editor</a> into an available keymap for <a id="a-tmk">TMK Keyboard Firmware Collection</a>.':'TMK Keymap Generator（略称してTKG）とは、<a id="a-kle">keyboard-layout-editor</a>で作成されたキーボード配列を<a id="a-tmk">TMKキーボードファームウェアコレクション</a>用のキーマップに変換できる一種のジェネレーターです。',

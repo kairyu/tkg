@@ -705,10 +705,12 @@ var keycode_map = {
 		"short_name": "KC_APP"
 	},
 	"KC_POWER": {
+		"name": "Power",
 		"description": "Power",
 		"keycode": "0x66"
 	},
 	"KC_KP_EQUAL": {
+		"name": "Keypad =",
 		"description": "Keypad =",
 		"keycode": "0x67",
 		"label": [ [ "=" ], [ "p=" ] ],
@@ -716,148 +718,178 @@ var keycode_map = {
 		"short_name": "KC_PEQL"
 	},
 	"KC_F13": {
+		"name": "F13",
 		"description": "F13",
 		"keycode": "0x68",
 		"label": [ "f13" ]
 	},
 	"KC_F14": {
+		"name": "F14",
 		"description": "F14",
 		"keycode": "0x69",
 		"label": [ "f14" ]
 	},
 	"KC_F15": {
+		"name": "F15",
 		"description": "F15",
 		"keycode": "0x6A",
 		"label": [ "f15" ]
 	},
 	"KC_F16": {
+		"name": "F16",
 		"description": "F16",
 		"keycode": "0x6B",
 		"label": [ "f16" ]
 	},
 	"KC_F17": {
+		"name": "F17",
 		"description": "F17",
 		"keycode": "0x6C",
 		"label": [ "f17" ]
 	},
 	"KC_F18": {
+		"name": "F18",
 		"description": "F18",
 		"keycode": "0x6D",
 		"label": [ "f18" ]
 	},
 	"KC_F19": {
+		"name": "F19",
 		"description": "F19",
 		"keycode": "0x6E",
 		"label": [ "f19" ]
 	},
 	"KC_F20": {
+		"name": "F20",
 		"description": "F20",
 		"keycode": "0x6F",
 		"label": [ "f20" ]
 	},
 	"KC_F21": {
+		"name": "F21",
 		"description": "F21",
 		"keycode": "0x70",
 		"label": [ "f21" ]
 	},
 	"KC_F22": {
+		"name": "F22",
 		"description": "F22",
 		"keycode": "0x71",
 		"label": [ "f22" ]
 	},
 	"KC_F23": {
+		"name": "F23",
 		"description": "F23",
 		"keycode": "0x72",
 		"label": [ "f23" ]
 	},
 	"KC_F24": {
+		"name": "F24",
 		"description": "F24",
 		"keycode": "0x73",
 		"label": [ "f24" ]
 	},
 	"KC_EXECUTE": {
+		"name": "Excute",
 		"description": "Excute",
 		"keycode": "0x74",
 		"label": [ "excute" ]
 	},
 	"KC_HELP": {
+		"name": "Help",
 		"description": "Help",
 		"keycode": "0x75",
 		"label": [ "help" ]
 	},
 	"KC_MENU": {
+		"name": "Menu",
 		"description": "Menu",
 		"keycode": "0x76",
 		"label": [ "menu" ]
 	},
 	"KC_SELECT": {
-		"description": "Select,",
+		"name": "Select",
+		"description": "Select",
 		"keycode": "0x77",
 		"label": [ "select" ]
 	},
 	"KC_STOP": {
+		"name": "Stop",
 		"description": "Stop",
 		"keycode": "0x78",
 		"label": [ "stop" ]
 	},
 	"KC_AGAIN": {
+		"name": "Again",
 		"description": "Again",
 		"keycode": "0x79",
 		"label": [ "again" ]
 	},
 	"KC_UNDO": {
+		"name": "Undo",
 		"description": "Undo",
 		"keycode": "0x7A",
 		"label": [ "undo" ]
 	},
 	"KC_CUT": {
+		"name": "Cut",
 		"description": "Cut",
 		"keycode": "0x7B",
 		"label": [ "cut" ]
 	},
 	"KC_COPY": {
+		"name": "Copy",
 		"description": "Copy",
 		"keycode": "0x7C",
 		"label": [ "copy" ]
 	},
 	"KC_PASTE": {
+		"name": "Paste",
 		"description": "Paste",
 		"keycode": "0x7D",
 		"label": [ "paste" ]
 	},
 	"KC_FIND": {
+		"name": "Find",
 		"description": "Find",
 		"keycode": "0x7E",
 		"label": [ "find" ]
 	},
 	"KC__MUTE": {
+		"name": "Mute",
 		"description": "Mute",
 		"keycode": "0x7F"
 	},
 	"KC__VOLUP": {
+		"name": "Volume Up",
 		"description": "Volume Up",
 		"keycode": "0x80"
 	},
 	"KC__VOLDOWN": {
+		"name": "Volumn Down",
 		"description": "Volumn Down",
 		"keycode": "0x82"
 	},
 	"KC_LOCKING_CAPS": {
+		"name": "Locking Caps Lock",
 		"description": "Locking Caps Lock",
 		"keycode": "0x82",
 		"label": [ "locking caps lock" ],
 	},
 	"KC_LOCKING_NUM": {
+		"name": "Locking Nums Lock",
 		"description": "Locking Nums Lock",
 		"keycode": "0x83",
 		"label": [ "locking nums lock" ],
 	},
 	"KC_LOCKING_SCROLL": {
+		"name": "Locking Scroll Lock",
 		"description": "Locking Scroll Lock",
 		"keycode": "0x84",
 		"label": [ "locking scroll lock" ],
 	},
 	"KC_KP_COMMA": {
+		"name": "Keypad ,",
 		"description": "Keypad ,(Comma)",
 		"keycode": "0x85",
 		"label": [ [ "," ], [ "p," ] ],
@@ -865,167 +897,200 @@ var keycode_map = {
 		"short_name": "KC_PCMM"
 	},
 	"KC_KP_EQUAL_AS400": {
+		"name": "Keypad Equal Sign on AS/400",
 		"description": "Keypad Equal Sign on AS/400",
 		"keycode": "0x86",
-		"label": [ "equal sign on as/400" ]
 	},
 	"KC_INT1": {
+		"name": "International1",
 		"description": "International1",
 		"keycode": "0x87",
 		"label": [ "int1", "romaji", "eisu", "e/j" ],
 		"short_name": "KC_RO"
 	},
 	"KC_INT2": {
+		"name": "International2",
 		"description": "International2",
 		"keycode": "0x88",
 		"label": [ "int2", "kana" ],
 		"short_name": "KC_KANA"
 	},
 	"KC_INT3": {
+		"name": "International3",
 		"description": "International3",
 		"keycode": "0x89",
 		"label": [ "int3", "yen", "¥" ],
 		"short_name": "KC_JYEN"
 	},
 	"KC_INT4": {
+		"name": "International4",
 		"description": "International4",
 		"keycode": "0x8A",
 		"label": [ "int4", "henkan" ],
 		"short_name": "KC_HENK"
 	},
 	"KC_INT5": {
+		"name": "International5",
 		"description": "International5",
 		"keycode": "0x8B",
 		"label": [ "int5", "muhenkan" ],
 		"short_name": "KC_MHEN"
 	},
 	"KC_INT6": {
+		"name": "International6",
 		"description": "International6",
 		"keycode": "0x8C",
 		"label": [ "int6" ]
 	},
 	"KC_INT7": {
+		"name": "International7",
 		"description": "International7",
 		"keycode": "0x8D",
 		"label": [ "int7" ]
 	},
 	"KC_INT8": {
+		"name": "International8",
 		"description": "International8",
 		"keycode": "0x8E",
 		"label": [ "int8" ]
 	},
 	"KC_INT9": {
+		"name": "International9",
 		"description": "International9",
 		"keycode": "0x8F",
 		"label": [ "int9" ]
 	},
 	"KC_LANG1": {
+		"name": "LANG1",
 		"description": "LANG1",
 		"keycode": "0x90",
 		"label": [ "lang1" ]
 	},
 	"KC_LANG2": {
+		"name": "LANG2",
 		"description": "LANG2",
 		"keycode": "0x91",
 		"label": [ "lang2" ]
 	},
 	"KC_LANG3": {
+		"name": "LANG3",
 		"description": "LANG3",
 		"keycode": "0x92",
 		"label": [ "lang3" ]
 	},
 	"KC_LANG4": {
+		"name": "LANG4",
 		"description": "LANG4",
 		"keycode": "0x93",
 		"label": [ "lang4" ]
 	},
 	"KC_LANG5": {
+		"name": "LANG5",
 		"description": "LANG5",
 		"keycode": "0x94",
 		"label": [ "lang5" ]
 	},
 	"KC_LANG6": {
+		"name": "LANG6",
 		"description": "LANG6",
 		"keycode": "0x95",
 		"label": [ "lang6" ]
 	},
 	"KC_LANG7": {
+		"name": "LANG7",
 		"description": "LANG7",
 		"keycode": "0x96",
 		"label": [ "lang7" ]
 	},
 	"KC_LANG8": {
+		"name": "LANG8",
 		"description": "LANG8",
 		"keycode": "0x97",
 		"label": [ "lang8" ]
 	},
 	"KC_LANG9": {
+		"name": "LANG9",
 		"description": "LANG9",
 		"keycode": "0x98",
 		"label": [ "lang9" ]
 	},
 	"KC_ALT_ERASE": {
+		"name": "Alternate Erase",
 		"description": "Alternate Erase",
 		"keycode": "0x99"
 	},
 	"KC_SYSREQ": {
+		"name": "SysReq/Attention",
 		"description": "SysReq/Attention",
 		"keycode": "0x9A",
 	},
 	"KC_CANCEL": {
-		"description": "Cencel",
+		"name": "Cancel",
+		"description": "Cancel",
 		"keycode": "0x9B"
 	},
 	"KC_CLEAR": {
+		"name": "Clear",
 		"description": "Clear",
 		"keycode": "0x9C"
 	},
 	"KC_PRIOR": {
+		"name": "Prior",
 		"description": "Prior",
 		"keycode": "0x9D"
 	},
 	"KC_RETURN": {
+		"name": "Return",
 		"description": "Return",
 		"keycode": "0x9E"
 	},
 	"KC_SEPARATOR": {
+		"name": "Separator",
 		"description": "Separator",
 		"keycode": "0x9F"
 	},
 	"KC_OUT": {
+		"name": "Out",
 		"description": "Out",
 		"keycode": "0xA0"
 	},
 	"KC_OPER": {
+		"name": "Oper",
 		"description": "Oper",
 		"keycode": "0xA1"
 	},
 	"KC_CLEAR_AGAIN": {
+		"name": "Clear/Again",
 		"description": "Clear/Again",
 		"keycode": "0xA2"
 	},
 	"KC_CRSEL": {
+		"name": "CrSel/Props",
 		"description": "CrSel/Props",
 		"keycode": "0xA3"
 	},
 	"KC_EXSEL": {
+		"name": "ExSel",
 		"description": "ExSel",
 		"keycode": "0xA4"
 	},
 	/* System Control */
 	"KC_SYSTEM_POWER": {
+		"name": "System Power Down",
 		"description": "System Power Down",
 		"keycode": "0xA5",
 		"label": [ "power", "pow", "pwr" ],
 		"short_name": "KC_PWR"
 	},
 	"KC_SYSTEM_SLEEP": {
+		"name": "System Sleep",
 		"description": "System Sleep",
 		"keycode": "0xA6",
 		"label": [ "sleep", "slp" ],
 		"short_name": "KC_SLEP"
 	},
 	"KC_SYSTEM_WAKE": {
+		"name": "System Wake",
 		"description": "System Wake",
 		"keycode": "0xA7",
 		"label": [ "wake" ],
@@ -1033,36 +1098,42 @@ var keycode_map = {
 	},
 	/* Media Control */
 	"KC_AUDIO_MUTE": {
+		"name": "Audio Mute",
 		"description": "Audio Mute",
 		"keycode": "0xA8",
 		"label": [ "mute" ],
 		"short_name": "KC_MUTE"
 	},
 	"KC_AUDIO_VOL_UP": {
+		"name": "Audio Volume Up",
 		"description": "Audio Volume Up",
 		"keycode": "0xA9",
 		"label": [ "volume up", "volumeup", "vol up", "volup", "vol_up" ],
 		"short_name": "KC_VOLU"
 	},
 	"KC_AUDIO_VOL_DOWN": {
+		"name": "Audio Volume Down",
 		"description": "Audio Volume Down",
 		"keycode": "0xAA",
 		"label": [ "volume down", "volumedown", "vol down", "voldown", "vol dn", "voldn", "vol_dn" ],
 		"short_name": "KC_VOLD"
 	},
 	"KC_MEDIA_NEXT_TRACK": {
+		"name": "Media Next Track",
 		"description": "Media Next Track",
 		"keycode": "0xAB",
 		"label": [ "next track", "nexttrack", "next" ],
 		"short_name": "KC_MNXT"
 	},
 	"KC_MEDIA_PREV_TRACK": {
+		"name": "Media Previous Track",
 		"description": "Media Previous Track",
 		"keycode": "0xAC",
 		"label": [ "previous track", "prevtrack", "previous", "prev" ],
 		"short_name": "KC_MPRV"
 	},
 	"KC_MEDIA_STOP": {
+		"name": "Media Stop",
 		"description": "Media Stop",
 		"keycode": "0xAD",
 		"label": [ "stop" ],
@@ -1070,78 +1141,91 @@ var keycode_map = {
 		"short_name": "KC_MSTP"
 	},
 	"KC_MEDIA_PLAY_PAUSE": {
+		"name": "Media Play/Pause",
 		"description": "Media Play/Pause",
 		"keycode": "0xAE",
 		"label": [ "play" ],
 		"short_name": "KC_MPLY"
 	},
 	"KC_MEDIA_SELECT": {
+		"name": "Media Select",
 		"description": "Media Select",
 		"keycode": "0xAF",
 		"label": [ "select" ],
 		"short_name": "KC_MSEL"
 	},
 	"KC_MEDIA_EJECT": {
+		"name": "Media Eject",
 		"description": "Media Eject",
 		"keycode": "0xB0",
 		"label": [ "eject" ],
 		"short_name": "KC_EJCT"
 	},
 	"KC_MAIL": {
+		"name": "Mail",
 		"description": "Mail",
 		"keycode": "0xB1",
 		"label": [ "mail" ],
 		"short_name": "KC_MAIL"
 	},
 	"KC_CALCULATOR": {
+		"name": "Calculator",
 		"description": "Calculator",
 		"keycode": "0xB2",
 		"label": [ "calc", "cal" ],
 		"short_name": "KC_CALC"
 	},
 	"KC_MY_COMPUTER": {
+		"name": "My Computer",
 		"description": "My Computer",
 		"keycode": "0xB3",
 		"label": [ "my computer", "mycomp" ],
 		"short_name": "KC_MYCM"
 	},
 	"KC_WWW_SEARCH": {
+		"name": "WWW Search",
 		"description": "WWW Search",
 		"keycode": "0xB4",
 		"label": [ "www search", "wwwsearch", "wsearch" ],
 		"short_name": "KC_WSCH"
 	},
 	"KC_WWW_HOME": {
+		"name": "WWW Home",
 		"description": "WWW Home",
 		"keycode": "0xB5",
 		"label": [ "www home", "wwwhome", "whome" ],
 		"short_name": "KC_WHOM"
 	},
 	"KC_WWW_BACK": {
+		"name": "WWW Back",
 		"description": "WWW Back",
 		"keycode": "0xB6",
 		"label": [ "www back", "wwwback", "wback" ],
 		"short_name": "KC_WBAK"
 	},
 	"KC_WWW_FORWARD": {
+		"name": "WWW Forward",
 		"description": "WWW Forward",
 		"keycode": "0xB7",
 		"label": [ "www forward", "wwwforward", "wforward" ],
 		"short_name": "KC_WFWD"
 	},
 	"KC_WWW_STOP": {
+		"name": "WWW Stop",
 		"description": "WWW Stop",
 		"keycode": "0xB8",
 		"label": [ "www stop", "wwwstop", "wstop" ],
 		"short_name": "KC_WSTP"
 	},
 	"KC_WWW_REFRESH": {
+		"name": "WWW Refresh",
 		"description": "WWW Refresh",
 		"keycode": "0xB9",
 		"label": [ "www refresh", "wwwrefresh", "wrefresh" ],
 		"short_name": "KC_WREF"
 	},
 	"KC_WWW_FAVORITES": {
+		"name": "WWW Favorites",
 		"description": "WWW Favorites",
 		"keycode": "0xBA",
 		"label": [ "www favorites", "wwwfavorites", "wfav" ],
@@ -1149,167 +1233,200 @@ var keycode_map = {
 	},
 	/* Fn Key */
 	"KC_FN0": {
+		"name": "Fn Key 0",
 		"description": "Fn Key 0",
 		"keycode": "0xC0",
 		"label": [ "fn0", "fn" ]
 	},
 	"KC_FN1": {
+		"name": "Fn Key 1",
 		"description": "Fn Key 1",
 		"keycode": "0xC1",
 		"label": [ "fn1" ]
 	},
 	"KC_FN2": {
+		"name": "Fn Key 2",
 		"description": "Fn Key 2",
 		"keycode": "0xC2",
 		"label": [ "fn2" ]
 	},
 	"KC_FN3": {
+		"name": "Fn Key 3",
 		"description": "Fn Key 3",
 		"keycode": "0xC3",
 		"label": [ "fn3" ]
 	},
 	"KC_FN4": {
+		"name": "Fn Key 4",
 		"description": "Fn Key 4",
 		"keycode": "0xC4",
 		"label": [ "fn4" ]
 	},
 	"KC_FN5": {
+		"name": "Fn Key 5",
 		"description": "Fn Key 5",
 		"keycode": "0xC5",
 		"label": [ "fn5" ]
 	},
 	"KC_FN6": {
+		"name": "Fn Key 6",
 		"description": "Fn Key 6",
 		"keycode": "0xC6",
 		"label": [ "fn6" ]
 	},
 	"KC_FN7": {
+		"name": "Fn Key 7",
 		"description": "Fn Key 7",
 		"keycode": "0xC7",
 		"label": [ "fn7" ]
 	},
 	"KC_FN8": {
+		"name": "Fn Key 8",
 		"description": "Fn Key 8",
 		"keycode": "0xC8",
 		"label": [ "fn8" ]
 	},
 	"KC_FN9": {
+		"name": "Fn Key 9",
 		"description": "Fn Key 9",
 		"keycode": "0xC9",
 		"label": [ "fn9" ]
 	},
 	"KC_FN10": {
+		"name": "Fn Key 10",
 		"description": "Fn Key 10",
 		"keycode": "0xCA",
 		"label": [ "fn10" ]
 	},
 	"KC_FN11": {
+		"name": "Fn Key 11",
 		"description": "Fn Key 11",
 		"keycode": "0xCB",
 		"label": [ "fn11" ]
 	},
 	"KC_FN12": {
+		"name": "Fn Key 12",
 		"description": "Fn Key 12",
 		"keycode": "0xCC",
 		"label": [ "fn12" ]
 	},
 	"KC_FN13": {
+		"name": "Fn Key 13",
 		"description": "Fn Key 13",
 		"keycode": "0xCD",
 		"label": [ "fn13" ]
 	},
 	"KC_FN14": {
+		"name": "Fn Key 14",
 		"description": "Fn Key 14",
 		"keycode": "0xCE",
 		"label": [ "fn14" ]
 	},
 	"KC_FN15": {
+		"name": "Fn Key 15",
 		"description": "Fn Key 15",
 		"keycode": "0xCF",
 		"label": [ "fn15" ]
 	},
 	"KC_FN16": {
+		"name": "Fn Key 16",
 		"description": "Fn Key 16",
 		"keycode": "0xD0",
 		"label": [ "fn16" ]
 	},
 	"KC_FN17": {
+		"name": "Fn Key 17",
 		"description": "Fn Key 17",
 		"keycode": "0xD1",
 		"label": [ "fn17" ]
 	},
 	"KC_FN18": {
+		"name": "Fn Key 18",
 		"description": "Fn Key 18",
 		"keycode": "0xD2",
 		"label": [ "fn18" ]
 	},
 	"KC_FN19": {
+		"name": "Fn Key 19",
 		"description": "Fn Key 19",
 		"keycode": "0xD3",
 		"label": [ "fn19" ]
 	},
 	"KC_FN20": {
+		"name": "Fn Key 20",
 		"description": "Fn Key 20",
 		"keycode": "0xD4",
 		"label": [ "fn20" ]
 	},
 	"KC_FN21": {
+		"name": "Fn Key 21",
 		"description": "Fn Key 21",
 		"keycode": "0xD5",
 		"label": [ "fn21" ]
 	},
 	"KC_FN22": {
+		"name": "Fn Key 22",
 		"description": "Fn Key 22",
 		"keycode": "0xD6",
 		"label": [ "fn22" ]
 	},
 	"KC_FN23": {
+		"name": "Fn Key 23",
 		"description": "Fn Key 23",
 		"keycode": "0xD7",
 		"label": [ "fn23" ]
 	},
 	"KC_FN24": {
+		"name": "Fn Key 24",
 		"description": "Fn Key 24",
 		"keycode": "0xD8",
 		"label": [ "fn24" ]
 	},
 	"KC_FN25": {
+		"name": "Fn Key 25",
 		"description": "Fn Key 25",
 		"keycode": "0xD9",
 		"label": [ "fn25" ]
 	},
 	"KC_FN26": {
+		"name": "Fn Key 26",
 		"description": "Fn Key 26",
 		"keycode": "0xDA",
 		"label": [ "fn26" ]
 	},
 	"KC_FN27": {
+		"name": "Fn Key 27",
 		"description": "Fn Key 27",
 		"keycode": "0xDB",
 		"label": [ "fn27" ]
 	},
 	"KC_FN28": {
+		"name": "Fn Key 28",
 		"description": "Fn Key 28",
 		"keycode": "0xDC",
 		"label": [ "fn28" ]
 	},
 	"KC_FN29": {
+		"name": "Fn Key 29",
 		"description": "Fn Key 29",
 		"keycode": "0xDD",
 		"label": [ "fn29" ]
 	},
 	"KC_FN30": {
+		"name": "Fn Key 30",
 		"description": "Fn Key 30",
 		"keycode": "0xDE",
 		"label": [ "fn30" ]
 	},
 	"KC_FN31": {
+		"name": "Fn Key 31",
 		"description": "Fn Key 31",
 		"keycode": "0xDF",
 		"label": [ "fn31" ]
 	},
 	/* Modifiers */
 	"KC_LCTRL": {
+		"name": "Left Control",
 		"description": "Left Control",
 		"keycode": "0xE0",
 		"label": [ "control", "ctrl", "lcontrol", "lctrl" ],
@@ -1317,6 +1434,7 @@ var keycode_map = {
 		"short_name": "KC_LCTL"
 	},
 	"KC_LSHIFT": {
+		"name": "Left Shift",
 		"description": "Left Shift",
 		"keycode": "0xE1",
 		"label": [ "shift", "lshift" ],
@@ -1324,89 +1442,104 @@ var keycode_map = {
 		"short_name": "KC_LSFT"
 	},
 	"KC_LALT": {
+		"name": "Left Alt",
 		"description": "Left Alt",
 		"keycode": "0xE2",
 		"label": [ "alt", "lalt" ],
 		"label_priority": [ "alt" ]
 	},
 	"KC_LGUI": {
+		"name": "Left GUI",
 		"description": "Left GUI (Windows/Apple/Meta key)",
 		"keycode": "0xE3",
 		"label": [ "gui", "win", "command", "comm", "meta", "lgui", "lwin", "lcommand", "lcomm", "lmeta" ],
 		"label_priority": [ "gui", "win", "command", "comm", "meta" ]
 	},
 	"KC_RCTRL": {
+		"name": "Right Ctonrol",
 		"description": "Right Ctonrol",
 		"keycode": "0xE4",
 		"label": [ "control", "ctrl", "rcontrol", "rctrl" ],
 		"short_name": "KC_RCTL"
 	},
 	"KC_RSHIFT": {
+		"name": "Right Shift",
 		"description": "Right Shift",
 		"keycode": "0xE5",
 		"label": [ "shift", "rshift" ],
 		"short_name": "KC_RSFT"
 	},
 	"KC_RALT": {
+		"name": "Right Alt",
 		"description": "Right Alt",
 		"keycode": "0xE6",
 		"label": [ "alt", "ralt", "altgr" ]
 	},
 	"KC_RGUI": {
+		"name": "Right GUI",
 		"description": "Right GUI (Windows/Apple/Meta key)",
 		"keycode": "0xE7",
 		"label": [ "gui", "win", "command", "comm", "meta", "rgui", "rwin", "rcommand", "rcomm", "rmeta" ]
 	},
 	/* Mousekey */
 	"KC_MS_UP": {
+		"name": "Mouse Cursor Up",
 		"description": "Mouse Cursor Up",
 		"keycode": "0xF0",
 		"label": [ "mouse up", "mouseup", "cursor up", "cursorup" ],
 		"short_name": "KC_MS_U"
 	},
 	"KC_MS_DOWN": {
+		"name": "Mouse Cursor Down",
 		"description": "Mouse Cursor Down",
 		"keycode": "0xF1",
 		"label": [ "mouse down", "mousedown", "cursor down", "cursordown" ],
 		"short_name": "KC_MS_D"
 	},
 	"KC_MS_LEFT": {
+		"name": "Mouse Cursor Left",
 		"description": "Mouse Cursor Left",
 		"keycode": "0xF2",
 		"label": [ "mouse left", "mouseleft", "cursor left", "cursorleft" ],
 		"short_name": "KC_MS_L"
 	},
 	"KC_MS_RIGHT": {
+		"name": "Mouse Cursor Right",
 		"description": "Mouse Cursor Right",
 		"keycode": "0xF3",
 		"label": [ "mouse right", "mouseright", "cursor right", "cursorright" ],
 		"short_name": "KC_MS_R"
 	},
 	"KC_MS_BTN1": {
+		"name": "Mouse Button 1",
 		"description": "Mouse Button 1",
 		"keycode": "0xF4",
 		"label": [ "button1", "btn1" ],
 		"short_name": "KC_BTN1"
 	},
 	"KC_MS_BTN2": {
+		"name": "Mouse Button 2",
 		"description": "Mouse Button 2",
 		"keycode": "0xF5",
 		"label": [ "button2", "btn2" ],
 		"short_name": "KC_BTN1"
 	},
 	"KC_MS_BTN3": {
+		"name": "Mouse Button 3",
 		"description": "Mouse Button 3",
 		"keycode": "0xF6",
 		"label": [ "button3", "btn3" ],
 		"short_name": "KC_BTN3"
 	},
 	"KC_MS_BTN4": {
+		"name": "Mouse Button 4",
 		"description": "Mouse Button 4",
 		"keycode": "0xF7",
 		"label": [ "button4", "btn4" ],
 		"short_name": "KC_BTN4"
 	},
 	"KC_MS_BTN5": {
+		"name": "Mouse Button 5",
 		"description": "Mouse Button 5",
 		"keycode": "0xF8",
 		"label": [ "button5", "btn5" ],
@@ -1414,24 +1547,28 @@ var keycode_map = {
 	},
 	/* Mousekey wheel */
 	"KC_MS_WH_UP": {
+		"name": "Mouse Wheel Up",
 		"description": "Mouse Wheel Up",
 		"keycode": "0xF9",
 		"label": [ "wheel up", "wheelup" ],
 		"short_name": "KC_WH_U"
 	},
 	"KC_MS_WH_DOWN": {
+		"name": "Mouse Wheel Down",
 		"description": "Mouse Wheel Down",
 		"keycode": "0xFA",
 		"label": [ "wheel down", "wheeldown" ],
 		"short_name": "KC_WH_D"
 	},
 	"KC_MS_WH_LEFT": {
+		"name": "Mouse Wheel Left",
 		"description": "Mouse Wheel Left",
 		"keycode": "0xFB",
 		"label": [ "wheel left", "wheelleft" ],
 		"short_name": "KC_WH_L"
 	},
 	"KC_MS_WH_RIGHT": {
+		"name": "Mouse Wheel Right",
 		"description": "Mouse Wheel Right",
 		"keycode": "0xFC",
 		"label": [ "wheel right", "wheelright" ],
@@ -1439,18 +1576,21 @@ var keycode_map = {
 	},
 	/* Mousekey accel */
 	"KC_MS_ACCEL0": {
+		"name": "Mouse Acceleration 0",
 		"description": "Mouse Acceleration 0",
 		"keycode": "0xFD",
 		"label": [ "accel0" ],
 		"short_name": "KC_ACL0"
 	},
 	"KC_MS_ACCEL1": {
+		"name": "Mouse Acceleration 1",
 		"description": "Mouse Acceleration 1",
 		"keycode": "0xFE",
 		"label": [ "accel1" ],
 		"short_name": "KC_ACL1"
 	},
 	"KC_MS_ACCEL2": {
+		"name": "Mouse Acceleration 2",
 		"description": "Mouse Acceleration 2",
 		"keycode": "0xFF",
 		"label": [ "accel2" ],

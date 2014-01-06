@@ -18,6 +18,8 @@ $(function() {
 
 	showNotification();
 
+	appendAvailableLabelTable();
+
 	tkg.setKeycodeMap(keycode_map);
 	tkg.setFnMaps(action_map, lr_map, mod_map, on_map);
 	tkg.setSimpleMode(_simple_mode);
@@ -222,7 +224,6 @@ var links = {
 }
 
 function attachLinks() {
-	console.error('attach');
 	$('#pg-about a').each(function() {
 		var id = $(this).attr('id');
 		if (links[id]) {
@@ -233,7 +234,6 @@ function attachLinks() {
 }
 
 function detachLinks() {
-	console.error('detach');
 	$('#pg-about a').each(function() {
 		var id = $(this).attr('id');
 		if (links[id]) {
@@ -243,3 +243,99 @@ function detachLinks() {
 	});
 }
 
+function appendAvailableLabelTable() {
+	if (!appendAvailableLabelTable.low_priority_labels) {
+		appendAvailableLabelTable.low_priority_labels = {};
+		var priority_labels = {};
+		for (var symbol in keycode_map) {
+			var key = keycode_map[symbol];
+			if (key["label_priority"]) {
+				var labels = key["label_priority"];
+				for (var i = 0; i < labels.length; i++) {
+					priority_labels[labels[i]] = symbol;
+				}
+			}
+		}
+		for (var symbol in keycode_map) {
+			var key = keycode_map[symbol];
+			if (key["label"]) {
+				var labels = key["label"];
+				for (var i = 0; i < labels.length; i++) {
+					if (_.isArray(labels[i])) {
+						for (var j = 0; j < labels[i].length; j++) {
+							if (priority_labels[labels[i][j]]) {
+								if (priority_labels[labels[i][j]] != symbol) {
+									appendAvailableLabelTable.low_priority_labels[labels[i][j]] = symbol;
+								}
+							}
+						}
+					}
+					else {
+						if (priority_labels[labels[i]]) {
+							if (priority_labels[labels[i]] != symbol) {
+								appendAvailableLabelTable.low_priority_labels[labels[i]] = symbol;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	$('#pg-help #available-labels').empty().append(
+		$('<div>').attr({ "class": "alert alert-info", "style": "padding: 5px 15px;" }).append(
+			$('<span>').attr({ "lang": "en" }).text('Case-insensitive')
+		),
+		$('<table>').attr({ "class": "table table-striped table-bordered table-condensed" }).append(
+			$('<thead>').append(
+				$('<tr>').append(
+					$('<th>').attr({ "lang": "en" }).text('Key'),
+					$('<th>').attr({ "lang": "en" }).text('Labels')
+				)
+			),
+			$('<tbody>').append(
+				(function() {
+					var $tbody = $();
+					for (var symbol in keycode_map) {
+						var key = keycode_map[symbol];
+						if (key["label"]) {
+							$tbody = $tbody.add($('<tr>').append(
+								$('<td>').attr({ "title": key["description"] }).text(key["name"]),
+								$('<td>').html(makeAvailableLabelTableCell(symbol, key))
+							));
+						}
+					}
+					return $tbody;
+				})()
+			)
+		)
+	);
+}
+
+function makeAvailableLabelTableCell(symbol, key) {
+	var $cell = $();
+	if (key["label"]) {
+		var label = key["label"];
+		if (_.isArray(label[0])) {
+			label = label[0];
+		}
+		for (var i = 0; i < label.length; i++) {
+			if (appendAvailableLabelTable.low_priority_labels[label[i]] == symbol) {
+				$cell = $cell.add($('<code>').attr({ "class": "low-priority", "title": "low priority" }).text(label[i]));
+			}
+			else {
+				$cell = $cell.add($('<code>').text(label[i]));
+			}
+		}
+		if (key["label_2"]) {
+			$cell = $cell.add($('<hr>'));
+			var label = key["label_2"];
+			if (_.isArray(label[0])) {
+				label = label[0];
+			}
+			for (var i = 0; i < label.length; i++) {
+				$cell = $cell.add($('<code>').text(label[i]));
+			}
+		}
+	}
+	return $cell;
+}

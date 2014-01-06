@@ -133,3 +133,29 @@ body {
 .popover .label-2-ignored .bottom-label {
 	color: #b94a48;
 }
+
+#available-labels .alert {
+	margin-bottom: 10px;
+	padding: 5px 15px;
+}
+#available-labels table tr td:first-child {
+	vertical-align: middle;
+	font-size: 90%;
+}
+#available-labels table td {
+}
+#available-labels hr {
+	margin: 4px 0;
+}
+#available-labels code {
+	margin: 0 4px 0 0;
+	border: 1px solid #ddd;
+	min-width: 24px;
+	min-height: 24px;
+	display: inline-block;
+	vertical-align: top;
+	text-align: center;
+}
+#available-labels code.low-priority {
+	color: #ccc;
+}

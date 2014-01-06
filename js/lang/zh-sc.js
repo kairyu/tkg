@@ -81,6 +81,10 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	// Fn key
 	'key':'按键',
 	// Help
+	'Available Labels':'可用标签',
+	'Case-insensitive':'不区分大小写',
+	'Key':'按键',
+	'Labels':'标签',
 	// About
 	'About TMK Keymap Generator':'关于 TMK Keymap Generator',
 	'TMK Keymap Generator, aka TKG, is a generator that can convert layout created by <a id="a-kle">keyboard-layout-editor</a> into an available keymap for <a id="a-tmk">TMK Keyboard Firmware Collection</a>.':'TMK Keymap Generator，简称TKG，是一个可以将由<a id="a-kle">keyboard-layout-editor</a>创建出的键盘布局转换为<a id="a-tmk">TMK键盘固件套装</a>可用的键表文件的生成器。',
