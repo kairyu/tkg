@@ -7,7 +7,7 @@ $(function() {
 
 	switchPage(location.hash.slice(1));
 
-	window.lang.beforeChange = function() {
+	window.lang.beforeRun = function() {
 		detachLinks();
 	}
 	window.lang.afterChange = function() {
@@ -222,6 +222,7 @@ var links = {
 }
 
 function attachLinks() {
+	console.error('attach');
 	$('#pg-about a').each(function() {
 		var id = $(this).attr('id');
 		if (links[id]) {
@@ -232,6 +233,7 @@ function attachLinks() {
 }
 
 function detachLinks() {
+	console.error('detach');
 	$('#pg-about a').each(function() {
 		var id = $(this).attr('id');
 		if (links[id]) {

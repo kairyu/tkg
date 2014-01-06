@@ -101,6 +101,7 @@ jquery_lang_js.prototype.run = function () {
 				} else {
 					// Not an input element
 					langElem.data('deftext', langElem.html());
+					console.log(langElem.data('deftext'));
 				}
 			}
 		}
