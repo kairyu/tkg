@@ -80,6 +80,7 @@ jquery_lang_js.prototype.lang.ja = {
 	// Fn key
 	'key':'一般キー',
 	// Help
+	'How to Use':'使い方',
 	'Available Labels':'識別可能なラベル',
 	'Case-insensitive':'大文字・小文字を区別しない',
 	'Key':'キー',

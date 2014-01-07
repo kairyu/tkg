@@ -81,6 +81,7 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	// Fn key
 	'key':'按键',
 	// Help
+	'How to Use':'使用方法',
 	'Available Labels':'可用标签',
 	'Case-insensitive':'不区分大小写',
 	'Key':'按键',
