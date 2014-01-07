@@ -21,7 +21,10 @@ body {
 	font-size: 0.5em;
 }
 #config-form {
-	padding: 25px 15px;
+	padding: 25px 0 0 0;
+}
+.page {
+	padding: 15px;
 }
 .container .credit {
 	margin: 20px 0;
