@@ -274,3 +274,8 @@ function makeSelect(attr, data, current, selected) {
 			return $options;
 		})());
 }
+
+function rebuildSelect() {
+	$('.fn-action select').multiselect('rebuild');
+	$('.fn-param select').multiselect('rebuild');
+}

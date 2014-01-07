@@ -5,13 +5,14 @@ var _simple_mode = false;
 
 $(function() {
 
-	switchPage(location.hash.slice(1));
+	switchPage(location.hash.slice(1) || 'home');
 
 	window.lang.beforeRun = function() {
 		detachLinks();
 	}
-	window.lang.afterChange = function() {
+	window.lang.afterChange = function(lang) {
 		attachLinks();
+		changeFont(lang);
 	}
 
 	$('.btn').button();
@@ -100,9 +101,11 @@ $(function() {
 });
 
 function switchPage(id) {
+	$('.page:visible').data('scroll', $(document).scrollTop()).hide();
+	$('#pg-' + id).show();
+	$(document).scrollTop($('#pg-' + id).data('scroll') - $('#notification').height());
+	console.error($('#pg-' + id).data('scroll') - $('#notification').height());
 	if (id == 'home') id = '';
-	$('.page').hide();
-	$('#pg-' + (id || 'home')).show();
 	location.hash = '#' + id;
 }
 
@@ -186,8 +189,27 @@ function showNotification() {
 
 function onLangChange(lang) {
 	window.lang.change(lang);
-	$('.fn-action select').multiselect('rebuild');
-	$('.fn-param select').multiselect('rebuild');
+	rebuildSelect();
+}
+
+function changeFont(lang) {
+	var font = '"Helvetica Neue",Helvetica,Arial';
+	switch (lang) {
+		case 'en':
+			break;
+		case 'ja':
+			font += ',"MS UIGothic"';
+			break;
+		case 'zh_sc':
+			font += ',"Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei"';
+			break;
+		case 'zh_tc':
+			font += ',"Microsoft JhengHei"';
+			break;
+	}
+	font += ',sans-serif';
+	$('body').css('font-family', font);
+	$('h1, h2, h3, h4, h5').css('font-family', font);
 }
 
 function updateDownloadButtonState() {

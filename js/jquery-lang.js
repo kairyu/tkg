@@ -118,7 +118,7 @@ jquery_lang_js.prototype.run = function () {
 			this.change(this.currentLang);
 	}
 
-	this.afterRun.call(this);
+	this.afterRun.call(this, this.currentLang);
 }
 
 jquery_lang_js.prototype.loadPack = function (packPath) {
@@ -126,7 +126,7 @@ jquery_lang_js.prototype.loadPack = function (packPath) {
 }
 	
 jquery_lang_js.prototype.change = function (lang) {
-	this.beforeChange.call(this);
+	this.beforeChange.call(this, lang);
 
 	//console.log('Changing language to ' + lang);
 	if (this.currentLang != lang) { this.update(lang); }
@@ -269,7 +269,7 @@ jquery_lang_js.prototype.change = function (lang) {
 		});
 	}
 
-	this.afterChange.call(this);
+	this.afterChange.call(this, lang);
 }
 // if text does not in language data???
 jquery_lang_js.prototype.convert = function (text, lang) {
