@@ -101,10 +101,11 @@ $(function() {
 });
 
 function switchPage(id) {
-	$('.page:visible').data('scroll', $(document).scrollTop()).hide();
-	$('#pg-' + id).show();
-	$(document).scrollTop($('#pg-' + id).data('scroll') - $('#notification').height());
-	console.error($('#pg-' + id).data('scroll') - $('#notification').height());
+	$('.page:visible').data('scroll', $(window).scrollTop()).hide();
+	setTimeout(function() {
+		$page = $('#pg-' + (id || 'home'));
+		$(window).scrollTop($page.show().data('scroll') || 0);
+	}, 0);
 	if (id == 'home') id = '';
 	location.hash = '#' + id;
 }
@@ -193,7 +194,7 @@ function onLangChange(lang) {
 }
 
 function changeFont(lang) {
-	var font = '"Helvetica Neue",Helvetica,Arial';
+	var font = '"Helvetica Neue",Helvetica,"Segoe UI",Arial';
 	switch (lang) {
 		case 'en':
 			break;

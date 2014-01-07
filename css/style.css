@@ -21,7 +21,7 @@ body {
 	font-size: 0.5em;
 }
 #config-form {
-	padding: 40px 15px;
+	padding: 25px 15px;
 }
 .container .credit {
 	margin: 20px 0;
@@ -138,20 +138,22 @@ body {
 	margin-bottom: 10px;
 	padding: 5px 15px;
 }
+#available-labels table tr td {
+	padding: 4px 5px;
+}
 #available-labels table tr td:first-child {
 	vertical-align: middle;
 	font-size: 90%;
-}
-#available-labels table td {
 }
 #available-labels hr {
 	margin: 4px 0;
 }
 #available-labels code {
 	margin: 0 4px 0 0;
+	padding: 0 3px;
 	border: 1px solid #ddd;
 	min-width: 24px;
-	min-height: 24px;
+	min-height: 20px;
 	display: inline-block;
 	vertical-align: top;
 	text-align: center;
