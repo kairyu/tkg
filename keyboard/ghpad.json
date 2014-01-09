@@ -2,7 +2,7 @@
 	"name": "GHPad",
 	"description": "4x6 GHPad",
 	"max_layers": 8,
-	"max_fns": 8,
+	"max_fns": 32,
 	"eep_size": 1024,
 	"eep_start": 16,
 	"matrix_rows": 6,
