@@ -128,9 +128,9 @@ function bin_to_intel_hex($bin, $byte_count = 16) {
 			$checksum = ($checksum + $byte) % 0x100;
 		}
 		$checksum = (0x100 - $checksum) % 0x100;
-		$hex .= sprintf(":%s%02X\n", $row, $checksum);
+		$hex .= sprintf(":%s%02X\r\n", $row, $checksum);
 	}
-	$hex .= ':00000001FF';
+	$hex .= ":00000001FF\r\n";
 	return $hex;
 }
 
