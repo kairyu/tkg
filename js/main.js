@@ -119,7 +119,7 @@ function initialize(name, simple_mode) {
 
 function loadKeyboard(name) {
 	var keyboard = {};
-	$.ajaxSetup({ async: false });
+	$.ajaxSetup({ async: false, cache: false });
 	$.getJSON("keyboard/" + name.toLowerCase() + ".json", function(json) {
 		keyboard = json;
 		tkg.init({
