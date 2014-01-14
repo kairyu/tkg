@@ -57,6 +57,7 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'No matching key':'没有匹配的按键',
 	'Position mismatch':'位置不匹配',
 	'WARNING':'警告',
+	'Overlapping key ignored':'重叠的按键被忽略',
 	'Secondary label ignored':'附标签被忽略',
 	'Invalid Fn key':'无效的 Fn 键',
 	'INFO':'提示',

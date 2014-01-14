@@ -61,6 +61,7 @@ jquery_lang_js.prototype.lang.ja = {
 	'No matching key':'適合なキーが見つからない',
 	'Position mismatch':'不適合な位置',
 	'WARNING':'警告',
+	'Overlapping key ignored':'重なるキーが無視された',
 	'Secondary label ignored':'セカンダリーラベルが無視された',
 	'Invalid Fn key':'無効な Fn キー',
 	'INFO':'情報',

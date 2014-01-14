@@ -294,6 +294,15 @@ function appendLayerWarning(warning, top_prop, bottom_prop) {
 	var $content = $('<h4>').attr({ "class": "text-warning", "lang": "en" }).text("WARNING");
 	for (var type in warning) {
 		switch (type) {
+			case "matrix_overlapping":
+				var keys = warning[type];
+				$content.append(
+					$('<h5>').attr({ "class": "text-warning", "lang": "en" }).text("Overlapping key ignored"),
+					$('<div>').attr({ "class": "matrix-overlapping" }).append(makeKeyList(keys, function(key) {
+						return "x: " + key["x"] + "<br>" + "y: " + key["y"];
+					}, top_prop, bottom_prop))
+				);
+				break;
 			case "label_2_ignored":
 				var keys = warning[type];
 				$content.append(

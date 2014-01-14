@@ -903,7 +903,12 @@ function TKG() {
 					"row": row,
 					"col": col
 				};
-				matrix[row][col] = symbol;
+				if ((matrix[row][col] && matrix[row][col] == "KC_NO") || !matrix[row][col]) {
+					matrix[row][col] = symbol;
+				}
+				else {
+					_raiseWarn(warn, "matrix_overlapping", key, index, key);
+				}
 			}
 			else {
 				_raiseError(error, "matrix_missmapping", key, index, key);
