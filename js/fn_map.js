@@ -309,16 +309,18 @@ var mod_map = {
 	"MOD_CTRL": {
 		"name": "Ctrl",
 		"description": "Ctrl",
-		"code": 1
-	},
-	"MOD_ALT": {
-		"name": "Alt",
-		"description": "Alt",
-		"code": 2
+		"code": 1,
+		"shortname": "MOD_CTL"
 	},
 	"MOD_SHIFT": {
 		"name": "Shift",
 		"description": "Shift",
+		"code": 2,
+		"shortname": "MOD_SFT"
+	},
+	"MOD_ALT": {
+		"name": "Alt",
+		"description": "Alt",
 		"code": 4
 	},
 	"MOD_GUI": {
