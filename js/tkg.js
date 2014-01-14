@@ -223,7 +223,7 @@ function TKG() {
 		for (var symbol in mod_map) {
 			var mod = mod_map[symbol];
 			options.push({
-				"value": symbol,
+				"value": mod["shortname"] | symbol,
 				"text": mod["description"],
 				"title": mod["name"]
 			});
