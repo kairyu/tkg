@@ -306,17 +306,17 @@ var lr_map = {
 }
 
 var mod_map = {
-	"MOD_CTRL": {
+	"MOD_CTL": {
 		"name": "Ctrl",
 		"description": "Ctrl",
 		"code": 1,
-		"shortname": "MOD_CTL"
+		"fullname": "MOD_CTRL"
 	},
-	"MOD_SHIFT": {
+	"MOD_SFT": {
 		"name": "Shift",
 		"description": "Shift",
 		"code": 2,
-		"shortname": "MOD_SFT"
+		"fullname": "MOD_SHIFT"
 	},
 	"MOD_ALT": {
 		"name": "Alt",
