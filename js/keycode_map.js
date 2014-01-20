@@ -1443,10 +1443,10 @@ var keycode_map = {
 	},
 	"KC_LALT": {
 		"name": "Left Alt",
-		"description": "Left Alt",
+		"description": "Left Alt (Alt/Option Key)",
 		"keycode": "0xE2",
-		"label": [ "alt", "lalt" ],
-		"label_priority": [ "alt" ]
+		"label": [ "alt", "option", "opt", "lalt", "loption", "lopt" ],
+		"label_priority": [ "alt", "option", "opt" ]
 	},
 	"KC_LGUI": {
 		"name": "Left GUI",
@@ -1471,9 +1471,9 @@ var keycode_map = {
 	},
 	"KC_RALT": {
 		"name": "Right Alt",
-		"description": "Right Alt",
+		"description": "Right Alt (Alt/Option Key)",
 		"keycode": "0xE6",
-		"label": [ "alt", "ralt", "altgr" ]
+		"label": [ "alt", "option", "opt", "ralt", "roption", "ropt", "altgr" ]
 	},
 	"KC_RGUI": {
 		"name": "Right GUI",
