@@ -1,4 +1,5 @@
 jquery_lang_js.prototype.lang.zh_tc = {
+	'Home':'首頁',
 	'Help':'幫助',
 	'About':'關於',
 	'Language':'語言',

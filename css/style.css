@@ -4,6 +4,19 @@ html, body {
 body {
 	padding-top: 50px;
 }
+#home,
+#help,
+#about {
+	border: none;
+	outline: none;
+}
+.nav .dropdown-menu>li>a:hover,
+.nav .dropdown-menu>li>a:focus {
+	color: #fff;
+	text-decoration: none;
+	background-color: #428bca;
+	outline: 0;
+}
 #wrapper {
 	min-height: 100%;
 	height: auto;

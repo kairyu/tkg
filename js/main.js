@@ -5,7 +5,9 @@ var _simple_mode = false;
 
 $(function() {
 
-	switchPage(location.hash.slice(1) || 'home');
+	$(window).on('hashchange', function() {
+		switchPage(location.hash.slice(1));
+	}).trigger('hashchange');
 
 	window.lang.beforeRun = function() {
 		detachLinks();
@@ -35,9 +37,14 @@ $(function() {
 
 	updateDownloadButtonState();
 
-	// on page change
-	$('.navbar-brand').click(function() {
-		switchPage($(this).attr('id'));
+	// on navbar click
+	$('.navbar-brand').click(function(e) {
+		if ($(this).attr('href') == (location.hash || '#')) {
+			switchPage(location.hash.slice(1));
+			//e.preventDefault();
+			//return false;
+		}
+		$('.page:visible').data('scroll', $(window).scrollTop());
 	});
 	
 	// parse layer
@@ -101,13 +108,28 @@ $(function() {
 });
 
 function switchPage(id) {
-	$('.page:visible').data('scroll', $(window).scrollTop()).hide();
-	setTimeout(function() {
-		$page = $('#pg-' + (id || 'home'));
-		$(window).scrollTop($page.show().data('scroll') || 0);
-	}, 0);
-	if (id == 'home') id = '';
-	location.hash = '#' + id;
+	if (id == '') {
+		id = 'home';
+	}
+	else if (id == 'home') {
+		id = '';
+	}
+	$next_page = $('#pg-' + id);
+	if ($next_page.length) {
+		$('.navbar-brand').parent().removeClass('active');
+		$('#' + id).parent().addClass('active');
+		$pre_page = $('.page:visible');
+		$next_page.show();
+		if ($pre_page.attr('id') != $next_page.attr('id')) {
+			$pre_page.hide();
+		}
+		setTimeout(function() {
+			$(window).scrollTop($next_page.data('scroll') || 0);
+		}, 0);
+	}
+	else {
+		location = '#';
+	}
 }
 
 function initialize(name, simple_mode) {
