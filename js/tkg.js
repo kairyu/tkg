@@ -24,9 +24,9 @@ function TKG() {
 	var _fns = [];
 	var _matrices = [];
 	var _keymaps_hex = [];
-	var _keymaps_symbol = [];
+	var _keymaps_symbol = {};
 	var _fn_actions_hex = [];
-	var _fn_actions_symbol = [];
+	var _fn_actions_symbol = {};
 
 	var _setSimpleMode = function(simple_mode) {
 		if (_simple_mode != simple_mode) {
@@ -991,7 +991,7 @@ function TKG() {
 			return array;
 		}
 		else {
-			var fn_actions = [];
+			var fn_actions = {};
 			for (var i in fn) {
 				fn_actions[i] = _generateFnActionsSymbol(fn[i]);
 			}
@@ -1205,6 +1205,52 @@ function TKG() {
 		return fn;
 	}
 
+	var _exportFns = function() {
+		return JSON.stringify(_fn_actions_symbol).slice(1, -1);
+	}
+
+	var _importFns = function(data) {
+		try {
+			data = JSON.parse('{' + data + '}');
+		}
+		catch (e) {
+			_consoleError(e);
+			return false;
+		};
+		_consoleDebug("Import Fns:");
+		_consoleDebug(data);
+		for (var index in data) {
+			index = Number(index);
+			if (index >= _max_fns) {
+				_consoleWarn("Fn index out of bounds");
+				_consoleWarn(index);
+				continue;
+			}
+			array = data[index];
+			if (_.isArray(array)) {
+				if (_fns[index]) {
+					var action = array.shift();
+					var args = array;
+					_setFns(index, {
+						"action": action,
+						"args": args
+					});
+				}
+				else {
+					_consoleWarn("Fn not exist");
+					_consoleWarn(index);
+					continue;
+				}
+			}
+			else {
+				_consoleError("Invalid Fn data");
+				_consoleError(array);
+				return false;
+			}
+		}
+		return true;
+	}
+
 	var _getFnOptions = function(item) {
 		if (item) {
 			return _fn_options[item];
@@ -1246,6 +1292,8 @@ function TKG() {
 	this.getInfo = _getInfo;
 	this.getFns = _getFns;
 	this.setFns = _setFns;
+	this.exportFns = _exportFns;
+	this.importFns = _importFns;
 	this.getFnOptions = _getFnOptions;
 	this.getKeymapsHex = _getKeymapsHex;
 	this.getKeymapsSymbol = _getKeymapsSymbol;

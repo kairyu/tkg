@@ -16,6 +16,8 @@ function appendFns() {
 		);
 	}
 	$('#fn-wrapper .fn-row').fn();
+
+	updateToolsMenuState();
 }
 
 $.fn.fn = function() {

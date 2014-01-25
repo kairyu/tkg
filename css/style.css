@@ -10,12 +10,30 @@ body {
 	border: none;
 	outline: none;
 }
+/*
 .nav .dropdown-menu>li>a:hover,
 .nav .dropdown-menu>li>a:focus {
 	color: #fff;
 	text-decoration: none;
 	background-color: #428bca;
 	outline: 0;
+}
+*/
+#import-fn-dialog .modal-body div,
+#export-fn-dialog .modal-body div {
+	margin-bottom: 0;
+}
+#import-fn-error {
+	margin-top: 15px;
+}
+#import-fn-dialog .modal-footer,
+#export-fn-dialog .modal-footer {
+	margin-top: 0;
+}
+#import-fn-dialog textarea,
+#export-fn-dialog textarea {
+	word-break: break-all;
+	word-wrap: break-word;
 }
 #wrapper {
 	min-height: 100%;

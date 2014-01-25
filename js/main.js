@@ -46,6 +46,73 @@ $(function() {
 		}
 		$('.page:visible').data('scroll', $(window).scrollTop());
 	});
+
+	// import fn dialog
+	$('#tools-import-fn').click(function(e) {
+		if ($(this).parent().hasClass('disabled')) {
+			e.preventDefault();
+			return false;
+		}
+		$('#import-fn-dialog').modal('show');
+	});
+	$('#import-fn-dialog').on('show.bs.modal', function() {
+		$('#import-fn-val').val('');
+		$('#import-fn-button').addClass('disabled');
+		$('#import-fn-error').addClass('hide');
+		$('#import-fn-val').parent().removeClass('has-error');
+		window.lang.run();
+	}).on('shown.bs.modal', function() {
+		$('#import-fn-val').focus();
+	});
+
+	// export fn dialog
+	$('#tools-export-fn').click(function(e) {
+		if ($(this).parent().hasClass('disabled')) {
+			e.preventDefault();
+			return false;
+		}
+		$('#export-fn-dialog').modal('show');
+	});
+	$('#export-fn-dialog').on('show.bs.modal', function() {
+		window.lang.run();
+		$('#export-fn-val').val(tkg.exportFns());
+	}).on('shown.bs.modal', function() {
+		$('#export-fn-val').focus().select();
+	});
+
+	// import and export fn dialog contents
+	$('#import-fn-val, #export-fn-val').focus(function() {
+		var $textarea = $(this);
+		$textarea.select().mouseup(function() {
+			$textarea.unbind('mouseup');
+			return false;
+		});
+	});
+	$('#import-fn-val').bind('input propertychange', function() {
+		if ($(this).val().length) {
+			$('#import-fn-button').removeClass('disabled');
+		}
+		else {
+			$('#import-fn-button').addClass('disabled');
+		}
+	}).trigger('input');
+
+	// import fn
+	$('#import-fn-button').click(function() {
+		if ($(this).hasClass('disabled')) {
+			return false;
+		}
+		var result = tkg.importFns($('#import-fn-val').val());
+		if (result) {
+			appendFns();
+			$('#import-fn-dialog').modal('hide');
+		}
+		else {
+			$('#import-fn-error').removeClass('hide');
+			$('#import-fn-val').focus().parent().addClass('has-error');
+			window.lang.run();
+		}
+	});
 	
 	// parse layer
 	$('#layer-wrapper').on('blur', 'textarea', onLayerChange);
@@ -254,6 +321,15 @@ function updateDownloadButtonState() {
 	}
 	else {
 		$('.dl-btn').addClass('disabled');
+	}
+}
+
+function updateToolsMenuState() {
+	if ($('#fn-wrapper').html().length) {
+		$('#tools-import-fn, #tools-export-fn').parent().removeClass('disabled');
+	}
+	else {
+		$('#tools-import-fn, #tools-export-fn').parent().addClass('disabled');
 	}
 }
 
