@@ -305,16 +305,36 @@ function changeFont(lang) {
 function updateDownloadButtonState() {
 	var empty_count = 0;
 	var has_error = false;
+	var has_warning = false;
 	$('.layer').each(function() {
+		if (!$(this).find('textarea').val()) {
+			empty_count++;
+		}
 		if (!has_error) {
 			if ($(this).hasClass('has-error')) {
 				has_error = true;
 			}
-			if (!$(this).find('textarea').val()) {
-				empty_count++;
+		}
+		if (!has_warning) {
+			if ($(this).hasClass('has-warning')) {
+				has_warning = true;
 			}
 		}
 	});
+	var $dl_btn = $('.dl-btn');
+	$dl_btn.removeClass('btn-default btn-success btn-warning btn-danger');
+	if (has_error) {
+		$dl_btn.addClass('btn-danger');
+	}
+	else if (has_warning) {
+		$dl_btn.addClass('btn-warning');
+	}
+	else if (empty_count == $('.layer').length) {
+		$dl_btn.addClass('btn-default');
+	}
+	else {
+		$dl_btn.addClass('btn-success');
+	}
 	var enabled = !has_error && (empty_count < $('.layer').length);
 	if (enabled) {
 		$('.dl-btn').removeClass('disabled');
