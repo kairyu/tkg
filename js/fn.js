@@ -185,15 +185,13 @@ function appendFnParams(id) {
 				var $selected = $(options[0]);
 				return $selected.attr('title');
 			},
-			afterChange: function() {
-				window.lang.run();
-			},
 			onChange: function(option, checked) {
 				var mods = [];
 				this.$select.find('option:selected').each(function() {
 					mods.push($(this).val());
 				});
 				$row.data('mods', mods);
+				console.log(mods);
 				onFnParamsChange(id);
 			}
 		});
