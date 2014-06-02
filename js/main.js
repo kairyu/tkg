@@ -158,9 +158,11 @@ $(function() {
 			$('#dl_form').remove();
 		}
 
+		/*
 		$("body").append("<form id='dl_form' action='download.php?file=" + type + "' method='POST'>" +
 			"<input type='hidden' name='matrix_rows' value='" + _keyboard['matrix_rows'] + "'>" +
 			"<input type='hidden' name='matrix_cols' value='" + _keyboard['matrix_cols'] + "'>" +
+			"<input type='hidden' name='matrix_size' value='" + (_keyboard['matrix_size'] || (_keyboard['matrix_rows'] * _keyboard['matrix_cols'])) + "'>" +
 			"<input type='hidden' name='max_layers' value='" + _keyboard['max_layers'] + "'>" +
 			"<input type='hidden' name='max_fns' value='" + _keyboard['max_fns'] + "'>" +
 			"<input type='hidden' name='eep_size' value='" + _keyboard['eep_size'] + "'>" +
@@ -168,6 +170,33 @@ $(function() {
 			"<input type='hidden' name='keymaps' value='" + JSON.stringify(keymaps) + "'>" +
 			"<input type='hidden' name='fn_actions' value='" + JSON.stringify(fn_actions) + "'>" +
 			"</form>");
+			*/
+		var $form = $("<form>", {
+			"id": "dl_form", "action": "download.php?file=" + type, "method": "POST"
+		}).append($("<input>", {
+			"type": "hidden", "name": "matrix_rows", "value": _keyboard['matrix_rows']
+		})).append($("<input>", {
+			"type": "hidden", "name": "matrix_cols", "value": _keyboard['matrix_cols']
+		})).append($("<input>", {
+			"type": "hidden", "name": "max_layers", "value": _keyboard['max_layers']
+		})).append($("<input>", {
+			"type": "hidden", "name": "max_fns", "value": _keyboard['max_fns']
+		})).append($("<input>", {
+			"type": "hidden", "name": "eep_size", "value": _keyboard['eep_size']
+		})).append($("<input>", {
+			"type": "hidden", "name": "eep_start", "value": _keyboard['eep_start']
+		})).append($("<input>", {
+			"type": "hidden", "name": "keymaps", "value": JSON.stringify(keymaps)
+		})).append($("<input>", {
+			"type": "hidden", "name": "fn_actions", "value": JSON.stringify(fn_actions)
+		}));
+		if (_keyboard['name'] == 'Kimera') {
+			$form = $form.append($("<input>", {
+				"type": "hidden", "name": "additional", "value": JSON.stringify(_keyboard['additional'])
+			}));
+		}
+		$("body").append($form);
+
 		console.log(keymaps);
 		console.log(fn_actions);
 		console.log($('#dl_form').html());

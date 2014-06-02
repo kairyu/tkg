@@ -52,13 +52,7 @@ function afterLoadKeyboardConfig(name) {
 		});
 		_keyboard_config["matrix_map_state"] = tkg.parseMatrixMapLayer(_keyboard_config["matrix_map_raw"]);
 		_keyboard_config["matrix_map"] = tkg.getMatrixMap();
-		tkg.init({
-			"max_layers": _keyboard["max_layers"],
-			"max_fns": _keyboard["max_fns"],
-			"matrix_rows": _keyboard_config["matrix_rows"],
-			"matrix_cols": _keyboard_config["matrix_cols"],
-			"matrix_map": _keyboard_config["matrix_map"]
-		});
+		kimeraConfigUpdate(true);
 	}
 }
 
@@ -172,7 +166,7 @@ function kimeraMuxMappingChange() {
 	_keyboard_config["matrix_rows"] = row_max_count;
 	_keyboard_config["matrix_cols"] = col_max_count;
 
-	kimeraConfigUpdate();
+	kimeraConfigUpdate(true);
 	kimeraMuxMappingRefresh();
 	kimeraRowColMappingRefresh();
 	kimeraMatrixMappingChange(true);
@@ -196,6 +190,7 @@ function kimeraRowMappingChange() {
 	});
 	_keyboard_config["row_mapping_input"] = input_ports;
 	_keyboard_config["row_mapping"] = _.intersection(input_ports, $row_input.data('available_ports'));
+	kimeraConfigUpdate(false);
 }
 
 function kimeraColMappingChange() {
@@ -205,6 +200,7 @@ function kimeraColMappingChange() {
 	});
 	_keyboard_config["col_mapping_input"] = input_ports;
 	_keyboard_config["col_mapping"] = _.intersection(input_ports, $col_input.data('available_ports'));
+	kimeraConfigUpdate(false);
 }
 
 function kimeraRowColMappingRefresh() {
@@ -254,7 +250,7 @@ function kimeraMatrixMappingChange(force) {
 	_keyboard_config["matrix_map_state"] = tkg.parseMatrixMapLayer(raw);
 	_keyboard_config["matrix_map"] = tkg.getMatrixMap();
 	kimeraMatrixMappingRefresh();
-	kimeraConfigUpdate();
+	kimeraConfigUpdate(true);
 	updateLayers();
 }
 
@@ -297,12 +293,56 @@ function kimeraMatrixMappingRefresh() {
 function kimeraSetupMatrixMappingPopover() {
 }
 
-function kimeraConfigUpdate() {
-	tkg.init({
-		"max_layers": _keyboard["max_layers"],
-		"max_fns": _keyboard["max_fns"],
-		"matrix_rows": _keyboard_config["matrix_rows"],
-		"matrix_cols": _keyboard_config["matrix_cols"],
-		"matrix_map": _keyboard_config["matrix_map"]
-	});
+function kimeraConfigUpdate(init) {
+	_keyboard["matrix_rows"] = _keyboard_config["matrix_rows"];
+	_keyboard["matrix_cols"] = _keyboard_config["matrix_cols"];
+	_keyboard["matrix_size"] = _keyboard_config["matrix_size"];
+	_keyboard["additional"][0]["data"] = kimeraMakeConfigData();
+	if (init) {
+		tkg.init({
+			"max_layers": _keyboard["max_layers"],
+			"max_fns": _keyboard["max_fns"],
+			"matrix_rows": _keyboard_config["matrix_rows"],
+			"matrix_cols": _keyboard_config["matrix_cols"],
+			"matrix_map": _keyboard_config["matrix_map"]
+		});
+	}
+}
+
+function kimeraMakeConfigData() {
+	var data = [];
+	var mux_ports = _keyboard_config["mux_ports"] | 0;
+	var mux_count = _keyboard_config["mux_count"];
+	var mux_mapping = _keyboard_config["mux_mapping"];
+	var row_max_count = _keyboard_config["matrix_rows"];
+	var col_max_count = _keyboard_config["matrix_cols"];
+	var row_mapping = _keyboard_config["row_mapping"];
+	var col_mapping = _keyboard_config["col_mapping"];
+
+	var mux_config = 0;
+	for (var i = 0; i < mux_count; i++) {
+		if (mux_mapping[i] == "row") {
+			mux_config |= (1 << i);
+		}
+	}
+	data.push(mux_config);
+
+	for (var i = 0; i < row_max_count; i++) {
+		if (row_mapping[i]) {
+			data.push(row_mapping[i] - 1);
+		}
+		else {
+			data.push(parseInt('0xFF', 16));
+		}
+	}
+	for (var i = 0; i < col_max_count; i++) {
+		if (col_mapping[i]) {
+			data.push(col_mapping[i] - 1);
+		}
+		else {
+			data.push(parseInt('0xFF', 16));
+		}
+	}
+	
+	return data;
 }

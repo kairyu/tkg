@@ -11,6 +11,7 @@ $max_layers = 0;
 $max_fns = 0;
 $keymaps = array();
 $fn_actions = array();
+$additional = array();
 $eeprom_size = 0;
 $file = '';
 $header = '';
@@ -52,6 +53,9 @@ if (
 		else {
 			die('Invalid EEP Data');
 		}
+		if (isset($_POST['additional'])) {
+			$additional = json_decode($_POST['additional'], true);
+		}
 	}
 }
 else {
@@ -69,13 +73,14 @@ if ($filetype == 'eep') {
 		'keymaps' => $keymaps,
 		'fn_actions' => $fn_actions,
 		'eep_size' => $eep_size,
-		'eep_start' => $eep_start
+		'eep_start' => $eep_start,
+		'additional' => $additional
 	)));
 	// check cache
 	$cache = check_cache('eep', $hash);
 	if (is_null($cache)) {
 		// no cache
-		$file = generate_eep_file($matrix_rows, $matrix_cols, $max_layers, $max_fns, $keymaps, $fn_actions, $eep_size, $eep_start);
+		$file = generate_eep_file($matrix_rows, $matrix_cols, $max_layers, $max_fns, $keymaps, $fn_actions, $eep_size, $eep_start, $additional);
 		write_cache('eep', $hash, $file);
 	}
 	else {

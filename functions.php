@@ -22,13 +22,14 @@ function disable_magic_quotes() {
 	}
 }
 
-function generate_eep_file($matrix_rows, $matrix_cols, $max_layers, $max_fns, $keymaps, $fn_actions, $eep_size, $eep_start) {
+function generate_eep_file($matrix_rows, $matrix_cols, $max_layers, $max_fns, $keymaps, $fn_actions, $eep_size, $eep_start, $additional) {
 	// generate binary data
 	$keymap_bin = '';
 	// fn actions
 	for ($fn = 0; $fn < $max_fns; $fn++) {
-		$keymap_bin .= pack('v', $fn_actions[$fn]);
-	} // keymaps
+		$keymap_bin .= pack('v', isset($fn_actions[$fn]) ? $fn_actions[$fn] : 0);
+	}
+	// keymaps
 	for ($layer = 0; $layer < $max_layers; $layer++) {
 		for ($row = 0; $row < $matrix_rows; $row++) {
 			for ($col = 0; $col < $matrix_cols; $col++) {
@@ -46,6 +47,9 @@ function generate_eep_file($matrix_rows, $matrix_cols, $max_layers, $max_fns, $k
 	$eep_bin .= str_repeat(pack('C', 0xFF), $eep_start);
 	$eep_bin .= $keymap_bin;
 	$eep_bin .= str_repeat(pack('C', 0xFF), $eep_size - $eep_start - strlen($keymap_bin));
+
+	// overwrite additional data
+	$eep_bin = process_additional($eep_bin, $additional);
 
 	// convert to hex
 	return bin_to_intel_hex($eep_bin);
@@ -112,6 +116,21 @@ function calc_checksum_word($bin, $checksum = 0) {
 		$checksum = ($checksum + $word) % 0x10000;
 	}
 	return $checksum;
+}
+
+function process_additional($bin, $addl) {
+	for ($i = 0; $i < count($addl); $i++) {
+		$block = $addl[$i];
+		if (isset($block["start"]) && isset($block["size"]) && isset($block["data"])) {
+			$start = $block["start"];
+			$size = $block["size"];
+			$data = $block["data"];
+			for ($j = 0; $j < count($data); $j++) {
+				$bin[$start + $j] = pack('C', $data[$j]);
+			}
+		}
+	}
+	return $bin;
 }
 
 function bin_to_intel_hex($bin, $byte_count = 16) {

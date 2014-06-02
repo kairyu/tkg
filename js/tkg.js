@@ -978,8 +978,6 @@ function TKG() {
 				matrix[i] = [];
 			}
 		}
-		console.log(_matrix_rows);
-		console.log(matrix);
 
 		// parse matrix from position
 		for (var i = 0; i < keys.length; i++) {
@@ -994,7 +992,6 @@ function TKG() {
 					"row": row,
 					"col": col
 				};
-				console.log(row + ',' + col);
 				if ((matrix[row][col] && matrix[row][col] == "KC_NO") || !matrix[row][col]) {
 					matrix[row][col] = symbol;
 				}
