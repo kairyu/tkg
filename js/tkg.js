@@ -27,6 +27,7 @@ function TKG() {
 	var _keymaps_symbol = {};
 	var _fn_actions_hex = [];
 	var _fn_actions_symbol = {};
+	var _matrix_map_layer = {};
 
 	var _setSimpleMode = function(simple_mode) {
 		if (_simple_mode != simple_mode) {
@@ -435,6 +436,33 @@ function TKG() {
 		return state;
 	}
 
+	var _parseMatrixMapLayer = function(raw_string) {
+		_consoleInfo("Parse matrix map layer");
+		var layer = {};
+
+		// parse raw string to keys
+		if (raw_string) {
+			layer = _parseRawString(raw_string);
+		}
+
+		// parse keys to matrix map
+		var matrix_map = _parseMatrixMap(layer, "top");
+		_matrix_map = matrix_map;
+		_matrix_map_layer = layer;
+		_consoleInfo("matrix_map:");
+		_consoleInfo(_matrix_map);
+
+		// return state
+		var state = _NONE;
+		if (!_.isEmpty(layer["warn"])) {
+			state = _WARNING;
+		}
+		if (!_.isEmpty(layer["error"])) {
+			state = _ERROR;
+		}
+		return state;
+	}
+
 	var _parseRawString = function(raw_string) {
 		var layer = {};
 		var error = {};
@@ -552,6 +580,67 @@ function TKG() {
 		layer["warn"] = warn;
 		layer["info"] = info;
 		return layer;
+	}
+
+	var _parseMatrixMap = function(layer, label_property) {
+		var error = layer["error"];
+		var warn = layer["warn"];
+		var info = layer["info"];
+		var matrix_map = {};
+
+		// check keys property
+		if (!layer["keys"] || !_.isArray(layer["keys"])) {
+			return layer;
+		}
+
+		// check label parameter
+		if (!label_property) {
+			_consoleError("Wrong function call");
+			return false;
+		}
+
+		// parse matrix map from key labels
+		var keys = layer["keys"];
+		for (var i = 0; i < keys.length; i++) {
+			var key = keys[i];
+			// check label property
+			var label;
+			if (key["label"][label_property] || key["label"][label_property] == "") {
+				label = key["label"][label_property].toLowerCase();
+			}
+			else {
+				label = "";
+				_consoleDebug("No valid label: " + key["x"] + "," + key["y"]);
+				_consoleDebug(key);
+			}
+			// get row col mapping
+			var mapping = /^(\d+),(\d+)$/.exec(label);
+			if (mapping) {
+				var index = _positionToIndex(key["x"], key["y"], key["w"], key["h"], key["x2"], key["w2"]);
+				// check existence
+				if (index in matrix_map) {
+					_raiseWarn(warn, "matrix_map_overlapping", key, index, key);
+				}
+				else {
+					// check validness
+					var row = parseInt(mapping[1]) - 1;
+					var col = parseInt(mapping[2]) - 1;
+					if (row >= 0 && row < _matrix_rows && col >= 0 && col < _matrix_cols) {
+						matrix_map[index] = {};
+						matrix_map[index]["row"] = row;
+						matrix_map[index]["col"] = col;
+					}
+					else {
+						_raiseError(error, "matrix_map_invalid_mapping", key, row + ',' + col, key);
+					}
+				}
+			}
+			else {
+				_raiseError(error, "matrix_map_incorrect_format", key, label, key);
+			}
+		}
+
+		return matrix_map;
 	}
 
 	var _parseKeycode = function(layer, label_property, label_property_2) {
@@ -889,6 +978,8 @@ function TKG() {
 				matrix[i] = [];
 			}
 		}
+		console.log(_matrix_rows);
+		console.log(matrix);
 
 		// parse matrix from position
 		for (var i = 0; i < keys.length; i++) {
@@ -903,6 +994,7 @@ function TKG() {
 					"row": row,
 					"col": col
 				};
+				console.log(row + ',' + col);
 				if ((matrix[row][col] && matrix[row][col] == "KC_NO") || !matrix[row][col]) {
 					matrix[row][col] = symbol;
 				}
@@ -1164,6 +1256,22 @@ function TKG() {
 		return _layers[layer_number]["info"] || {};
 	}
 
+	var _getMatrixMap = function() {
+		return _matrix_map;
+	}
+
+	var _getMatrixMapError = function() {
+		return _matrix_map_layer["error"] || {};
+	}
+
+	var _getMatrixMapWarning = function() {
+		return _matrix_map_layer["warn"] || {};
+	}
+
+	var _getMatrixMapInfo = function() {
+		return _matrix_map_layer["info"] || {};
+	}
+
 	var _getFns = function(index) {
 		if (arguments.length) {
 			return _fns[index];
@@ -1287,9 +1395,14 @@ function TKG() {
 	this.setFnMaps = _setFnMaps;
 	this.setSimpleMode = _setSimpleMode;
 	this.parseLayer = _parseLayer;
+	this.parseMatrixMapLayer = _parseMatrixMapLayer;
 	this.getError = _getError;
 	this.getWarning = _getWarning;
 	this.getInfo = _getInfo;
+	this.getMatrixMap = _getMatrixMap;
+	this.getMatrixMapError = _getMatrixMapError;
+	this.getMatrixMapWarning = _getMatrixMapWarning;
+	this.getMatrixMapInfo = _getMatrixMapInfo;
 	this.getFns = _getFns;
 	this.setFns = _setFns;
 	this.exportFns = _exportFns;

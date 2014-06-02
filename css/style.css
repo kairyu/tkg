@@ -52,7 +52,7 @@ body {
 	font-size: 0.5em;
 }
 #config-form {
-	padding: 25px 0 0 0;
+	padding: 5px 0 0 0;
 }
 .page {
 	padding: 15px;
@@ -60,12 +60,19 @@ body {
 .container .credit {
 	margin: 20px 0;
 }
+#addl-config-btn {
+}
+/*
 .kbd-info {
 	padding-top: 7px;
 }
 #kbd-info {
 	color: #2f6f9f;
 	border-bottom: 1px dotted #999;
+}
+*/
+#kbd-info {
+	width: auto;
 }
 #notification {
 	position: fixed;
@@ -123,10 +130,24 @@ body {
 	text-decoration: underline;
 }
 
-.layer .popover {
+.bootstrap-tagsinput {
+	width: 100%;
+	margin-bottom: 0;
+}
+
+.popover{
+	max-width: 600px;
+	z-index: 2000;
+}
+.popover-content {
+	max-height: 600px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+#layer-info-container .popover {
 	max-width: 400px;
 }
-.popover ul {
+#layer-info-container .popover ul {
 	list-style-type: none;
 	width: 360px;
 	overflow: auto;
@@ -134,7 +155,7 @@ body {
 	padding: 0;
 	white-space: nowrap;
 }
-.popover li.key {
+#layer-info-container .popover li.key {
 	display: block;
 	float: left;
 	min-width: 40px;
@@ -149,28 +170,36 @@ body {
 	text-align: left;
 	vertical-align: top;
 }
-.popover li.key:hover {
+#layer-info-container .popover li.key:hover {
 	background-color: #efefef;
 }
-.popover li.key span {
+#layer-info-container .popover li.key span {
 	display: block;
 }
-.popover .tooltip-inner {
+#layer-info-container .popover .tooltip-inner {
 	text-align: left;
 }
-.popover .general {
+#layer-info-container .popover .general {
 	white-space: nowrap;
 }
-.popover .unknown-label .top-label {
+#layer-info-container .popover .unknown-label .top-label {
 	color: #b94a48;
 }
-.popover .label-2-ignored .bottom-label {
+#layer-info-container .popover .label-2-ignored .bottom-label {
 	color: #b94a48;
+}
+#kbd-info-container .popover {
+	z-index: 2010;
+}
+#key-info-container .tooltip {
+	z-index: 2010;
 }
 
+.alert {
+	padding: 5px 15px;
+}
 #available-labels .alert {
 	margin-bottom: 10px;
-	padding: 5px 15px;
 }
 #available-labels table tr td {
 	padding: 4px 5px;
@@ -194,4 +223,21 @@ body {
 }
 #available-labels code.low-priority {
 	color: #ccc;
+}
+#kimera-config-inner {
+	width: 400px;
+	padding: 20px;
+}
+#kimera-mux .multiselect {
+	text-align: center;
+}
+#kimera-mux .btn-group .btn {
+	border-right-width: 0px;
+}
+#kimera-mux .btn-group:last-of-type .btn {
+	border-right-width: 1px;
+}
+#kimera-mux-error {
+	margin-bottom: 0;
+	margin-top: 20px;
 }

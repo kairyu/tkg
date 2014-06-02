@@ -228,19 +228,29 @@ function setupLayerPopover(id) {
 	if (has_popover) {
 		// setup popover
 		$layer.popover({
+			animation: false,
 			html: true,
 			trigger: 'focus',
 			//trigger: 'manual',
-			content: $content.html()
+			content: $content.html(),
+			container: '#layer-info-container',
 		});//.popover('show');
 
 		$layer.on('shown.bs.popover', function() {
+			var $popover = $('#layer-info-container .popover');
+			var popover_top = parseInt($popover.css('top'));
+			var popover_height = parseInt($popover.height());
+			if (popover_top < 0) {
+				$popover.css('top', '0px');
+				$popover.find('.arrow').css('top', (popover_height / 2 + popover_top) + 'px');
+			}
 			// setup tooltip of keys
-			$layer.parent().find('li.key').tooltip('destroy').tooltip({
+			$('#layer-info-container .popover').find('li.key').tooltip('destroy').tooltip({
 				trigger: 'hover',
 				placement: 'bottom',
 				html: true,
-				delay: { show: 500, hide: 100 }
+				delay: { show: 500, hide: 100 },
+				container: '#key-info-container',
 			});
 		});
 	}
@@ -262,7 +272,7 @@ function appendLayerError(error, top_prop, bottom_prop) {
 				$content.append(
 					$('<h5>').attr({ "class": "text-danger", "lang": "en" }).text("Unknown label"),
 					$('<div>').attr({ "class": "unknown-label" }).append(makeKeyList(keys, function(key) {
-						console.log(key);
+						//console.log(key);
 						return "x: " + key["x"] + "<br>" + "y: " + key["y"];
 					}, top_prop, bottom_prop))
 				);

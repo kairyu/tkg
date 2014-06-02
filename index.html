@@ -6,23 +6,27 @@
 	<title>TMK Keymap Generator</title>
 	<link rel="shortcut icon" href="favicon.ico">
 	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<script src="http://underscorejs.org/underscore-min.js"></script>
 	<script src="../analytics.js"></script>
-	<script src="js/bootstrap.touchspin.js"></script>
+	<script src="js/bootstrap3-typeahead.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/bootstrap.touchspin.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/bootstrap-multiselect.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/bootstrap-tagsinput.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/jquery-lang.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/lang/ja.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/lang/zh_sc.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/lang/zh_tc.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/keycode_map.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/fn_map.js" charset="utf-8" type="text/javascript"></script>
-	<script src="js/bootstrap-multiselect.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/tkg.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/layer.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/fn.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/keyboard_config.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/main.js" charset="utf-8" type="text/javascript"></script>
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/bootstrap-multiselect.css">
+	<link rel="stylesheet" href="css/bootstrap-tagsinput.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>	
 <body>
@@ -89,24 +93,30 @@
 			<form id="config-form" class="form-horizontal" role="form">
 				<div class="form-group">
 					<label for="keyboard-sel" lang="en" class="col-md-2 control-label">Keyboard</label>
-					<div class="col-md-2">
-						<select id="keyboard-sel" class="form-control">
-							<option>GH60</option>
-							<option>GHPad</option>
-							<option>RedScarfII</option>
-							<option>AKB96</option>
-						</select>
+					<div class="col-md-5">
+						<div class="btn-group input-group">
+							<select id="keyboard-sel" class="form-control">
+								<option>GH60</option>
+								<option>GHPad</option>
+								<option>RedScarfII</option>
+								<option>AKB96</option>
+								<option data-role="divider"></option>
+								<option>Kimera</option>
+							</select>
+							<div id="kbd-cfg" class="btn-group" style="display: none;">
+								<button type="button" id="kbd-cfg-btn" class="btn btn-default" lang="en">Config</button>
+							</div>
+							<span id="kbd-info" class="input-group-addon" lang="en">Detail</span>
+						</div>
 					</div>
-					<div class="kbd-info">
-						<span id="kbd-info" lang="en">Detail</span>
-					</div>
-					<div id="kbd-info-dummy" style="display: none;"></div>
 				</div>
 				<div id="simple-mode" class="form-group">
 					<label for="switch-on" lang="en" class="col-md-2 control-label">Simple Mode</label>
-					<div class="col-md-2 btn-group">
-						<button id="switch-on" class="btn btn-default" lang="en">ON</button>
-						<button id="switch-off" class="btn btn-primary active" lang="en">OFF</button>
+					<div class="col-md-2">
+						<div class="btn-group">
+							<button id="switch-on" class="btn btn-default" lang="en">ON</button>
+							<button id="switch-off" class="btn btn-primary active" lang="en">OFF</button>
+						</div>
 					</div>
 				</div>
 				<div id="layer-wrapper">
@@ -115,11 +125,69 @@
 				</div>
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-5">
-						<button id="dl_eep" type="button" class="dl-btn btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> <span lang="en">Download</span> .eep <span lang="en">file</span></button>
-						<button id="dl_c" type="button" class="dl-btn btn btn-success"><span class="glyphicon glyphicon-floppy-disk"></span> <span lang="en">Download</span> .c <span lang="en">file</span></button>
+						<button id="dl_eep" type="button" class="dl-btn btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> <span lang="en">Download</span> .eep <span lang="en">file</span></button>
+						<button id="dl_c" type="button" class="dl-btn btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> <span lang="en">Download</span> .c <span lang="en">file</span></button>
 					</div>
 				</div>
 			</form>
+			<!-- popover: containers -->
+			<div id="kbd-info-container"></div>
+			<div id="kbd-cfg-container"></div>
+			<div id="layer-info-container"></div>
+			<div id="key-info-container"></div>
+			<!-- popover: kimera config -->
+			<div id="kimera-config" style="display: none;">
+				<div id="kimera-config-inner">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<label for="kimera-mux-sel[1]" lang="en" class="">Port Mapping</label>
+							<div>
+								<div id="kimera-mux" class="btn-group">
+									<select id="kimera-mux-sel[1]" class="form-control">
+										<option disabled="disabled">P1-P8</option>
+										<option lang="en" value="row">Row</option>
+										<option lang="en" value="col">Col</option>
+									</select>
+									<select id="kimera-mux-sel[2]" class="form-control">
+										<option disabled="disabled">P9-P16</option>
+										<option lang="en" value="row">Row</option>
+										<option lang="en" value="col">Col</option>
+									</select>
+									<select id="kimera-mux-sel[3]" class="form-control">
+										<option disabled="disabled">P17-P24</option>
+										<option lang="en" value="row">Row</option>
+										<option lang="en" value="col">Col</option>
+									</select>
+									<select id="kimera-mux-sel[4]" class="form-control">
+										<option disabled="disabled">P25-P32</option>
+										<option lang="en" value="row">Row</option>
+										<option lang="en" value="col">Col</option>
+									</select>
+								</div>
+								<div id="kimera-mux-error" class="alert alert-danger" lang="en" style="display: none;">Please select at least one Row or Col.</div>
+							</div>
+						</div>
+						<div id="kimera-row" class="form-group">
+							<label for="kimera-row-val" lang="en" class="">Row Mapping</label>
+							<div class="" style="width: 100%;">
+								<input id="kimera-row-val" type="text" class="form-control" data-mapping="row" placeholder="Add Row" lang="en" />
+							</div>
+						</div>
+						<div id="kimera-col" class="form-group">
+							<label for="kimera-col-val" lang="en" class="">Col Mapping</label>
+							<div class="">
+								<input id="kimera-col-val" type="text" class="form-control" data-mapping="col" placeholder="Add Col" lang="en" />
+							</div>
+						</div>
+						<div id="kimera-matrix" class="form-group">
+							<label for="kimera-matrix-val" lang="en" class="">Matrix Mapping</label>
+							<div class="">
+								<textarea id="kimera-matrix-val" spellcheck="false" class="form-control" rows=4 placeholder="Paste raw data here" lang="en"></textarea>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
 		<div id="pg-about" class="page container" style="display:none;">
 			<div class="col-md-offset-2 col-md-8">

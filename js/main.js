@@ -27,8 +27,9 @@ $(function() {
 	tkg.setFnMaps(action_map, lr_map, mod_map, on_map);
 	tkg.setSimpleMode(_simple_mode);
 
+	// select keyboard
 	$('#keyboard-sel').multiselect({
-		buttonWidth: "100%"
+		buttonContainer: '<div class="btn-group" />'
 	});
 	$('#keyboard-sel').change(function() {
 		var name = this.value;
@@ -202,6 +203,7 @@ function switchPage(id) {
 function initialize(name, simple_mode) {
 	var keyboard = loadKeyboard(name);
 	_keyboard = keyboard;
+	initKeyboardConfig(name);
 	initKeyboardInfo(keyboard);
 	initForm(simple_mode);
 }
@@ -229,17 +231,21 @@ function initKeyboardInfo(keyboard) {
 	// remove old
 	$('#kbd-info').popover('destroy');
 
+	/*
 	$('#kbd-info-dummy').html(
 		'<strong><span lang="en">Name</span>: </strong>' + keyboard['name'] + '<br/>' +
 		'<strong><span lang="en">Description</span>: </strong>' + keyboard['description'] + '<br/>' +
 		'<strong><span lang="en">Max Layers</span>: </strong>' + keyboard['max_layers'] + '<br/>' + 
 		'<strong><span lang="en">Max Fns</span>: </strong>' + keyboard['max_fns']
 	);
+	*/
 
 	// show keyboard info
 	$('#kbd-info').popover({
+		animation: false,
 		html: true,
 		trigger: 'hover',
+		container: '#kbd-info-container',
 		//content: (function() { $('#kbd-info-dymmy').html(); })()
 		content: 
 			'<strong><span lang="en">Name</span>: </strong>' + keyboard['name'] + '<br/>' +
@@ -250,6 +256,7 @@ function initKeyboardInfo(keyboard) {
 
 	// translate when shown
 	$('#kbd-info').on('shown.bs.popover', function() {
+		//$('#kbd-info-container .popover').css('top', $(this).offset().top + 'px');
 		window.lang.run();
 	});
 }
@@ -261,6 +268,9 @@ function initForm(simple_mode) {
 	
 	// clear fns
 	emptyFns();
+
+	// update buttons
+	updateDownloadButtonState();
 
 	// translate
 	window.lang.run();
@@ -351,6 +361,11 @@ function updateToolsMenuState() {
 	else {
 		$('#tools-import-fn, #tools-export-fn').parent().addClass('disabled');
 	}
+}
+
+function updateLayers() {
+	$('#layer-wrapper textarea').data('last', "");
+	$('#layer-wrapper textarea').trigger('blur');
 }
 
 var links = {

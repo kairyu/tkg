@@ -58,6 +58,17 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Paste raw data here':'请将 Raw Data 粘贴于此处',
 	'Download':'下载',
 	'file':'文件',
+	// Kimera
+	'Config':'设定',
+	'Port Mapping':'端口映射',
+	'Please select at least one Row or Col.':'请至少保留一个行或列',
+	'Row':'行',
+	'Col':'列',
+	'Row Mapping':'行映射',
+	'Col Mapping':'列映射',
+	'Matrix Mapping':'矩阵映射',
+	'Add Row':'添加行',
+	'Add Col':'添加列',
 	// Layer popover
 	'Normal Layer':'通常层',
 	'Fn Layer':'Fn 层',
