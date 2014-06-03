@@ -471,9 +471,8 @@ function TKG() {
 		var info = {};
 
 		// parse raw string to object
-		var raw;
-		try{
-			eval("raw = [" + raw_string + "]");
+		try {
+			eval("raw = [" + raw_string + "];");
 		} catch (e) {
 			var message = "Invalid raw data";
 			_raiseError(error, "general", message, message, raw_string);

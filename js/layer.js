@@ -19,10 +19,10 @@ function appendLayers(simple_mode) {
 					$('<textarea>').attr({
 						"spellcheck": false,
 						"id": "composite-layer",
-						"class": "form-control composite-layer-raw",
+						"class": "form-control composite-layer-raw kle-layer",
 						"rows": 4,
 						"lang": "en",
-						"placeholder": "Paste raw data here"
+						"placeholder": "Paste URL or raw data here"
 					})
 				)
 			)
@@ -101,10 +101,10 @@ function makeLayer(index) {
 			$('<textarea>').attr({
 				"spellcheck": false,
 				"id": "layer" + index,
-				"class": "form-control layer-raw",
+				"class": "form-control layer-raw kle-layer",
 				"rows": 4,
 				"lang": "en",
-				"placeholder": "Paste raw data here"
+				"placeholder": "Paste URL or raw data here"
 			})
 		)
 	);
@@ -119,9 +119,8 @@ function removeLastLayer() {
 	$('.layer-row:last').remove();
 }
 
-function onLayerChange(event) {
-	var id = event.target.id;
-	var $layer = $('#' + id);
+function onLayerChange($layer) {
+	var id = $layer.attr('id')
 	var last = $layer.data('last') || "";
 	var raw = $layer.val();
 	if (last != raw) {
@@ -139,26 +138,26 @@ function onLayerChange(event) {
 		layer_number = id.slice(5);
 	}
 	var state = tkg.parseLayer(layer_number, raw);
-	var div = $(this).parent();
+	var $div = $layer.parent();
 	// clear validation states
 	var class_names = [ "has-success", "has-warning", "has-error" ];
 	for (var i in class_names) {
 		var class_name = class_names[i];
-		if (div.hasClass(class_name)) {
-			div.removeClass(class_name);
+		if ($div.hasClass(class_name)) {
+			$div.removeClass(class_name);
 		}
 	}
 	// set validation state
 	if (raw != "") {
 		switch (state) {
 			case tkg.NONE:
-				div.addClass("has-success");
+				$div.addClass("has-success");
 				break;
 			case tkg.WARNING:
-				div.addClass("has-warning");
+				$div.addClass("has-warning");
 				break;
 			case tkg.ERROR:
-				div.addClass("has-error");
+				$div.addClass("has-error");
 				break;
 		}
 	}

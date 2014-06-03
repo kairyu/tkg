@@ -115,8 +115,29 @@ $(function() {
 		}
 	});
 	
+	// get raw data from server
+	$('body').on('blur', '.kle-layer', function(event) {
+		var $this = $(this);
+		if (isKLEUrl($this.val())) {
+			$this.attr('disabled', 'disabled');
+			getKLERawData($this.val(), function(data) {
+				$this.val(data);
+				$this.removeAttr('disabled');
+				$this.trigger('blur_custom', [ $this ]);
+			}, function() {
+				$(this).removeAttr('disabled');
+				$(this).trigger('blur_custom', [ $this ]);
+			});
+		}
+		else {
+			$this.trigger('blur_custom', [ $this ]);
+		}
+	});
+
 	// parse layer
-	$('#layer-wrapper').on('blur', 'textarea', onLayerChange);
+	$('#layer-wrapper').on('blur_custom', 'textarea', function(event, $layer) {
+		onLayerChange($layer);
+	});
 
 	// simple mode on off switch
 	$('#switch-on, #switch-off').click( function() {
@@ -158,38 +179,16 @@ $(function() {
 			$('#dl_form').remove();
 		}
 
-		/*
-		$("body").append("<form id='dl_form' action='download.php?file=" + type + "' method='POST'>" +
-			"<input type='hidden' name='matrix_rows' value='" + _keyboard['matrix_rows'] + "'>" +
-			"<input type='hidden' name='matrix_cols' value='" + _keyboard['matrix_cols'] + "'>" +
-			"<input type='hidden' name='matrix_size' value='" + (_keyboard['matrix_size'] || (_keyboard['matrix_rows'] * _keyboard['matrix_cols'])) + "'>" +
-			"<input type='hidden' name='max_layers' value='" + _keyboard['max_layers'] + "'>" +
-			"<input type='hidden' name='max_fns' value='" + _keyboard['max_fns'] + "'>" +
-			"<input type='hidden' name='eep_size' value='" + _keyboard['eep_size'] + "'>" +
-			"<input type='hidden' name='eep_start' value='" + _keyboard['eep_start'] + "'>" +
-			"<input type='hidden' name='keymaps' value='" + JSON.stringify(keymaps) + "'>" +
-			"<input type='hidden' name='fn_actions' value='" + JSON.stringify(fn_actions) + "'>" +
-			"</form>");
-			*/
-		var $form = $("<form>", {
-			"id": "dl_form", "action": "download.php?file=" + type, "method": "POST"
-		}).append($("<input>", {
-			"type": "hidden", "name": "matrix_rows", "value": _keyboard['matrix_rows']
-		})).append($("<input>", {
-			"type": "hidden", "name": "matrix_cols", "value": _keyboard['matrix_cols']
-		})).append($("<input>", {
-			"type": "hidden", "name": "max_layers", "value": _keyboard['max_layers']
-		})).append($("<input>", {
-			"type": "hidden", "name": "max_fns", "value": _keyboard['max_fns']
-		})).append($("<input>", {
-			"type": "hidden", "name": "eep_size", "value": _keyboard['eep_size']
-		})).append($("<input>", {
-			"type": "hidden", "name": "eep_start", "value": _keyboard['eep_start']
-		})).append($("<input>", {
-			"type": "hidden", "name": "keymaps", "value": JSON.stringify(keymaps)
-		})).append($("<input>", {
-			"type": "hidden", "name": "fn_actions", "value": JSON.stringify(fn_actions)
-		}));
+		var $form = $("<form>").attr({ "id": "dl_form", "action": "download.php?file=" + type, "method": "POST" }).append(
+			$("<input>").attr({ "type": "hidden", "name": "matrix_rows", "value": _keyboard['matrix_rows'] }),
+			$("<input>").attr({ "type": "hidden", "name": "matrix_cols", "value": _keyboard['matrix_cols'] }),
+			$("<input>").attr({ "type": "hidden", "name": "max_layers", "value": _keyboard['max_layers'] }),
+			$("<input>").attr({ "type": "hidden", "name": "max_fns", "value": _keyboard['max_fns'] }),
+			$("<input>").attr({ "type": "hidden", "name": "eep_size", "value": _keyboard['eep_size'] }),
+			$("<input>").attr({ "type": "hidden", "name": "eep_start", "value": _keyboard['eep_start'] }),
+			$("<input>").attr({ "type": "hidden", "name": "keymaps", "value": JSON.stringify(keymaps) }),
+			$("<input>").attr({ "type": "hidden", "name": "fn_actions", "value": JSON.stringify(fn_actions) })
+		);
 		if (_keyboard['name'] == 'Kimera') {
 			$form = $form.append($("<input>", {
 				"type": "hidden", "name": "additional", "value": JSON.stringify(_keyboard['additional'])
@@ -548,4 +547,28 @@ function adjustPopoverPosition($popover) {
 		arrow_top = popover_height - arrow_margin;
 	}
 	$popover.find('.arrow').css('top', arrow_top + 'px');
+}
+
+function isKLEUrl(url) {
+	return /^http:\/\/.*\/layouts\/[0-9a-z]+$/.test(url);
+}
+
+function getKLERawData(url, success, fail) {
+	var match = /layouts\/([0-9a-z]+)$/.exec(url);
+	if (match) {
+		var hash = match[1];
+		$.get("http://www.keyboard-layout-editor.com.s3.amazonaws.com/layouts/" + hash,  function(data) {
+			if (data.substr(0, 1) == '[' && data.substr(-1, 1) == ']') {
+				success.call(this, data.slice(1, -1));
+			}
+			else {
+				fail.call(this);
+			}
+		}, "text").fail(function() {
+			fail.call(this);
+		});
+	}
+	else {
+		fail.call(this);
+	}
 }

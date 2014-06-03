@@ -55,7 +55,7 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Layer29':'第29层',
 	'Layer30':'第30层',
 	'Layer31':'第31层',
-	'Paste raw data here':'请将 Raw Data 粘贴于此处',
+	'Paste URL or raw data here':'请将 URL 或 Raw Data 粘贴于此处',
 	'Download':'下载',
 	'file':'文件',
 	// Kimera
