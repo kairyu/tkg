@@ -532,7 +532,6 @@ function adjustPopoverPosition($popover) {
 	var window_top = parseInt($(window).scrollTop());
 	var window_height = parseInt($(window).height());
 	var margin = 10;
-	console.log(popover_top, popover_height, window_top, window_height);
 	if (popover_top + popover_height > window_top + window_height - margin) {
 		popover_top = window_top + window_height - margin - popover_height;
 	}

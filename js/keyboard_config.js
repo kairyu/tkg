@@ -367,8 +367,8 @@ function kimeraSetupMatrixMappingPopover() {
 }
 
 function kimeraConfigUpdate(init) {
-	_keyboard["matrix_rows"] = _keyboard_config["matrix_rows"];
-	_keyboard["matrix_cols"] = _keyboard_config["matrix_cols"];
+	_keyboard["matrix_rows"] = _keyboard_config["matrix_max_rows"];
+	_keyboard["matrix_cols"] = _keyboard_config["matrix_max_cols"];
 	_keyboard["matrix_size"] = _keyboard_config["matrix_size"];
 	_keyboard["additional"][0]["data"] = kimeraMakeConfigData();
 	if (init) {
@@ -387,8 +387,8 @@ function kimeraMakeConfigData() {
 	var mux_ports = _keyboard_config["mux_ports"] | 0;
 	var mux_count = _keyboard_config["mux_count"];
 	var mux_mapping = _keyboard_config["mux_mapping"];
-	var row_max_count = _keyboard_config["matrix_rows"];
-	var col_max_count = _keyboard_config["matrix_cols"];
+	var row_max_count = _keyboard_config["matrix_max_rows"];
+	var col_max_count = _keyboard_config["matrix_max_cols"];
 	var row_mapping = _keyboard_config["row_mapping"];
 	var col_mapping = _keyboard_config["col_mapping"];
 

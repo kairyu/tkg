@@ -33,7 +33,7 @@ function generate_eep_file($matrix_rows, $matrix_cols, $max_layers, $max_fns, $k
 	for ($layer = 0; $layer < $max_layers; $layer++) {
 		for ($row = 0; $row < $matrix_rows; $row++) {
 			for ($col = 0; $col < $matrix_cols; $col++) {
-				$keymap_bin .= pack('C', $keymaps[$layer][$row][$col]);
+				$keymap_bin .= pack('C', isset($keymaps[$layer][$row][$col]) ? $keymaps[$layer][$row][$col] : 0);
 			}
 		}
 	}

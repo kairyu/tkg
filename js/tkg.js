@@ -89,6 +89,7 @@ function TKG() {
 	var _initKeymaps = function(layer_number) {
 		if (layer_number === undefined) {
 			_keymaps_symbol = {};
+			_keymaps_hex = [];
 			for (var i = 0; i < _max_layers; i++) {
 				_initKeymaps(i);
 			}
