@@ -267,7 +267,6 @@ function appendLayerError(error, top_prop, bottom_prop) {
 				$content.append(
 					$('<h5>').attr({ "class": "text-danger", "lang": "en" }).text("Unknown label"),
 					$('<div>').attr({ "class": "unknown-label" }).append(makeKeyList(keys, function(key) {
-						//console.log(key);
 						return "x: " + key["x"] + "<br>" + "y: " + key["y"];
 					}, top_prop, bottom_prop))
 				);

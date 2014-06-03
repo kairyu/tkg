@@ -191,7 +191,6 @@ function appendFnParams(id) {
 					mods.push($(this).val());
 				});
 				$row.data('mods', mods);
-				console.log(mods);
 				onFnParamsChange(id);
 			}
 		});

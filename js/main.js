@@ -259,15 +259,6 @@ function initKeyboardInfo(keyboard) {
 	// remove old
 	$('#kbd-info').popover('destroy');
 
-	/*
-	$('#kbd-info-dummy').html(
-		'<strong><span lang="en">Name</span>: </strong>' + keyboard['name'] + '<br/>' +
-		'<strong><span lang="en">Description</span>: </strong>' + keyboard['description'] + '<br/>' +
-		'<strong><span lang="en">Max Layers</span>: </strong>' + keyboard['max_layers'] + '<br/>' + 
-		'<strong><span lang="en">Max Fns</span>: </strong>' + keyboard['max_fns']
-	);
-	*/
-
 	// show keyboard info
 	$('#kbd-info').popover({
 		animation: false,

@@ -141,7 +141,7 @@ function initKeyboardConfigPanel(name) {
 		// matrix mapping
 		var $matrix_textarea = $("#kbd-cfg-container #kimera-matrix-val");
 		$matrix_textarea.val(_keyboard_config["matrix_map_raw"]);
-		$matrix_textarea.blur(function() {
+		$matrix_textarea.on('blur_custom', function() {
 			kimeraMatrixMappingChange();
 		});
 		kimeraMatrixMappingRefresh();
