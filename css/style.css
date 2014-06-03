@@ -188,6 +188,9 @@ body {
 #layer-info-container .popover .label-2-ignored .bottom-label {
 	color: #b94a48;
 }
+#layer-info-container .popover .matrix-map-incorrect-format,.matrix-map-invalid-mapping .top-label {
+	color: #b94a48;
+}
 #kbd-info-container .popover {
 	z-index: 2010;
 }

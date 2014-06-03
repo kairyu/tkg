@@ -524,3 +524,29 @@ function makeAvailableLabelTableCell(symbol, key) {
 	}
 	return $cell;
 }
+
+function adjustPopoverPosition($popover) {
+	var popover_top = parseInt($popover.css('top'));
+	var popover_top_org = popover_top;
+	var popover_height = parseInt($popover.height());
+	var window_top = parseInt($(window).scrollTop());
+	var window_height = parseInt($(window).height());
+	var margin = 10;
+	console.log(popover_top, popover_height, window_top, window_height);
+	if (popover_top + popover_height > window_top + window_height - margin) {
+		popover_top = window_top + window_height - margin - popover_height;
+	}
+	if (popover_top < window_top + margin) {
+		popover_top = window_top + margin;
+	}
+	$popover.css('top', popover_top + 'px');
+	var arrow_top = popover_height / 2 + (popover_top_org - popover_top);
+	var arrow_margin = 12;
+	if (arrow_top < arrow_margin) {
+		arrow_top = arrow_margin;
+	}
+	if (arrow_top > popover_height - arrow_margin) {
+		arrow_top = popover_height - arrow_margin;
+	}
+	$popover.find('.arrow').css('top', arrow_top + 'px');
+}

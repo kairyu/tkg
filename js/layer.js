@@ -238,12 +238,8 @@ function setupLayerPopover(id) {
 
 		$layer.on('shown.bs.popover', function() {
 			var $popover = $('#layer-info-container .popover');
-			var popover_top = parseInt($popover.css('top'));
-			var popover_height = parseInt($popover.height());
-			if (popover_top < 0) {
-				$popover.css('top', '0px');
-				$popover.find('.arrow').css('top', (popover_height / 2 + popover_top) + 'px');
-			}
+			adjustPopoverPosition($popover);
+
 			// setup tooltip of keys
 			$('#layer-info-container .popover').find('li.key').tooltip('destroy').tooltip({
 				trigger: 'hover',
@@ -295,6 +291,24 @@ function appendLayerError(error, top_prop, bottom_prop) {
 					}, top_prop, bottom_prop))
 				);
 				break;
+			case "matrix_map_incorrect_format":
+				var keys = error[type];
+				$content.append(
+					$('<h5>').attr({ "class": "text-danger", "lang": "en" }).text("Incorrect format"),
+					$('<div>').attr({ "class": "matrix-map-incorrect-format" }).append(makeKeyList(keys, function(key) {
+						return "x: " + key["x"] + "<br>" + "y: " + key["y"];
+					}, top_prop, bottom_prop))
+				);
+				break;
+			case "matrix_map_invalid_mapping":
+				var keys = error[type];
+				$content.append(
+					$('<h5>').attr({ "class": "text-danger", "lang": "en" }).text("Invalid row or col"),
+					$('<div>').attr({ "class": "matrix-map-invalid-mapping" }).append(makeKeyList(keys, function(key) {
+						return "x: " + key["x"] + "<br>" + "y: " + key["y"];
+					}, top_prop, bottom_prop))
+				);
+				break;
 		}
 	}
 	return $content;
@@ -327,6 +341,15 @@ function appendLayerWarning(warning, top_prop, bottom_prop) {
 				$content.append(
 					$('<h5>').attr({ "class": "text-warning", "lang": "en" }).text("Invalid Fn key"),
 					$('<div>').attr({ "class": "fn-out-of-bounds" }).append(makeKeyList(keys, function(key) {
+						return "x: " + key["x"] + "<br>" + "y: " + key["y"];
+					}, top_prop, bottom_prop))
+				);
+				break;
+			case "matrix_map_overlapping":
+				var keys = warning[type];
+				$content.append(
+					$('<h5>').attr({ "class": "text-warning", "lang": "en" }).text("Overlapping matrix mapping ignored"),
+					$('<div>').attr({ "class": "matrix-map-overlapping" }).append(makeKeyList(keys, function(key) {
 						return "x: " + key["x"] + "<br>" + "y: " + key["y"];
 					}, top_prop, bottom_prop))
 				);

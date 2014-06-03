@@ -69,6 +69,10 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Matrix Mapping':'矩阵映射',
 	'Add Row':'添加行',
 	'Add Col':'添加列',
+	// Kimera popover
+	'Incorrect format':'格式错误',
+	'Invalid row or col':'无效的行或列',
+	'Overlapping matrix mapping ignored':'重叠的矩阵映射被忽略',
 	// Layer popover
 	'Normal Layer':'通常层',
 	'Fn Layer':'Fn 层',
