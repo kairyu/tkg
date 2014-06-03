@@ -22,7 +22,7 @@ function appendLayers(simple_mode) {
 						"class": "form-control composite-layer-raw kle-layer",
 						"rows": 4,
 						"lang": "en",
-						"placeholder": "Paste URL or raw data here"
+						"placeholder": "Paste URL or Raw Data here"
 					})
 				)
 			)
@@ -104,7 +104,7 @@ function makeLayer(index) {
 				"class": "form-control layer-raw kle-layer",
 				"rows": 4,
 				"lang": "en",
-				"placeholder": "Paste URL or raw data here"
+				"placeholder": "Paste URL or Raw Data here"
 			})
 		)
 	);

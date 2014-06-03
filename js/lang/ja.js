@@ -55,7 +55,7 @@ jquery_lang_js.prototype.lang.ja = {
 	'Layer29':'レイヤー29',
 	'Layer30':'レイヤー30',
 	'Layer31':'レイヤー31',
-	'Paste URL or raw data here':'URL または Raw Data をここに貼り付けてください',
+	'Paste URL or Raw Data here':'URL または Raw Data をここに貼り付けてください',
 	'Download':'ダウンロード',
 	'file':'ファイル',
 	'Name':'名前',
