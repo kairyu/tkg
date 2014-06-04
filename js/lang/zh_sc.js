@@ -69,6 +69,10 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Matrix Mapping':'矩阵映射',
 	'Add Row':'添加行',
 	'Add Col':'添加列',
+	'Delete all':'全部删除',
+	'Assign port for Row or Col use':'分配端口作为行或是列',
+	'Input port numbers orderly. Use commas to separate numbers and backspace to delete numbers. Invalid values are shown in red.':'输入端口号（有序）。使用逗号分隔多个值，使用退格删除值。无效值显示为红色。',
+	'Input mapping data between key and Row/Col. The correct format is "n-th row,n-th col".':'输入按键与行列之间的映射关系。正确的格式为“第N行,第N列”。',
 	// Kimera popover
 	'Incorrect format':'格式错误',
 	'Invalid row or col':'无效的行或列',
