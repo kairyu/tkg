@@ -1164,10 +1164,10 @@ function TKG() {
 	var _consoleDebug = function(message) {
 		if (Boolean(_log & _DEBUG)) {
 			if (_.isObject(message)) {
-				console.log(message);
+				console.debug(message);
 			}
 			else {
-				console.log("DEBUG: " + message);
+				console.debug("DEBUG: " + message);
 			}
 		}
 	}
@@ -1175,10 +1175,10 @@ function TKG() {
 	var _consoleInfo = function(message) {
 		if (Boolean(_log & _INFO)) {
 			if (_.isObject(message)) {
-				console.log(message);
+				console.info(message);
 			}
 			else {
-				console.log("INFO: " + message);
+				console.info("INFO: " + message);
 			}
 		}
 	}
