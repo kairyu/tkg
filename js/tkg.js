@@ -37,6 +37,7 @@ function TKG() {
 	}
 
 	var _setKeycodeMap = function(keycode_map) {
+		_consoleInfoGroup("setKeycodeMap");
 		_keycode_map = keycode_map;
 		_consoleInfo("keycode_map:");
 		_consoleInfo(_keycode_map);
@@ -44,9 +45,11 @@ function TKG() {
 		_consoleInfo("keycode_map_reversed:");
 		_consoleInfo(_keycode_map_reversed);
 		_fn_options["key"] = _generateKeyOptions(_keycode_map);
+		_consoleInfoGroupEnd();
 	}
 
 	var _setFnMaps = function(action_map, lr_map, mod_map, on_map) {
+		_consoleInfoGroup("setFnMaps");
 		_action_map = action_map;
 		_lr_map = lr_map;
 		_mod_map = mod_map;
@@ -63,6 +66,7 @@ function TKG() {
 		_fn_options["lr"] = _generateLrOptions(_lr_map);
 		_fn_options["mod"] = _generateModOptions(_mod_map);
 		_fn_options["on"] = _generateOnOptions(_on_map);
+		_consoleInfoGroupEnd();
 	}
 
 	var _init = function(object) {
@@ -265,6 +269,7 @@ function TKG() {
 	}
 
 	var _parseLayer = function(layer_number, raw_string) {
+		_consoleInfoGroup("parseLayer");
 		// console log
 		if (!_simple_mode) {
 			_consoleInfo("Parse layer");
@@ -279,12 +284,14 @@ function TKG() {
 		if (_simple_mode) {
 			if (layer_number != 0) {
 				_consoleError("Invalid layer number: " + layer_number);
+				_consoleInfoGroupEnd();
 				return _ERROR;
 			}
 		}
 		else {
 			if (layer_number >= _max_layers) {
 				_consoleError("Layer number out of bounds");
+				_consoleInfoGroupEnd();
 				return _ERROR;
 			}
 		}
@@ -434,10 +441,12 @@ function TKG() {
 				}
 			}
 		}
+		_consoleInfoGroupEnd();
 		return state;
 	}
 
 	var _parseMatrixMapLayer = function(raw_string) {
+		_consoleInfoGroup("parseMatrixMapLayer");
 		_consoleInfo("Parse matrix map layer");
 		var layer = {};
 
@@ -461,6 +470,7 @@ function TKG() {
 		if (!_.isEmpty(layer["error"])) {
 			state = _ERROR;
 		}
+		_consoleInfoGroupEnd();
 		return state;
 	}
 
@@ -1180,6 +1190,18 @@ function TKG() {
 			else {
 				console.info("INFO: " + message);
 			}
+		}
+	}
+
+	var _consoleInfoGroup = function(message) {
+		if (Boolean(_log & _INFO)) {
+			console.groupCollapsed(message);
+		}
+	}
+
+	var _consoleInfoGroupEnd = function() {
+		if (Boolean(_log & _INFO)) {
+			console.groupEnd();
 		}
 	}
 
