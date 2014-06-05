@@ -73,7 +73,7 @@ jquery_lang_js.prototype.lang.ja = {
 	'Matrix Mapping':'マトリックスマッピング',
 	'Add Row':'行を追加',
 	'Add Col':'列を追加',
-	'Delete all':'すべてを削除',
+	'Remove all':'すべてを削除',
 	'Assign port for Row or Col use':'ポートを行用か列用かに割り当ててください',
 	'Input port numbers orderly. Use commas to separate numbers and backspace to delete numbers. Invalid values are shown in red.':'順序付きにポート番号を入れてください。番号を区切るにはコンマ「,」を、削除するにはバックスペースを使用してください。無効な値は赤で表示される。',
 	'Input mapping data between key and Row/Col. The correct format is "n-th row,n-th col".':'キーと行列の対応付けデータを入れてください。正しいフォーマットは「N行目,N列目」。',

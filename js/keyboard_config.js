@@ -138,6 +138,18 @@ function initKeyboardConfigPanel(name) {
 		});
 		kimeraRowColMappingRefresh();
 
+		// row col clear
+		var $row_clear = $('#kbd-cfg-container #kimera-row-clear');
+		var $col_clear = $('#kbd-cfg-container #kimera-col-clear');
+		$row_clear.click(function () {
+			$row_input.tagsinput('removeAll');
+			kimeraRowMappingChange();
+		});
+		$col_clear.click(function () {
+			$col_input.tagsinput('removeAll');
+			kimeraColMappingChange();
+		});
+
 		// matrix mapping
 		var $matrix_textarea = $("#kbd-cfg-container #kimera-matrix-val");
 		$matrix_textarea.val(_keyboard_config["matrix_map_raw"]);
@@ -198,9 +210,12 @@ function kimeraRowMappingChange(force) {
 		return;
 	}
 	$row_input.data('last', val);
-	var input_ports = _.map(val.split(','), function(e) {
-		return parseInt(e);
-	});
+	var input_ports = [];
+	if (val) {
+		input_prots = _.map(val.split(','), function(e) {
+			return parseInt(e);
+		});
+	}
 	_keyboard_config["row_mapping_input"] = input_ports;
 	_keyboard_config["row_mapping"] = _.intersection(input_ports, $row_input.data('available_ports'));
 	_keyboard_config["matrix_rows"] = _keyboard_config["row_mapping"].length;
@@ -219,9 +234,12 @@ function kimeraColMappingChange(force) {
 		return;
 	}
 	$col_input.data('last', val);
-	var input_ports = _.map(val.split(','), function(e) {
-		return parseInt(e);
-	});
+	var input_ports = [];
+	if (val) {
+		input_prots = _.map(val.split(','), function(e) {
+			return parseInt(e);
+		});
+	}
 	_keyboard_config["col_mapping_input"] = input_ports;
 	_keyboard_config["col_mapping"] = _.intersection(input_ports, $col_input.data('available_ports'));
 	_keyboard_config["matrix_cols"] = _keyboard_config["col_mapping"].length;
