@@ -212,7 +212,7 @@ function kimeraRowMappingChange(force) {
 	$row_input.data('last', val);
 	var input_ports = [];
 	if (val) {
-		input_prots = _.map(val.split(','), function(e) {
+		input_ports = _.map(val.split(','), function(e) {
 			return parseInt(e);
 		});
 	}
@@ -236,7 +236,7 @@ function kimeraColMappingChange(force) {
 	$col_input.data('last', val);
 	var input_ports = [];
 	if (val) {
-		input_prots = _.map(val.split(','), function(e) {
+		input_ports = _.map(val.split(','), function(e) {
 			return parseInt(e);
 		});
 	}
