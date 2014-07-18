@@ -493,7 +493,7 @@ var keycode_map = {
 		"description": "Insert",
 		"keycode": "0x49",
 		"label": [ "insert", "ins" ],
-		"short_name": "KC_INT"
+		"short_name": "KC_INS"
 	},
 	"KC_HOME": {
 		"name": "Home",
@@ -1522,7 +1522,7 @@ var keycode_map = {
 		"description": "Mouse Button 2",
 		"keycode": "0xF5",
 		"label": [ "button2", "btn2" ],
-		"short_name": "KC_BTN1"
+		"short_name": "KC_BTN2"
 	},
 	"KC_MS_BTN3": {
 		"name": "Mouse Button 3",
