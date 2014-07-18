@@ -614,7 +614,7 @@ var keycode_map = {
 		"keycode": "0x5A",
 		"label": [ [ "2" ], [ "p2" ] ],
 		"label_2": [ [ "down", "↓" ], [] ],
-		"short_name": "KC_P1"
+		"short_name": "KC_P2"
 	},
 	"KC_KP_3": {
 		"name": "Keypad 3 and PageDown",
@@ -646,7 +646,7 @@ var keycode_map = {
 		"keycode": "0x5E",
 		"label": [ [ "6" ], [ "p6" ] ],
 		"label_2": [ [ "right", "→" ], [] ],
-		"short_name": "KC_P1"
+		"short_name": "KC_P6"
 	},
 	"KC_KP_7": {
 		"name": "Keypad 7 and Home",
