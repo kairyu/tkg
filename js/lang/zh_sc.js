@@ -119,6 +119,8 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Invert':'反转状态',
 	'On then off':'开启后关闭',
 	'Off then on':'关闭后开启',
+	'Dual-role send key':'二合一：按键，瞬时开启',
+	'Dual-role toggle layer':'二合一：开关，瞬时开启',
 	'Set then clear':'设置后清除',
 	'Backlight action':'背光操作',
 	'Increase':'提高亮度',
