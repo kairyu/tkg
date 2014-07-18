@@ -229,24 +229,17 @@ var action_map = {
 		"param": [ "layer" ],
 		"default": [ 1 ]
 	},
-    /*
-     * TODO: flash it and test on a real keyboard
-     * These two actions (ACTION_LAYER_TAP_KEY, ACTION_LAYER_TAP_TOGGLE) are
-     * experimental. They are only tested on website! It means that only the
-     * eep, c files which contains these two actions are correct.  I have not
-     * flashed it on any keyboard testing whether it works.
-     */
 	"ACTION_LAYER_TAP_KEY": {
 		"group": "Layer advanced action",
 		"name": "Dual-role send key",
 		"description": "Turns on layer momentary while holding, but registers key on tap (press and release quickly)",
 		"code": function (layer, key) {
 			if (layer >= 0 && layer < 16) {
-				return "0xA" + dechex(layer) + dechex(key, 2);
+				return "0xA" + dechex(layer) + keyCode(key);
 			}
 			else if (layer < 32) {
 				layer -= 16;
-				return "0xB" + dechex(layer) + dechex(key, 2);
+				return "0xB" + dechex(layer) + keyCode(key);
 			}
 			else {
 				return "";
