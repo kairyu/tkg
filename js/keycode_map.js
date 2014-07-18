@@ -493,7 +493,7 @@ var keycode_map = {
 		"description": "Insert",
 		"keycode": "0x49",
 		"label": [ "insert", "ins" ],
-		"short_name": "KC_INT"
+		"short_name": "KC_INS"
 	},
 	"KC_HOME": {
 		"name": "Home",
@@ -614,7 +614,7 @@ var keycode_map = {
 		"keycode": "0x5A",
 		"label": [ [ "2" ], [ "p2" ] ],
 		"label_2": [ [ "down", "↓" ], [] ],
-		"short_name": "KC_P1"
+		"short_name": "KC_P2"
 	},
 	"KC_KP_3": {
 		"name": "Keypad 3 and PageDown",
@@ -646,7 +646,7 @@ var keycode_map = {
 		"keycode": "0x5E",
 		"label": [ [ "6" ], [ "p6" ] ],
 		"label_2": [ [ "right", "→" ], [] ],
-		"short_name": "KC_P1"
+		"short_name": "KC_P6"
 	},
 	"KC_KP_7": {
 		"name": "Keypad 7 and Home",
@@ -1522,7 +1522,7 @@ var keycode_map = {
 		"description": "Mouse Button 2",
 		"keycode": "0xF5",
 		"label": [ "button2", "btn2" ],
-		"short_name": "KC_BTN1"
+		"short_name": "KC_BTN2"
 	},
 	"KC_MS_BTN3": {
 		"name": "Mouse Button 3",
