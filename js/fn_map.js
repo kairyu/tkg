@@ -229,6 +229,44 @@ var action_map = {
 		"param": [ "layer" ],
 		"default": [ 1 ]
 	},
+	"ACTION_LAYER_TAP_KEY": {
+		"group": "Layer advanced action",
+		"name": "Dual-role send key",
+		"description": "Turns on layer momentary while holding, but registers key on tap (press and release quickly)",
+		"code": function (layer, key) {
+			if (layer >= 0 && layer < 16) {
+				return "0xA" + dechex(layer) + keyCode(key);
+			}
+			else if (layer < 32) {
+				layer -= 16;
+				return "0xB" + dechex(layer) + keyCode(key);
+			}
+			else {
+				return "";
+			}
+		},
+		"param": [ "layer", "key" ],
+		"default": [ 1, "KC_NO" ]
+	},
+	"ACTION_LAYER_TAP_TOGGLE": {
+		"group": "Layer advanced action",
+		"name": "Dual-role toggle layer",
+		"description": "Turns on layer momentary while holding and toggles it with serial taps",
+		"code": function (layer) {
+			if (layer >= 0 && layer < 16) {
+				return "0xA" + dechex(layer) + "F0";
+			}
+			else if (layer < 32) {
+				layer -= 16;
+				return "0xB" + dechex(layer) + "F0";
+			}
+			else {
+				return "";
+			}
+		},
+		"param": [ "layer" ],
+		"default": [ 1 ]
+	},
 	"ACTION_BACKLIGHT_INCREASE": {
 		"group": "Backlight action",
 		"name": "Increase",
