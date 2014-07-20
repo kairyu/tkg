@@ -115,6 +115,8 @@ jquery_lang_js.prototype.lang.ja = {
 	'Invert':'反転',
 	'On then off':'オンしてからオフ',
 	'Off then on':'オフしてからオン',
+	'Dual-role send key':'複合：キー・モーメンタリー',
+	'Dual-role toggle layer':'複合：オン／オフ・モーメンタリー',
 	'Set then clear':'セットしてからクリア',
 	'Backlight action':'バックライトアクション',
 	'Increase':'明るさを上げる',
