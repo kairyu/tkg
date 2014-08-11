@@ -1,0 +1,15 @@
+{
+	"name": "TentaPad FX",
+	"description": "TentaPad Fx by 3beeline",
+	"max_layers": 8,
+	"max_fns": 32,
+	"eep_size": 1024,
+	"eep_start": 16,
+	"matrix_rows": 1,
+	"matrix_cols": 5,
+	"matrix_map": {
+		"0,0": { "row": 0, "col": 0 },
+		"1,0": { "row": 0, "col": 1 },
+		"2,0": { "row": 0, "col": 2 }
+	}
+}
