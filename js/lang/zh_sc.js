@@ -19,6 +19,8 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'SMART68 Module Keyboard by DeeLonG':'SMART68模块化键盘 by DeeLonG',
 	'RedScarfII 77 Keyboard by 悬壶济世':'红领巾二道杠77键盘 by 悬壶济世',
 	// Main
+	'General':'一般',
+	'Layer':'层',
 	'Keyboard':'键盘',
 	'Simple Mode':'简单模式',
 	'ON':'开',
@@ -140,6 +142,11 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Right':'右',
 	// Fn key
 	'key':'按键',
+	// LED
+	'Backlight':'背光',
+	'Bind to default layer':'绑定默认层',
+	'Bind to layer':'绑定层',
+	'Indicator':'指示灯',
 	// Help
 	'How to Use':'使用方法',
 	'Available Labels':'可用标签',

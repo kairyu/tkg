@@ -1,0 +1,26 @@
+{
+	"name": "GH60 (RevCHN)",
+	"description": "GH60 Keyboard (Revision CHN)",
+	"led_count": 2,
+	"led_map": [{
+		"name": "Caps Lock",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_CAPS_LOCK",
+			"backlight": 1
+		}
+	},{
+		"name": "Backlight",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NO",
+			"backlight": 1
+		}
+	}],
+	"led_additional_index": 0,
+	"additional": [{
+		"start": 7,
+		"size": 2,
+		"data": []
+	}]
+}

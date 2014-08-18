@@ -5,17 +5,23 @@ function emptyFns() {
 function appendFns() {
 	emptyFns();
 	var fns = tkg.getFns();
-	for (var index in fns) {
-		var fn = fns[index];
-		$('#fn-wrapper').append(
-			$('<div>').attr({ "class": "form-group"  }).append(
-				$('<label>').attr({ "for": "fn" + index + "-action", "class": "col-md-2 control-label" }).text("Fn" + index)
-			).append(
-				$('<div>').attr({ "id": "fn" + index, "class": "fn-row col-md-10" })
-			)
-		);
+	if (fns.length) {
+		for (var index in fns) {
+			var fn = fns[index];
+			$('#fn-wrapper').append(
+				$('<div>').attr({ "class": "form-group"  }).append(
+					$('<label>').attr({ "for": "fn" + index + "-action", "class": "col-md-2 control-label" }).text("Fn" + index)
+				).append(
+					$('<div>').attr({ "id": "fn" + index, "class": "fn-row col-md-10" })
+				)
+			);
+		}
+		$('#fn-wrapper .fn-row').fn();
+		$('#fn-wrapper').parent().show();
 	}
-	$('#fn-wrapper .fn-row').fn();
+	else {
+		$('#fn-wrapper').parent().hide();
+	}
 
 	updateToolsMenuState();
 }
@@ -24,7 +30,7 @@ $.fn.fn = function() {
 	return this.each(function() {
 		var $row = $(this);
 		var id = $row.attr('id');
-		var index = Number(id.slice(2));
+		var index = Number(id.slice('fn'.length));
 		var fn = tkg.getFns(index);
 		var action = fn["action"];
 		$row.removeData();

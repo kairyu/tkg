@@ -13,20 +13,27 @@ function TKG() {
 	var _lr_map = {};
 	var _mod_map = {};
 	var _on_map = {};
-	var _fn_options = {}
+	var _binding_map = {};
+	var _backlight_map = {};
+	var _fn_options = {};
 	var _action_options = [];
+	var _led_options = {};
 	var _max_layers = 0;
 	var _max_fns = 0;
 	var _matrix_rows = 0;
 	var _matrix_cols = 0;
 	var _matrix_map = {};
+	var _led_count = 0;
 	var _layers = [];
 	var _fns = [];
+	var _leds = [];
 	var _matrices = [];
 	var _keymaps_hex = [];
 	var _keymaps_symbol = {};
 	var _fn_actions_hex = [];
 	var _fn_actions_symbol = {};
+	var _led_hex = [];
+	var _led_symbol = {};
 	var _matrix_map_layer = {};
 
 	var _setSimpleMode = function(simple_mode) {
@@ -68,6 +75,19 @@ function TKG() {
 		_fn_options["on"] = _generateOnOptions(_on_map);
 		_consoleInfoGroupEnd();
 	}
+	
+	var _setLedMaps = function(binding_map, backlight_map) {
+		_consoleInfoGroup("setLedMap");
+		_binding_map = binding_map;
+		_backlight_map = backlight_map;
+		_consoleInfo("binding_map:");
+		_consoleInfo(_binding_map);
+		_consoleInfo("backlight map:");
+		_consoleInfo(_backlight_map);
+		_led_options["binding"] = _generateBindingOptions(_binding_map);
+		_led_options["backlight"] = _generateBacklightOptions(_backlight_map);
+		_consoleInfoGroupEnd();
+	}
 
 	var _init = function(object) {
 		// get parameters
@@ -76,6 +96,9 @@ function TKG() {
 		_matrix_rows = object["matrix_rows"];
 		_matrix_cols = object["matrix_cols"];
 		_matrix_map = object["matrix_map"];
+		_led_count = object["led_count"] | 0;
+		_leds = [];
+		_initLeds();
 		// init variables
 		_initVariables();
 		// generate options
@@ -105,8 +128,18 @@ function TKG() {
 
 	var _initFnActions = function() {
 		_fn_actions_symbol = {};
+		_fn_actions_hex = [];
 		for (var i = 0; i < _max_fns; i++) {
 			_fn_actions_hex[i] = 0;
+		}
+	}
+
+	var _initLeds = function() {
+		_led_symbol = {};
+		_led_hex = [];
+		for (var i = 0; i < _led_count; i++) {
+			_leds[i] = {}
+			_led_hex[i] = 0;
 		}
 	}
 
@@ -161,13 +194,13 @@ function TKG() {
 		return keycode_map_reversed;
 	}
 
-	var _generateActionOptions = function(action_map) {
+	var _generateGroupedOptions = function(map) {
 		var options = {};
-		for (var symbol in action_map) {
-			var action = action_map[symbol];
-			var group = action["group"];
-			var name = action["name"];
-			var description = action["description"];
+		for (var symbol in map) {
+			var item = map[symbol];
+			var group = item["group"];
+			var name = item["name"];
+			var description = item["description"];
 			if (options[group]) {
 				options[group].push({
 					"value": symbol,
@@ -186,6 +219,23 @@ function TKG() {
 		return options;
 	}
 
+	var _generateUngroupedOptions = function(map) {
+		var options = [];
+		for (var symbol in map) {
+			var item = map[symbol];
+			options.push({
+				"value": symbol,
+				"text": item["name"],
+				"title": item["description"]
+			});
+		}
+		return options;
+	}
+
+	var _generateActionOptions = function(action_map) {
+		return _generateGroupedOptions(action_map);
+	}
+
 	var _generateLayerOptions = function(max_layers) {
 		var options = [];
 		for (var i = 0; i < max_layers; i++) {
@@ -199,42 +249,15 @@ function TKG() {
 	}
 
 	var _generateOnOptions = function(on_map) {
-		var options = [];
-		for (var symbol in on_map) {
-			var on = on_map[symbol];
-			options.push({
-				"value": symbol,
-				"text": on["name"],
-				"title": on["description"]
-			});
-		}
-		return options;
+		return _generateUngroupedOptions(on_map);
 	}
 
 	var _generateLrOptions = function(lr_map) {
-		var options = [];
-		for (var symbol in lr_map) {
-			var lr = lr_map[symbol];
-			options.push({
-				"value": symbol,
-				"text": lr["name"],
-				"title": lr["description"]
-			});
-		}
-		return options;
+		return _generateUngroupedOptions(lr_map);
 	}
 
 	var _generateModOptions = function(mod_map) {
-		var options = [];
-		for (var symbol in mod_map) {
-			var mod = mod_map[symbol];
-			options.push({
-				"value": symbol,
-				"text": mod["description"],
-				"title": mod["name"]
-			});
-		}
-		return options;
+		return _generateUngroupedOptions(mod_map);
 	}
 
 	var _generateKeyOptions = function(keycode_map) {
@@ -251,6 +274,14 @@ function TKG() {
 			}
 		}
 		return key_options;
+	}
+
+	var _generateBindingOptions = function(binding_map) {
+		return _generateGroupedOptions(binding_map);
+	}
+
+	var _generateBacklightOptions = function(backlight_map) {
+		return _generateUngroupedOptions(binding_map);
 	}
 
 	var _smartPush = function(target, value) {
@@ -1098,6 +1129,57 @@ function TKG() {
 		}
 	}
 
+	var _generateLedHex = function(led) {
+		if (led["binding"]) {
+			var dec = 0;
+			var binding = led["binding"];
+			if (_binding_map[binding]) {
+				var code = _binding_map[binding]["code"];
+				if (_.isFunction(code)) {
+					dec = code.apply(code, led["args"]);
+				}
+				else {
+					dec = code;
+				}
+			}
+			var backlight = led["backlight"] | 0;
+			var code = _backlight_map["LEDMAP_BACKLIGHT"]["code"];
+			if (_.isFunction(code)) {
+				dec |= code.apply(code, [ backlight ]);
+			}
+			else {
+				dec |= code;
+			}
+			return dec;
+		}
+		else {
+			var leds = [];
+			for (var i = 0; i < _led_count; i++) {
+				if (led[i]) {
+					leds[i] = _generateLedHex(led[i]);
+				}
+			}
+			return leds;
+		}
+	}
+
+	var _generateLedSymbol = function(led, index) {
+		if (led["binding"]) {
+			var binding = led["binding"];
+			var array = [ binding ];
+			if (led["args"]) {
+				array = array.concat(led["args"]);
+			}
+			return array;
+		}
+		else {
+			var leds = {};
+			for (var i in led) {
+				leds[i] = _generateLedSymbol(led[i]);
+			}
+			return leds;
+		}
+	}
 	var _parseLabelString = function(label_string) {
 		var strings = label_string.split("\n");
 		var label = {};
@@ -1387,6 +1469,62 @@ function TKG() {
 		}
 	}
 
+	var _getLeds = function(index) {
+		if (arguments.length) {
+			return _leds[index];
+		}
+		else {
+			return _leds;
+		}
+	}
+
+	var _setLeds = function(index, object) {
+		var led = _leds[index];
+		_consoleInfo("Set Led" + index + ":");
+		_consoleInfo(object);
+		if (object["binding"]) {
+			var symbol = object["binding"];
+			if (led["binding"] != symbol || object["args"]) {
+				led["binding"] = symbol;
+				if (_binding_map[symbol]) {
+					var binding = _binding_map[symbol];
+					if (binding["param"]) {
+						led["param"] = binding["param"];
+						if (object["args"]) {
+							led["args"] = object["args"];
+						}
+						else {
+							led["args"] = binding["default"];
+						}
+					}
+					else {
+						delete led["param"];
+						delete led["args"];
+					}
+				}
+				_led_hex[index] = _generateLedHex(led);
+				_led_symbol[index] = _generateLedSymbol(led);
+			}
+		}
+		if (object["backlight"] !== undefined) {
+			if (led["backlight"] != object["backlight"]) {
+				led["backlight"] = object["backlight"];
+				_led_hex[index] = _generateLedHex(led);
+				_led_symbol[index] = _generateLedSymbol(led);
+			}
+		}
+		return led;
+	}
+
+	var _getLedOptions = function(item) {
+		if (item) {
+			return _led_options[item];
+		}
+		else {
+			return _led_options;
+		}
+	}
+
 	var _getKeymapsHex = function() {
 		return _keymaps_hex;
 	}
@@ -1403,6 +1541,14 @@ function TKG() {
 		return _fn_actions_symbol;
 	}
 
+	var _getLedsHex = function() {
+		return _led_hex;
+	}
+	
+	var _getLedsSymbol = function() {
+		return _led_symbol;
+	}
+
 	// public methods
 	this.NONE = _NONE;
 	this.ERROR = _ERROR;
@@ -1412,6 +1558,7 @@ function TKG() {
 	this.init = _init;
 	this.setKeycodeMap = _setKeycodeMap;
 	this.setFnMaps = _setFnMaps;
+	this.setLedMaps = _setLedMaps;
 	this.setSimpleMode = _setSimpleMode;
 	this.parseLayer = _parseLayer;
 	this.parseMatrixMapLayer = _parseMatrixMapLayer;
@@ -1427,9 +1574,14 @@ function TKG() {
 	this.exportFns = _exportFns;
 	this.importFns = _importFns;
 	this.getFnOptions = _getFnOptions;
+	this.getLeds = _getLeds;
+	this.setLeds = _setLeds;
+	this.getLedOptions = _getLedOptions;
 	this.getKeymapsHex = _getKeymapsHex;
 	this.getKeymapsSymbol = _getKeymapsSymbol;
 	this.getFnActionsHex = _getFnActionsHex;
 	this.getFnActionsSymbol = _getFnActionsSymbol;
+	this.getLedsHex = _getLedsHex;
+	this.getLedsSymbol = _getLedsSymbol;
 
 }

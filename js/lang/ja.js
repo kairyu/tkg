@@ -16,6 +16,8 @@ jquery_lang_js.prototype.lang.ja = {
 	'Error!':'エラー！',
 	'Please check your data!':'データを確認してください！',
 	// Main
+	'General':'全般',
+	'Layer':'レイヤー',
 	'Keyboard':'キーボード',
 	'Simple Mode':'簡単モード',
 	'ON':'オン',
@@ -136,6 +138,11 @@ jquery_lang_js.prototype.lang.ja = {
 	'Right':'右',
 	// Fn key
 	'key':'一般キー',
+	// LED
+	'Backlight':'バックライト',
+	'Bind to default layer':'既定レイヤーにバインド',
+	'Bind to layer':'レイヤーにバインド',
+	'Indicator':'インディケーター',
 	// Help
 	'How to Use':'使い方',
 	'Available Labels':'識別可能なラベル',

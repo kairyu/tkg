@@ -25,6 +25,7 @@ $(function() {
 
 	tkg.setKeycodeMap(keycode_map);
 	tkg.setFnMaps(action_map, lr_map, mod_map, on_map);
+	tkg.setLedMaps(binding_map, backlight_map);
 	tkg.setSimpleMode(_simple_mode);
 
 	// select keyboard
@@ -159,27 +160,34 @@ $(function() {
 
 	// download
 	$('#dl_eep, #dl_c').click(function() {
-		var id = $(this).attr('id');
-		var type = '';
-		var keymaps = [];
-		var fn_actions = [];
+		download($(this).attr('id'));
+	});
+});
 
-		if ( id == 'dl_eep' ) {
-			type = 'eep';
-			keymaps = tkg.getKeymapsHex();
-			fn_actions = tkg.getFnActionsHex();
-		}
-		else if ( id == 'dl_c' ) {
-			type = 'c';
-			keymaps = tkg.getKeymapsSymbol();
-			fn_actions = tkg.getFnActionsSymbol();
-		}
+function download(id) {
+	var type = '';
+	var keymaps = [];
+	var fn_actions = [];
+	var leds = [];
 
-		if ( $('#dl_form').length > 0 ) {
-			$('#dl_form').remove();
-		}
+	if (id == 'dl_eep') {
+		type = 'eep';
+		keymaps = tkg.getKeymapsHex();
+		fn_actions = tkg.getFnActionsHex();
+		leds = tkg.getLedsHex();
+	}
+	else if (id == 'dl_c') {
+		type = 'c';
+		keymaps = tkg.getKeymapsSymbol();
+		fn_actions = tkg.getFnActionsSymbol();
+		leds = tkg.getLedsSymbol();
+	}
 
-		var $form = $("<form>").attr({ "id": "dl_form", "action": "download.php?file=" + type, "method": "POST" }).append(
+	if ($('#dl_form').length > 0) {
+		$('#dl_form').remove();
+	}
+
+	var $form = $("<form>").attr({ "id": "dl_form", "action": "download.php?file=" + type, "method": "POST" }).append(
 			$("<input>").attr({ "type": "hidden", "name": "matrix_rows", "value": _keyboard['matrix_rows'] }),
 			$("<input>").attr({ "type": "hidden", "name": "matrix_cols", "value": _keyboard['matrix_cols'] }),
 			$("<input>").attr({ "type": "hidden", "name": "max_layers", "value": _keyboard['max_layers'] }),
@@ -189,19 +197,25 @@ $(function() {
 			$("<input>").attr({ "type": "hidden", "name": "keymaps", "value": JSON.stringify(keymaps) }),
 			$("<input>").attr({ "type": "hidden", "name": "fn_actions", "value": JSON.stringify(fn_actions) })
 		);
-		if (_keyboard['name'] == 'Kimera') {
-			$form = $form.append($("<input>", {
-				"type": "hidden", "name": "additional", "value": JSON.stringify(_keyboard['additional'])
-			}));
-		}
-		$("body").append($form);
+	if (_keyboard['name'] == 'Kimera') {
+		$form = $form.append($("<input>", {
+			"type": "hidden", "name": "additional", "value": JSON.stringify(_keyboard['additional'])
+		}));
+	}
+	if (id == 'dl_eep' && _keyboard['led_count']) {
+		_keyboard['additional'][0]['data'] = leds;
+		$form = $form.append($("<input>", {
+			"type": "hidden", "name": "additional", "value": JSON.stringify(_keyboard['additional'])
+		}));
+	}
+	$("body").append($form);
 
-		console.log(keymaps);
-		console.log(fn_actions);
-		console.log($('#dl_form').html());
-		$('#dl_form').submit();
-	});
-});
+	console.log(keymaps);
+	console.log(fn_actions);
+	console.log(leds);
+	console.log($('#dl_form').html());
+	$('#dl_form').submit();
+}
 
 function switchPage(id) {
 	if (id == '') {
@@ -234,20 +248,43 @@ function initialize(name, simple_mode) {
 	initKeyboardConfig(name);
 	initKeyboardInfo(keyboard);
 	initForm(simple_mode);
+	appendLeds();
 }
 
 function loadKeyboard(name) {
 	var keyboard = {};
+	var rsc = /[\s\/]/g;
+	var result = name.match(/^(.*)\((.*)\)$/);
+	if (result) {
+		var main = result[1].trim().replace(rsc, '_').toLowerCase();
+		var variant = result[2].trim().replace(rsc, '_').toLowerCase();
+	}
+	else {
+		var main = name.trim().replace(rsc, '_').toLowerCase();
+	}
 	$.ajaxSetup({ async: false, cache: false });
-	$.getJSON("keyboard/" + name.toLowerCase() + ".json", function(json) {
+	$.getJSON("keyboard/" + main + ".json", function(json) {
 		keyboard = json;
+		if (variant) {
+			$.getJSON("keyboard/" + main + "-" + variant + ".json", function(json) {
+				keyboard = _.extend(keyboard, json);
+			}).fail(function(d, textStatus, error) {
+				console.error("getJSON failed, status: " + textStatus + ", error: "+error)
+			});
+		}
 		tkg.init({
 			"max_layers": keyboard["max_layers"],
 			"max_fns": keyboard["max_fns"],
 			"matrix_rows": keyboard["matrix_rows"],
 			"matrix_cols": keyboard["matrix_cols"],
-			"matrix_map": keyboard["matrix_map"]
+			"matrix_map": keyboard["matrix_map"],
+			"led_count": keyboard["led_count"]
 		});
+		if (keyboard["led_count"] && keyboard["led_map"]) {
+			for (var i = 0; i < keyboard["led_count"]; i++) {
+				tkg.setLeds(i, keyboard["led_map"][i]["default"]);
+			}
+		}
 	}).fail(function(d, textStatus, error) {
 		console.error("getJSON failed, status: " + textStatus + ", error: "+error)
 	});

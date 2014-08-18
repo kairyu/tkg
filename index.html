@@ -19,9 +19,11 @@
 	<script src="js/lang/zh_tc.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/keycode_map.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/fn_map.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/led_map.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/tkg.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/layer.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/fn.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/led.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/keyboard_config.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/main.js" charset="utf-8" type="text/javascript"></script>
 	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
@@ -91,41 +93,57 @@
 		</div>
 		<div id="pg-home" class="page container">
 			<form id="config-form" class="form-horizontal" role="form">
-				<div class="form-group">
-					<label for="keyboard-sel" lang="en" class="col-md-2 control-label">Keyboard</label>
-					<div class="col-md-5">
-						<div class="btn-group input-group">
-							<select id="keyboard-sel" class="form-control">
-								<option>GH60</option>
-								<option>GHPad</option>
-								<option>SMART68</option>
-								<option>LR94</option>
-								<option>RedScarfII</option>
-								<option>AKB96</option>
-								<option>TentaPad</option>
-								<option data-role="divider"></option>
-								<option>Kimera</option>
-							</select>
-							<div id="kbd-cfg" class="btn-group" style="display: none;">
-								<button type="button" id="kbd-cfg-btn" class="btn btn-default" lang="en">Config</button>
+				<fieldset>
+					<legend lang="en">General</legend>
+					<div class="form-group">
+						<label for="keyboard-sel" lang="en" class="col-md-2 control-label">Keyboard</label>
+						<div class="col-md-5">
+							<div class="btn-group input-group">
+								<select id="keyboard-sel" class="form-control">
+									<option>GH60 (RevA/B)</option>
+									<option>GH60 (RevCHN)</option>
+									<option>GHPad</option>
+									<option>SMART68</option>
+									<option>LR94</option>
+									<option>RedScarfII</option>
+									<option>AKB96</option>
+									<option>TentaPad</option>
+									<option data-role="divider"></option>
+									<option>Kimera</option>
+								</select>
+								<div id="kbd-cfg" class="btn-group" style="display: none;">
+									<button type="button" id="kbd-cfg-btn" class="btn btn-default" lang="en">Config</button>
+								</div>
+								<span id="kbd-info" class="input-group-addon" lang="en">Detail</span>
 							</div>
-							<span id="kbd-info" class="input-group-addon" lang="en">Detail</span>
 						</div>
 					</div>
-				</div>
-				<div id="simple-mode" class="form-group">
-					<label for="switch-on" lang="en" class="col-md-2 control-label">Simple Mode</label>
-					<div class="col-md-2">
-						<div class="btn-group">
-							<button id="switch-on" class="btn btn-default" lang="en">ON</button>
-							<button id="switch-off" class="btn btn-primary active" lang="en">OFF</button>
+				</fieldset>
+				<fieldset>
+					<legend lang="en">Layer</legend>
+					<div id="simple-mode" class="form-group">
+						<label for="switch-on" lang="en" class="col-md-2 control-label">Simple Mode</label>
+						<div class="col-md-2">
+							<div class="btn-group">
+								<button id="switch-on" class="btn btn-default" lang="en">ON</button>
+								<button id="switch-off" class="btn btn-primary active" lang="en">OFF</button>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div id="layer-wrapper">
-				</div>
-				<div id="fn-wrapper">
-				</div>
+					<div id="layer-wrapper">
+					</div>
+				</fieldset>
+				<fieldset style="display: none;">
+					<legend lang="en">Fn</legend>
+					<div id="fn-wrapper">
+					</div>
+				</fieldset>
+				<fieldset style="display: none;">
+					<legend lang="en">LED</legend>
+					<div id="led-wrapper">
+					</div>
+				</fieldset>
+				<hr>
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-5">
 						<button id="dl_eep" type="button" class="dl-btn btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> <span lang="en">Download</span> .eep <span lang="en">file</span></button>

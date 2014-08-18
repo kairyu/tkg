@@ -108,6 +108,17 @@ body {
 	vertical-align: top;
 	padding: 0 15px 0 0;
 }
+.led-row {
+	float: left;
+	padding: 0 2px 0 15px;
+}
+.led-binding,
+.led-backlight,
+.led-param {
+	display: table-cell;
+	vertical-align: top;
+	padding: 0 15px 0 0;
+}
 
 .multiselect {
 	text-align: left;

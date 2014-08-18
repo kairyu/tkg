@@ -1,0 +1,50 @@
+{
+	"name": "GH60 (RevA/B)",
+	"description": "GH60 Keyboard (Revision A/B)",
+	"led_count": 5,
+	"led_map": [{
+		"name": "Caps Lock",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_CAPS_LOCK",
+			"backlight": 1
+		}
+	},{
+		"name": "Esc",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NO",
+			"backlight": 1
+		}
+	},{
+		"name": "WASD",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_LAYER",
+			"args": [ 1 ],
+			"backlight": 1
+		}
+	},{
+		"name": "Right Shift/Alt/Ctrl",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_LAYER",
+			"args": [ 2 ],
+			"backlight": 1
+		}
+	},{
+		"name": "Fn",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_LAYER",
+			"args": [ 1 ],
+			"backlight": 1
+		}
+	}],
+	"led_additional_index": 0,
+	"additional": [{
+		"start": 7,
+		"size": 5,
+		"data": []
+	}]
+}
