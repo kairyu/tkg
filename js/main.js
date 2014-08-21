@@ -49,6 +49,13 @@ $(function() {
 		$('.page:visible').data('scroll', $(window).scrollTop());
 	});
 
+	// collapse
+	$('.collapse').on('hide.bs.collapse', function() {
+		$(this).parent().find('legend span').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+	}).on('show.bs.collapse', function() {
+		$(this).parent().find('legend span').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+	});
+
 	// import fn dialog
 	$('#tools-import-fn').click(function(e) {
 		if ($(this).parent().hasClass('disabled')) {

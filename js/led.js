@@ -18,10 +18,10 @@ function appendLeds() {
 			);
 		}
 		$('#led-wrapper .led-row').led();
-		$('#led-wrapper').parent().show();
+		$('#led-field').parent().show();
 	}
 	else {
-		$('#led-wrapper').parent().hide();
+		$('#led-field').parent().hide();
 	}
 }
 

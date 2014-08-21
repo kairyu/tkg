@@ -17,10 +17,10 @@ function appendFns() {
 			);
 		}
 		$('#fn-wrapper .fn-row').fn();
-		$('#fn-wrapper').parent().show();
+		$('#fn-field').parent().show();
 	}
 	else {
-		$('#fn-wrapper').parent().hide();
+		$('#fn-field').parent().hide();
 	}
 
 	updateToolsMenuState();

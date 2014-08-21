@@ -255,3 +255,9 @@ body {
 	margin-bottom: 0;
 	margin-top: 20px;
 }
+
+span.glyphicon-chevron-down,
+span.glyphicon-chevron-up {
+	font-size: 0.5em;
+	line-height: 3.5;
+}
