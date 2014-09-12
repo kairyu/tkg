@@ -280,7 +280,7 @@ function makeSelect(attr, data, current, selected) {
 		})());
 }
 
-function rebuildSelect() {
+function rebuildFnSelect() {
 	$('.fn-action select').multiselect('rebuild');
 	$('.fn-param select').multiselect('rebuild');
 }

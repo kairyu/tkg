@@ -352,7 +352,8 @@ function showNotification() {
 
 function onLangChange(lang) {
 	window.lang.change(lang);
-	rebuildSelect();
+	rebuildFnSelect();
+	rebuildLedSelect();
 }
 
 function changeFont(lang) {

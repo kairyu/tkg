@@ -146,3 +146,7 @@ function onLedParamsChange(id) {
 		"backlight": backlight
 	});
 }
+
+function rebuildLedSelect() {
+	$('.led-binding select').multiselect('rebuild');
+}
