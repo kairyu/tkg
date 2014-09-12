@@ -107,5 +107,35 @@
 		"15,5,2": { "row": 14, "col": 5 },
 		"16,5": { "row": 15, "col": 5 },
 		"17,5": { "row": 16, "col": 5 }
-	}
+	},
+	"led_count": 3,
+	"led_map": [{
+		"name": "Caps Lock",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_CAPS_LOCK",
+			"backlight": 1
+		}
+	},{
+		"name": "Num Lock",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_LAYER",
+			"args": [ 2 ],
+			"backlight": 1
+		}
+	},{
+		"name": "Backlight",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NO",
+			"backlight": 1
+		}
+	}],
+	"led_additional_index": 0,
+	"additional": [{
+		"start": 7,
+		"size": 3,
+		"data": []
+	}]
 }
