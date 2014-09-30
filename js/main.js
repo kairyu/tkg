@@ -51,9 +51,9 @@ $(function() {
 
 	// collapse
 	$('.collapse').on('hide.bs.collapse', function() {
-		$(this).parent().find('legend span').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+		$(this).parent().find('legend span.glyphicon').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
 	}).on('show.bs.collapse', function() {
-		$(this).parent().find('legend span').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+		$(this).parent().find('legend span.glyphicon').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
 	});
 
 	// import fn dialog
