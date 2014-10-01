@@ -507,14 +507,24 @@ function TKG() {
 			var message = "Invalid raw data";
 			var error = {};
 			_raiseError(error, "general", message, message, raw_string);
-			return { "error": error, "warn": {}, "info": {} };
+			if (arguments.length == 1) {
+				return { "error": error, "warn": {}, "info": {} };
+			}
+			else {
+				return [{ "error": error, "warn": {}, "info": {} }];
+			}
 		}
 
 		if (!_.isArray(raw)) {
 			var message = "Invalid raw data";
 			var layer = {};
 			_raiseError(error, "general", message, message, raw_string);
-			return { "error": error, "warn": {}, "info": {} };
+			if (arguments.length == 1) {
+				return { "error": error, "warn": {}, "info": {} };
+			}
+			else {
+				return [{ "error": error, "warn": {}, "info": {} }];
+			}
 		}
 
 		// parse object to keys
