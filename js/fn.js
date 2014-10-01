@@ -1,5 +1,6 @@
 function emptyFns() {
 	$('#fn-wrapper').empty();
+	$('#fn-field').parent().hide();
 }
 
 function appendFns() {

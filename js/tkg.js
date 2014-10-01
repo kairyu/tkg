@@ -5,8 +5,10 @@ function TKG() {
 	const _WARNING = 2;
 	const _DEBUG = 4;
 	const _INFO = 8;
+	const _LAYER_NORMAL = 0;
+	const _LAYER_SIMPLE = 1;
+	const _LAYER_ALL_IN_ONE = 2;
 	var _log = _ERROR | _WARNING | _DEBUG | _INFO;
-	var _simple_mode = true;
 	var _keycode_map = {};
 	var _keycode_map_reversed = {};
 	var _action_map = {};
@@ -35,13 +37,6 @@ function TKG() {
 	var _led_hex = [];
 	var _led_symbol = {};
 	var _matrix_map_layer = {};
-
-	var _setSimpleMode = function(simple_mode) {
-		if (_simple_mode != simple_mode) {
-			_simple_mode = simple_mode;
-			_initVariables();
-		}
-	}
 
 	var _setKeycodeMap = function(keycode_map) {
 		_consoleInfoGroup("setKeycodeMap");
@@ -299,89 +294,136 @@ function TKG() {
 		return target;
 	}
 
-	var _parseLayer = function(layer_number, raw_string) {
-		_consoleInfoGroup("parseLayer");
-		// console log
-		if (!_simple_mode) {
-			_consoleInfo("Parse layer");
-			_consoleInfo("layer_number: " + layer_number);
+	var _worseState = function(state, state_2) {
+		switch (state) {
+			case _ERROR:
+				return state;
+			case _WARNING:
+				switch (state_2) {
+					case _ERROR:
+						return _ERROR;
+					case _WARNING:
+						return _WARNING;
+					case _NONE:
+						return _WARNING;
+				}
+			case _NONE:
+				return state_2;
 		}
-		else {
-			_consoleInfo("Parse layer simple mode");
+		return _NONE;
+	}
+
+	var _parseLayer = function(layer_number, raw_string, layer_mode, block_rows) {
+		// console log
+		switch (layer_mode) {
+			case LAYER_NORMAL:
+				_consoleInfo("Parse layer normal mode");
+				break;
+			case LAYER_SIMPLE:
+				_consoleInfo("Parse layer simple mode");
+				break;
+			case LAYER_ALL_IN_ONE:
+				_consoleInfo("Parse layer all-in-one mode");
+				break;
 		}
 
 		// check layer_number parameter
 		layer_number = Number(layer_number);
-		if (_simple_mode) {
-			if (layer_number != 0) {
-				_consoleError("Invalid layer number: " + layer_number);
-				_consoleInfoGroupEnd();
-				return _ERROR;
-			}
-		}
-		else {
-			if (layer_number >= _max_layers) {
-				_consoleError("Layer number out of bounds");
-				_consoleInfoGroupEnd();
-				return _ERROR;
-			}
+		switch (layer_mode) {
+			case LAYER_NORMAL:
+				if (layer_number >= _max_layers) {
+					_consoleError("Layer number out of bounds");
+					return _ERROR;
+				}
+				break;
+			case LAYER_SIMPLE:
+			case LAYER_ALL_IN_ONE:
+				if (layer_number != 0) {
+					_consoleError("Invalid layer number: " + layer_number);
+					return _ERROR;
+				}
+				break;
 		}
 
-		var layer = {};
-		var fns = [];
-		var matrix = [];
-		var keymap_hex = [];
-		var keymap_symbol = [];
-		if (_simple_mode) {
-			var layer_2 = {}
-			var fns_2 = [];
-			var matrix_2 = [];
-			var keymap_hex_2 = [];
-			var keymap_symbol_2 = [];
-		}
 
 		if (raw_string) {
-			// parse raw string to keys
-			layer = _parseRawString(raw_string);
-			if (_simple_mode) {
-				layer_2 = _parseRawString(raw_string);
-			}
-			/*
-			if (!_.isEmpty(layer["error"])) {
-				_layers[layer_number] = layer;
-				if (_simple_mode) {
-					_layers[layer_number + 1] = layer_2;
+			if (layer_mode == LAYER_NORMAL || layer_mode == LAYER_SIMPLE) {
+				// parse raw string to keys
+				var layer = _parseRawString(raw_string);
+				if (layer_mode == LAYER_SIMPLE) {
+					// copy to layer_2
+					var layer_2 = JSON.parse(JSON.stringify(layer));
 				}
-				return _ERROR;
+				// parse keys
+				var state = _postParseLayer(layer_number, layer, "top", "bottom");
+				if (layer_mode == LAYER_SIMPLE) {
+					var state_2 = _postParseLayer(layer_number + 1, layer_2, "side_print", "side_print_secondary");
+					// fn hack
+					if (_fns[0] && _fns[0]["action"] == "ACTION_NO") {
+						_setFns(0, { "action": "ACTION_LAYER_MOMENTARY", "args": [ layer_number + 1 ] });
+					}
+					if (_fns[1] && _fns[1]["action"] == "ACTION_NO") {
+						_setFns(1, { "action": "ACTION_BACKLIGHT_TOGGLE" });
+					}
+					if (_fns[2] && _fns[2]["action"] == "ACTION_NO") {
+						_setFns(2, { "action": "ACTION_BACKLIGHT_DECREASE" });
+					}
+					if (_fns[3] && _fns[3]["action"] == "ACTION_NO") {
+						_setFns(3, { "action": "ACTION_BACKLIGHT_INCREASE" });
+					}
+					state = _worseState(state, state_2);
+				}
+				// return state
+				return state;
 			}
-			*/
-
-			// parse keycode from label
-			layer = _parseKeycode(layer, "top", "bottom");
-			_consoleInfo("layer:");
-			_consoleInfo(layer);
-			if (_simple_mode) {
-				layer_2 = _parseKeycode(layer_2, "side_print", "side_print_secondary");
-				_consoleInfo("layer_2:");
-				_consoleInfo(layer_2);
-			}
-
-			// check warning
-			layer = _scanWarn(layer, "top", "bottom");
-			if (_simple_mode) {
-				layer_2 = _scanWarn(layer_2, "side_print", "side_print_secondary");
+			else if (layer_mode == LAYER_ALL_IN_ONE) {
+				// parse raw string to keys
+				var layers = _parseRawString(raw_string, block_rows);
+				var state = _NONE;
+				for (var i = 0; i < layers.length; i++) {
+					var state_2 = _postParseLayer(layer_number + i, layers[i], "top", "bottom");
+					state = _worseState(state, state_2);
+				}
+				// return state
+				return state;
 			}
 		}
 		else {
 			// clear when raw string is empty
+			if (layer_mode == LAYER_NORMAL) {
+				var layer = {};
+				var state = _postParseLayer(layer_number, layer, "top", "bottom");
+				return state;
+			}
+			else if (layer_mode == LAYER_SIMPLE || layer_mode == LAYER_ALL_IN_ONE) {
+				_initVariables();
+				return _NONE;
+			}
 		}
+
+		return _NONE;
+	}
+
+	var _postParseLayer = function(layer_number, layer, label_property, label_property_2) {
+		_consoleInfoGroup("parseLayer");
+		_consoleInfo("layer_number: " + layer_number);
+
+		var fns = [];
+		var matrix = [];
+		var keymap_hex = [];
+		var keymap_symbol = [];
+
+		// parse keycode from label
+		layer = _parseKeycode(layer, label_property, label_property_2);
+		_consoleInfo("layer:");
+		_consoleInfo(layer);
+
+		// check warning
+		layer = _scanWarn(layer, label_property, label_property_2);
 
 		// set layer
 		_layers[layer_number] = layer;
-		if (_simple_mode) {
-			_layers[layer_number + 1] = layer_2;
-		}
-		
+
 		// parse fns from layer
 		fns = _parseFns(layer);
 		fns = _mergeFns(_fns, fns);
@@ -389,36 +431,11 @@ function TKG() {
 		_consoleInfo("fns:");
 		_consoleInfo(fns);
 		_consoleInfo(_fns);
-		if (_simple_mode) {
-			fns_2 = _parseFns(layer_2);
-			fns_2 = _mergeFns(_fns, fns_2);
-			_fns = _cleanFns(fns_2, _layers);
-			_consoleInfo("fns_2:");
-			_consoleInfo(fns_2);
-			_consoleInfo(_fns);
-			if (_fns[0] && _fns[0]["action"] == "ACTION_NO") {
-				_setFns(0, { "action": "ACTION_LAYER_MOMENTARY", "args": [ layer_number + 1 ] });
-			}
-			if (_fns[1] && _fns[1]["action"] == "ACTION_NO") {
-				_setFns(1, { "action": "ACTION_BACKLIGHT_TOGGLE" });
-			}
-			if (_fns[2] && _fns[2]["action"] == "ACTION_NO") {
-				_setFns(2, { "action": "ACTION_BACKLIGHT_DECREASE" });
-			}
-			if (_fns[3] && _fns[3]["action"] == "ACTION_NO") {
-				_setFns(3, { "action": "ACTION_BACKLIGHT_INCREASE" });
-			}
-		}
 
 		// parse matrix from position
 		matrix = _parseMatrix(layer);
 		_consoleInfo("matrix:");
 		_consoleInfo(matrix);
-		if (_simple_mode) {
-			matrix_2 = _parseMatrix(layer_2);
-			_consoleInfo("matrix_2:");
-			_consoleInfo(matrix_2);
-		}
 
 		// generate keymap from matrix
 		keymap_hex = _generateKeymapHex(matrix);
@@ -427,14 +444,6 @@ function TKG() {
 		_consoleInfo(keymap_hex);
 		_consoleInfo("keymap_symbol:");
 		_consoleInfo(keymap_symbol);
-		if (_simple_mode) {
-			keymap_hex_2 = _generateKeymapHex(matrix_2);
-			keymap_symbol_2 = _generateKeymapSymbol(matrix_2);
-			_consoleInfo("keymap_hex_2:");
-			_consoleInfo(keymap_hex_2);
-			_consoleInfo("keymap_symbol_2:");
-			_consoleInfo(keymap_symbol_2);
-		}
 
 		// generate fn actions
 		_fn_actions_hex = _generateFnActionsHex(_fns);
@@ -448,29 +457,14 @@ function TKG() {
 		_matrices[layer_number] = matrix;
 		_keymaps_hex[layer_number] = keymap_hex;
 		_keymaps_symbol[layer_number] = keymap_symbol;
-		if (_simple_mode) {
-			_matrices[layer_number + 1] = matrix_2;
-			_keymaps_hex[layer_number + 1] = keymap_hex_2;
-			_keymaps_symbol[layer_number + 1] = keymap_symbol_2;
-		}
 
 		// return state
 		var state = _NONE;
 		if (!_.isEmpty(layer["warn"])) {
 			state = _WARNING;
-			if (_simple_mode) {
-				if (!_.isEmpty(layer_2["warn"])) {
-					state = _WARNING;
-				}
-			}
 		}
 		if (!_.isEmpty(layer["error"])) {
 			state = _ERROR;
-			if (_simple_mode) {
-				if (!_.isEmpty(layer_2["error"])) {
-					state = _ERROR;
-				}
-			}
 		}
 		_consoleInfoGroupEnd();
 		return state;
@@ -505,25 +499,44 @@ function TKG() {
 		return state;
 	}
 
-	var _parseRawString = function(raw_string) {
+	var _parseRawString = function(raw_string, block_rows) {
+		// parse raw string to object
+		try {
+			eval("var raw = [" + raw_string + "];");
+		} catch (e) {
+			var message = "Invalid raw data";
+			var error = {};
+			_raiseError(error, "general", message, message, raw_string);
+			return { "error": error, "warn": {}, "info": {} };
+		}
+
+		if (!_.isArray(raw)) {
+			var message = "Invalid raw data";
+			var layer = {};
+			_raiseError(error, "general", message, message, raw_string);
+			return { "error": error, "warn": {}, "info": {} };
+		}
+
+		// parse object to keys
+		if (arguments.length == 1) {
+			return _parseRawObject(raw);
+		}
+		else {
+			var layers = [];
+			for (var i = 0; i < raw.length; i += block_rows) {
+				var raw_object = raw.slice(i, i + block_rows);
+				layers.push(_parseRawObject(raw_object));
+			}
+			return layers;
+		}
+	}
+
+	var _parseRawObject = function(raw_object) {
 		var layer = {};
 		var error = {};
 		var warn = {};
 		var info = {};
 
-		// parse raw string to object
-		try {
-			eval("raw = [" + raw_string + "];");
-		} catch (e) {
-			var message = "Invalid raw data";
-			_raiseError(error, "general", message, message, raw_string);
-			layer["error"] = error;
-			layer["warn"] = warn;
-			layer["info"] = info;
-			return layer;
-		}
-
-		// parse object to keys
 		var keys = [];
 		var c_x = 0;
 		var c_y = 0;
@@ -534,19 +547,11 @@ function TKG() {
 		var before_first_key = true;
 		var stepped = false;
 		var rowspan = false;
-		if (!_.isArray(raw)) {
-			var message = "Invalid raw data";
-			_raiseError(error, "general", message, message, raw_string);
-			layer["error"] = error;
-			layer["warn"] = warn;
-			layer["info"] = info;
-			return layer;
-		}
-		for (var i = 0; i < raw.length; i++) {
-			if (!_.isArray(raw[i])) { continue; }
+		for (var i = 0; i < raw_object.length; i++) {
+			if (!_.isArray(raw_object[i])) { continue; }
 			c_x = 0;
-			for (var j = 0; j < raw[i].length; j++) {
-				var el = raw[i][j];
+			for (var j = 0; j < raw_object[i].length; j++) {
+				var el = raw_object[i][j];
 				// a property object
 				if (_.isObject(el)) {
 					if (el.l) { stepped = true; }
@@ -612,7 +617,7 @@ function TKG() {
 
 		if (keys.length == 0) {
 			var message = "Invalid raw data";
-			_raiseError(error, "general", message, message, raw_string);
+			_raiseError(error, "general", message, message, raw_object);
 		}
 		else {
 			layer["keys"] = keys;
@@ -1321,40 +1326,45 @@ function TKG() {
 	}
 
 	var _getError = function(layer_number) {
-		layer_number = Number(layer_number);
-		if (layer_number > _max_layers) { return false; }
-		if (_simple_mode) {
-			return [ _layers[layer_number]["error"] || {},
-				_layers[layer_number + 1]["error"] || {} ];
+		if (arguments.length) {
+			return _getLayerElement("error", layer_number);
 		}
 		else {
-			return _layers[layer_number]["error"] || {};
+			return _getLayerElement("error");
 		}
 	}
 
 	var _getWarning = function(layer_number) {
-		layer_number = Number(layer_number);
-		if (layer_number > _max_layers) { return false; }
-		if (_simple_mode) {
-			return [ _layers[layer_number]["warn"] || {},
-				_layers[layer_number + 1]["warn"] || {} ];
+		if (arguments.length) {
+			return _getLayerElement("warn", layer_number);
 		}
 		else {
-			return _layers[layer_number]["warn"] || {};
+			return _getLayerElement("warn");
 		}
 	}
 
 	var _getInfo = function(layer_number) {
-		layer_number = Number(layer_number);
-		if (layer_number > _max_layers) { return false; }
-		if (_simple_mode) {
-			return [ _layers[layer_number]["info"] || {},
-				_layers[layer_number + 1]["info"] || {} ];
+		if (arguments.length) {
+			return _getLayerElement("info", layer_number);
 		}
 		else {
-			return _layers[layer_number]["info"] || {};
+			return _getLayerElement("info");
 		}
-		return _layers[layer_number]["info"] || {};
+	}
+
+	var _getLayerElement = function(element_name, layer_number) {
+		if (arguments.length > 1) {
+			layer_number = Number(layer_number);
+			if (layer_number > _max_layers) { return false; }
+			return _layers[layer_number][element_name] || {};
+		}
+		else {
+			var elements = [];
+			for (var i = 0; i < _layers.length; i++) {
+				elements.push(_getLayerElement(element_name, i));
+			}
+			return elements;
+		}
 	}
 
 	var _getMatrixMap = function() {
@@ -1383,6 +1393,7 @@ function TKG() {
 	}
 
 	var _setFns = function(index, object) {
+		_consoleInfoGroup("setFns");
 		var fn = _fns[index];
 		_consoleInfo("Set Fn" + index + ":");
 		_consoleInfo(object);
@@ -1411,6 +1422,7 @@ function TKG() {
 			_fn_actions_hex[index] = _generateFnActionsHex(fn);
 			_fn_actions_symbol[index] = _generateFnActionsSymbol(fn);
 		}
+		_consoleInfoGroupEnd();
 		return fn;
 	}
 
@@ -1479,6 +1491,7 @@ function TKG() {
 	}
 
 	var _setLeds = function(index, object) {
+		_consoleInfoGroup("setLeds");
 		var led = _leds[index];
 		_consoleInfo("Set Led" + index + ":");
 		_consoleInfo(object);
@@ -1513,6 +1526,7 @@ function TKG() {
 				_led_symbol[index] = _generateLedSymbol(led);
 			}
 		}
+		_consoleInfoGroupEnd();
 		return led;
 	}
 
@@ -1556,10 +1570,10 @@ function TKG() {
 	this.DEBUG = _DEBUG;
 	this.INFO = _INFO;
 	this.init = _init;
+	this.initVariables = _initVariables;
 	this.setKeycodeMap = _setKeycodeMap;
 	this.setFnMaps = _setFnMaps;
 	this.setLedMaps = _setLedMaps;
-	this.setSimpleMode = _setSimpleMode;
 	this.parseLayer = _parseLayer;
 	this.parseMatrixMapLayer = _parseMatrixMapLayer;
 	this.getError = _getError;

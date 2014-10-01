@@ -1,5 +1,6 @@
 function emptyLeds() {
 	$('#led-wrapper').empty();
+	$('#led-field').parent().hide();
 }
 
 function appendLeds() {

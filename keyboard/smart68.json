@@ -7,6 +7,7 @@
 	"eep_start": 16,
 	"matrix_rows": 5,
 	"matrix_cols": 15,
+	"physical_rows": 5,
 	"matrix_map": {
 		"0,0": { "row": 0, "col": 0 },
 		"1,0": { "row": 0, "col": 1 },

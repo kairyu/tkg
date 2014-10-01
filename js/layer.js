@@ -1,88 +1,95 @@
+const LAYER_NORMAL = 0;
+const LAYER_SIMPLE = 1;
+const LAYER_ALL_IN_ONE = 2;
+
 function emptyLayers() {
 	$('#layer-wrapper').empty();
 }
 
-function appendLayers(simple_mode) {
+function appendLayers(layer_mode) {
 	var default_layer_num = 2;
 	emptyLayers();
-	if (simple_mode) {
-		// add controls
-		$('#layer-wrapper').append(
-			// composite layer
-			$('<div>').attr({ "class": "layer-row form-group" }).append(
-				$('<label>').attr({
-					"for": "composite-layer",
-					"class": "col-md-2 control-label",
-					"lang": "en"
-				}).text("Composite Layer"),
-				$('<div>').attr({ "class": "layer col-md-5" }).append(
-					$('<textarea>').attr({
-						"spellcheck": false,
-						"id": "composite-layer",
-						"class": "form-control composite-layer-raw kle-layer",
-						"rows": 4,
-						"lang": "en",
-						"placeholder": "Paste URL or Raw Data here"
-					})
+	switch (layer_mode) {
+		case LAYER_SIMPLE:
+		case LAYER_ALL_IN_ONE:
+			// add controls
+			$('#layer-wrapper').append(
+				// composite layer
+				$('<div>').attr({ "class": "layer-row form-group" }).append(
+					$('<label>').attr({
+						"for": "composite-layer",
+						"class": "col-md-2 control-label",
+						"lang": "en"
+					}).text("Composite Layer"),
+					$('<div>').attr({ "class": "layer col-md-5" }).append(
+						$('<textarea>').attr({
+							"spellcheck": false,
+							"id": "composite-layer",
+							"class": "form-control composite-layer-raw kle-layer",
+							"rows": 4,
+							"lang": "en",
+							"placeholder": "Paste URL or Raw Data here"
+						})
+					)
 				)
-			)
-		);
-	}
-	else {
-		// add controls
-		$('#layer-wrapper').append(
-			// layer number
-			$('<div>').attr({ "id": "layer-num-row", "class": "form-group" }).append(
-				$('<label>').attr({
-					"for": "layer-num",
-					"class": "col-md-2 control-label",
-					"lang": "en"
-				}).text("Number of Layers"),
-				$('<div>').attr({ "class": "col-md-2" }).append(
-					$('<input>').attr({
-						"id": "layer-num",
-						"class": "form-control",
-						"type": "text",
-						"name": "layer-num",
-						"value": default_layer_num
-					})
+			);
+			break;
+		case LAYER_NORMAL:
+			// add controls
+			$('#layer-wrapper').append(
+				// layer number
+				$('<div>').attr({ "id": "layer-num-row", "class": "form-group" }).append(
+					$('<label>').attr({
+						"for": "layer-num",
+						"class": "col-md-2 control-label",
+						"lang": "en"
+					}).text("Number of Layers"),
+					$('<div>').attr({ "class": "col-md-2" }).append(
+						$('<input>').attr({
+							"id": "layer-num",
+							"class": "form-control",
+							"type": "text",
+							"name": "layer-num",
+							"value": default_layer_num
+						})
+					)
 				)
-			)
-		).append(
-			// layers
-			(function (layer_num) {
-				var $layers = $();
-				for (var i = 0; i < layer_num; i++) {
-					$layers = $layers.add(makeLayer(i));
-				}
-				return $layers;
-			})(default_layer_num)
-		);
-		// initialize touch spin
-		$('#layer-num').TouchSpin({
-			min: 1,
-			max: _keyboard['max_layers'],
-			boostat: 5,
-			stepinterval: 200,
-			booster: false
-		});
-		$('#layer-num').val(default_layer_num);
-		$('#layer-num').change(function() {
-			var count = $('.layer-row').length;
-			var num = $('#layer-num').val();
+			).append(
+				// layers
+				(function (layer_num) {
+					var $layers = $();
+					for (var i = 0; i < layer_num; i++) {
+						$layers = $layers.add(makeLayer(i));
+					}
+					return $layers;
+				})(default_layer_num)
+			);
+			// initialize touch spin
+			$('#layer-num').TouchSpin({
+				min: 1,
+				max: _keyboard['max_layers'],
+				boostat: 5,
+				stepinterval: 200,
+				booster: false
+			});
+			$('#layer-num').val(default_layer_num);
+			$('#layer-num').change(function() {
+				var count = $('.layer-row').length;
+				var num = $('#layer-num').val();
 
-			for (var i = 0; i < Math.abs(num - count); i++) {
-				if (num > count) {
-					addAfterLastLayer();
+				for (var i = 0; i < Math.abs(num - count); i++) {
+					if (num > count) {
+						addAfterLastLayer();
+					}
+					else {
+						removeLastLayer();
+					}
 				}
-				else {
-					removeLastLayer();
-				}
-			}
 
-			// translate
-			window.lang.run();
-		});
+				// translate
+				window.lang.run();
+			});
+			break;
 	}
 	// translate popover
 	$('#layer-wrapper .layer').on('shown.bs.popover', function() {
@@ -119,7 +126,7 @@ function removeLastLayer() {
 	$('.layer-row:last').remove();
 }
 
-function onLayerChange($layer) {
+function onLayerChange($layer, layer_mode, block_rows) {
 	var id = $layer.attr('id')
 	var last = $layer.data('last') || "";
 	var raw = $layer.val();
@@ -137,7 +144,7 @@ function onLayerChange($layer) {
 	else {
 		layer_number = id.slice(5);
 	}
-	var state = tkg.parseLayer(layer_number, raw);
+	var state = tkg.parseLayer(layer_number, raw, layer_mode, block_rows);
 	var $div = $layer.parent();
 	// clear validation states
 	var class_names = [ "has-success", "has-warning", "has-error" ];
@@ -163,62 +170,88 @@ function onLayerChange($layer) {
 	}
 
 	// set data for popover
-	$layer.data('error', tkg.getError(layer_number));
-	$layer.data('warning', tkg.getWarning(layer_number));
-	$layer.data('info', tkg.getInfo(layer_number));
-	setupLayerPopover(id);
+	switch (layer_mode) {
+		case LAYER_NORMAL:
+			$layer.data('error', tkg.getError(layer_number));
+			$layer.data('warning', tkg.getWarning(layer_number));
+			$layer.data('info', tkg.getInfo(layer_number));
+			break;
+		case LAYER_SIMPLE:
+		case LAYER_ALL_IN_ONE:
+			$layer.data('error', tkg.getError());
+			$layer.data('warning', tkg.getWarning());
+			$layer.data('info', tkg.getInfo());
+			break;
+	}
+	setupLayerPopover(id, layer_mode);
 
 	appendFns();
 	updateDownloadButtonState();
 }
 
-function setupLayerPopover(id) {
+function setupLayerPopover(id, layer_mode) {
 	var $layer = $('#' + id);
 	var has_popover = false;
 	var error = $layer.data('error');
 	var warning = $layer.data('warning');
 	var info = $layer.data('info');
-	var simple_mode = (id == "composite-layer");
 	var top_prop = [ "top", "side_print" ];
 	var bottom_prop = [ "bottom", "side_print_secondary" ];
 	var $content = $('<div>');
+	var max_layers = 0;
 
-	if (simple_mode) {
-		var header = [ "Normal Layer", "Fn Layer" ];
-		for (var i = 0; i < 2; i++) {
-			has_popover = false;
-			var $sub_layer = $('<div>').append(
-				$('<h4>').attr({ "class": "", "lang": "en" }).text(header[i])
-			);
-			if (error[i] && !_.isEmpty(error[i])) {
-				$sub_layer.append(appendLayerError(error[i], top_prop[i], bottom_prop[i]));
-				has_popover = true;
-			}
-			if (warning[i] && !_.isEmpty(warning[i])) {
-				$sub_layer.append(appendLayerWarning(warning[i], top_prop[i], bottom_prop[i]));
-				has_popover = true;
-			}
-			if (info[i] && !_.isEmpty(info[i])) {
-				$sub_layer.append(appendLayerInfo(info[i], top_prop[i], bottom_prop[i]));
-				has_popover = true;
-			}
-			if (has_popover) {
-				$content.append($sub_layer);
-			}
+	switch (layer_mode) {
+		case LAYER_NORMAL:
+			max_layers = 1;
+			break;
+		case LAYER_SIMPLE:
+			max_layers = 2;
+			break;
+		case LAYER_ALL_IN_ONE:
+			max_layers = _keyboard['max_layers'];
+			break;
+	}
+
+	var sub_contents = [];
+	for (var i = 0; i < max_layers; i++) {
+		var has_layer = false;
+		var label_index = (layer_mode == LAYER_SIMPLE) ? i : 0;
+		var $sub_content = $('<div>');
+		var sub_error;
+		var sub_warning;
+		var sub_info;
+		if (layer_mode == LAYER_SIMPLE || layer_mode == LAYER_ALL_IN_ONE) {
+			$sub_content.append($('<h4>').attr({ "class": "", "lang": "en" }).text("Layer" + i));
+			sub_error = error[i];
+			sub_warning = warning[i];
+			sub_info = info[i];
+		}
+		else {
+			sub_error = error;
+			sub_warning = warning;
+			sub_info = info;
+		}
+		if (sub_error && !_.isEmpty(sub_error)) {
+			$sub_content.append(appendLayerError(sub_error, top_prop[label_index], bottom_prop[label_index]));
+			has_layer = true;
+		}
+		if (sub_warning && !_.isEmpty(sub_warning)) {
+			$sub_content.append(appendLayerWarning(sub_warning, top_prop[label_index], bottom_prop[label_index]));
+			has_layer = true;
+		}
+		if (sub_info && !_.isEmpty(sub_info)) {
+			$sub_content.append(appendLayerInfo(sub_info, top_prop[label_index], bottom_prop[label_index]));
+			has_layer = true;
+		}
+		if (has_layer) {
+			sub_contents.push($sub_content);
+			has_popover = true;
 		}
 	}
-	else {
-		if (error && !_.isEmpty(error)) {
-			$content.append(appendLayerError(error, top_prop[0], bottom_prop[0]));
-			has_popover = true;
-		}
-		if (warning && !_.isEmpty(warning)) {
-			$content.append(appendLayerWarning(warning, top_prop[0], bottom_prop[0]));
-			has_popover = true;
-		}
-		if (info && !_.isEmpty(info)) {
-			$content.append(appendLayerInfo(info, top_prop[0], bottom_prop[0]));
-			has_popover = true;
+	for (var i = 0; i < sub_contents.length; i++) {
+		$content.append(sub_contents[i]);
+		if (i != sub_contents.length - 1) {
+			$content.append($('<hr>'));
 		}
 	}
 

@@ -1,7 +1,7 @@
 window.lang = new jquery_lang_js();
 var tkg = new TKG();
 var _keyboard = {};
-var _simple_mode = false;
+var _layer_mode = LAYER_NORMAL;
 
 $(function() {
 
@@ -26,7 +26,6 @@ $(function() {
 	tkg.setKeycodeMap(keycode_map);
 	tkg.setFnMaps(action_map, lr_map, mod_map, on_map);
 	tkg.setLedMaps(binding_map, backlight_map);
-	tkg.setSimpleMode(_simple_mode);
 
 	// select keyboard
 	$('#keyboard-sel').multiselect({
@@ -34,7 +33,7 @@ $(function() {
 	});
 	$('#keyboard-sel').change(function() {
 		var name = this.value;
-		initialize(name, _simple_mode);
+		initialize(name, _layer_mode);
 	}).change();
 
 	updateDownloadButtonState();
@@ -144,24 +143,23 @@ $(function() {
 
 	// parse layer
 	$('#layer-wrapper').on('blur_custom', 'textarea', function(event, $layer) {
-		onLayerChange($layer);
+		onLayerChange($layer, _layer_mode, _keyboard['physical_rows']);
 	});
 
-	// simple mode on off switch
-	$('#switch-on, #switch-off').click( function() {
-		$('#switch-on').toggleClass('btn-default active btn-primary');
-		$('#switch-off').toggleClass('btn-default active btn-primary');
-		if ($('#switch-on').hasClass('active')) {
-			_simple_mode = true;
-		}
-		else if ($('#switch-off').hasClass('active')) {
-			_simple_mode = false;
-		}
-		else {
+	// layer mode switch
+	$('#layer-mode-normal, #layer-mode-simple, #layer-mode-allinone').click( function() {
+		if ($(this).hasClass('active')) {
 			return false;
 		}
-		initForm(_simple_mode);
-		tkg.setSimpleMode(_simple_mode);
+		$('#layer-mode button').removeClass('btn-primary active').addClass('btn-default');
+		$(this).removeClass('btn-default').addClass('btn-primary active');
+		switch ($(this).attr('id').slice('layer-mode-'.length)) {
+			case 'normal': _layer_mode = LAYER_NORMAL; break;
+			case 'simple': _layer_mode = LAYER_SIMPLE; break;
+			case 'allinone': _layer_mode = LAYER_ALL_IN_ONE; break;
+		}
+		initForm(_layer_mode);
+		tkg.initVariables();
 		return false;	// no submit
 	});
 
@@ -249,25 +247,25 @@ function switchPage(id) {
 	}
 }
 
-function initialize(name, simple_mode) {
-	var keyboard = loadKeyboard(name);
+function initialize(keyboard_name, layer_mode) {
+	var keyboard = loadKeyboard(keyboard_name);
 	_keyboard = keyboard;
-	initKeyboardConfig(name);
+	initKeyboardConfig(keyboard_name);
 	initKeyboardInfo(keyboard);
-	initForm(simple_mode);
+	initForm(layer_mode);
 	appendLeds();
 }
 
-function loadKeyboard(name) {
+function loadKeyboard(keyboard_name) {
 	var keyboard = {};
 	var rsc = /[\s\/]/g;
-	var result = name.match(/^(.*)\((.*)\)$/);
+	var result = keyboard_name.match(/^(.*)\((.*)\)$/);
 	if (result) {
 		var main = result[1].trim().replace(rsc, '_').toLowerCase();
 		var variant = result[2].trim().replace(rsc, '_').toLowerCase();
 	}
 	else {
-		var main = name.trim().replace(rsc, '_').toLowerCase();
+		var main = keyboard_name.trim().replace(rsc, '_').toLowerCase();
 	}
 	$.ajaxSetup({ async: false, cache: false });
 	$.getJSON("keyboard/" + main + ".json", function(json) {
@@ -324,11 +322,11 @@ function initKeyboardInfo(keyboard) {
 	});
 }
 
-function initForm(simple_mode) {
+function initForm(layer_mode) {
 	// append layers
 	emptyLayers();
-	appendLayers(simple_mode);
-	
+	appendLayers(layer_mode);
+
 	// clear fns
 	emptyFns();
 
