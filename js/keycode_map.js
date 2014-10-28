@@ -1152,6 +1152,7 @@ var keycode_map = {
 		"description": "Media Select",
 		"keycode": "0xAF",
 		"label": [ "select" ],
+		"label_priority": [ "select" ],
 		"short_name": "KC_MSEL"
 	},
 	"KC_MEDIA_EJECT": {
