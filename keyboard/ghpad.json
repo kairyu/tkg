@@ -39,5 +39,48 @@
 		"3,2,1,2": { "row": 2, "col": 3 },
 		"3,3,1,2": { "row": 3, "col": 3 },
 		"3,4,1,2": { "row": 4, "col": 3 }
-	}
+	},
+	"led_count": 5,
+	"led_map": [{
+		"name": "SW1",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NUM_LOCK",
+			"backlight": 1
+		}
+	},{
+		"name": "SW6",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NO",
+			"backlight": 1
+		}
+	},{
+		"name": "SW11",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NO",
+			"backlight": 1
+		}
+	},{
+		"name": "SW16",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NO",
+			"backlight": 1
+		}
+	},{
+		"name": "Others",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NO",
+			"backlight": 1
+		}
+	}],
+	"led_additional_index": 0,
+	"additional": [{
+		"start": 7,
+		"size": 5,
+		"data": []
+	}]
 }
