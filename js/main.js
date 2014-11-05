@@ -195,6 +195,7 @@ function download(id) {
 	var $form = $("<form>").attr({ "id": "dl_form", "action": "download.php?file=" + type, "method": "POST" }).append(
 			$("<input>").attr({ "type": "hidden", "name": "matrix_rows", "value": _keyboard['matrix_rows'] }),
 			$("<input>").attr({ "type": "hidden", "name": "matrix_cols", "value": _keyboard['matrix_cols'] }),
+			$("<input>").attr({ "type": "hidden", "name": "matrix_size", "value": _keyboard['matrix_size'] }),
 			$("<input>").attr({ "type": "hidden", "name": "max_layers", "value": _keyboard['max_layers'] }),
 			$("<input>").attr({ "type": "hidden", "name": "max_fns", "value": _keyboard['max_fns'] }),
 			$("<input>").attr({ "type": "hidden", "name": "eep_size", "value": _keyboard['eep_size'] }),

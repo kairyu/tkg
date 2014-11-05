@@ -67,7 +67,7 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	// Kimera
 	'Config':'设定',
 	'Port Mapping':'端口映射',
-	'Please select at least one Row or Col.':'请至少保留一个行或列',
+	'Please set at least one valid Row or Col.':'请至少设置一个有效行或列',
 	'Row':'行',
 	'Col':'列',
 	'Row Mapping':'行映射',

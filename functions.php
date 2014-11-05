@@ -22,7 +22,7 @@ function disable_magic_quotes() {
 	}
 }
 
-function generate_eep_file($matrix_rows, $matrix_cols, $max_layers, $max_fns, $keymaps, $fn_actions, $eep_size, $eep_start, $additional) {
+function generate_eep_file($matrix_rows, $matrix_cols, $matrix_size, $max_layers, $max_fns, $keymaps, $fn_actions, $eep_size, $eep_start, $additional) {
 	// generate binary data
 	$keymap_bin = '';
 	// fn actions
@@ -35,6 +35,9 @@ function generate_eep_file($matrix_rows, $matrix_cols, $max_layers, $max_fns, $k
 			for ($col = 0; $col < $matrix_cols; $col++) {
 				$keymap_bin .= pack('C', isset($keymaps[$layer][$row][$col]) ? $keymaps[$layer][$row][$col] : 0);
 			}
+		}
+		if ($matrix_size && $matrix_size > $matrix_rows * $matrix_cols) {
+			$keymap_bin .= str_repeat(pack('C', 0), $matrix_size - $matrix_rows * $matrix_cols);
 		}
 	}
 	// checksum

@@ -4,13 +4,13 @@
 	"max_layers": 3,
 	"max_fns": 32,
 	"eep_size": 1024,
-	"eep_start": 40,
+	"eep_start": 41,
 	"matrix_rows": 16,
 	"matrix_cols": 16,
 	"matrix_map": {},
 	"additional": [{
 		"start": 7,
-		"size": 33,
+		"size": 34,
 		"data": []
 	}]
 }

@@ -7,6 +7,7 @@ include_once('functions.php');
 $filetype = '';
 $matrix_rows = 0;
 $matrix_cols = 0;
+$matrix_size = 0;
 $max_layers = 0;
 $max_fns = 0;
 $keymaps = array();
@@ -57,6 +58,7 @@ if (
 			$additional = json_decode($_POST['additional'], true);
 		}
 	}
+	$matrix_size = intval($_POST['matrix_size']);
 }
 else {
 	die('Invalid Data');
@@ -80,7 +82,7 @@ if ($filetype == 'eep') {
 	$cache = check_cache('eep', $hash);
 	if (is_null($cache)) {
 		// no cache
-		$file = generate_eep_file($matrix_rows, $matrix_cols, $max_layers, $max_fns, $keymaps, $fn_actions, $eep_size, $eep_start, $additional);
+		$file = generate_eep_file($matrix_rows, $matrix_cols, $matrix_size, $max_layers, $max_fns, $keymaps, $fn_actions, $eep_size, $eep_start, $additional);
 		write_cache('eep', $hash, $file);
 	}
 	else {

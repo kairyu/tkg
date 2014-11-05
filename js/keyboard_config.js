@@ -58,23 +58,6 @@ function afterLoadKeyboardConfig(name) {
 
 function initKeyboardConfigPanel(name) {
 	if (name == "Kimera") {
-		// mux mapping
-		var $mux_sels = $('#kbd-cfg-container #kimera-mux select');
-		$mux_sels.multiselect({
-			buttonWidth: "100%",
-			buttonContainer: '<div class="btn-group" style="width:25%" />',
-			onChange: function(option, checked) {
-				kimeraMuxMappingChange();
-			}
-		});
-		if (!_.isEmpty(_keyboard_config)) {
-			var mux_count = _keyboard_config["mux_count"];
-			for (var i = 0; i < $mux_sels.length; i++) {
-				$mux_sels.eq(i).val(_keyboard_config["mux_mapping"][i]).multiselect('refresh');
-			}
-		}
-		kimeraMuxMappingRefresh();
-
 		// row col mapping
 		var $row_input = $('#kbd-cfg-container #kimera-row-val');
 		var $col_input = $('#kbd-cfg-container #kimera-col-val');
@@ -85,6 +68,7 @@ function initKeyboardConfigPanel(name) {
 				_keyboard_config["row_mapping_input"] = _keyboard_config["row_mapping"];
 			}
 			$row_input.val(_keyboard_config["row_mapping_input"].join(','));
+			$row_input.data('last', $row_input.val());
 		}
 		if ("col_mapping" in _keyboard_config) {
 			if ("col_mapping_input" in _keyboard_config) {
@@ -93,10 +77,11 @@ function initKeyboardConfigPanel(name) {
 				_keyboard_config["col_mapping_input"] = _keyboard_config["col_mapping"];
 			}
 			$col_input.val(_keyboard_config["col_mapping_input"].join(','));
+			$col_input.data('last', $col_input.val());
 		}
 		$row_input.data('role', 'tagsinput').tagsinput({
 			tagClass: function(item) { 
-				if (_.contains($row_input.data('available_ports'), parseInt(item))) {
+				if (_.contains($row_input.data('valid_pins'), parseInt(item))) {
 					return 'label label-primary';
 				}
 				else {
@@ -105,16 +90,16 @@ function initKeyboardConfigPanel(name) {
 			},
 			typeahead: {
 				source: function(query) {
-					return $row_input.data('available_ports');
+					return $row_input.data('available_pins');
 				}
 			},
 		});
 		$row_input.change(function() {
-			//kimeraRowMappingChange();
+			kimeraRowColMappingChange();
 		});
 		$col_input.data('role', 'tagsinput').tagsinput({
 			tagClass: function(item) {
-				if (_.contains($col_input.data('available_ports'), parseInt(item))) {
+				if (_.contains($col_input.data('valid_pins'), parseInt(item))) {
 					return 'label label-primary';
 				}
 				else {
@@ -123,171 +108,124 @@ function initKeyboardConfigPanel(name) {
 			},
 			typeahead: {
 				source: function(query) {
-					return $col_input.data('available_ports');
+					return $col_input.data('available_pins');
 				}
 			},
 		});
 		$col_input.change(function() {
-			//kimeraColMappingChange();
+			kimeraRowColMappingChange();
 		});
 		$($row_input.tagsinput('input')).attr('lang', $row_input.attr('lang')).blur(function() {
-			kimeraRowMappingChange();
+			var val = $row_input.val();
+			var last = $row_input.data('last') || '';
+			if (val != last) {
+				$row_input.data('last', val);
+				$row_input.trigger('change');
+			}
 		});
 		$($col_input.tagsinput('input')).attr('lang', $col_input.attr('lang')).blur(function() {
-			kimeraColMappingChange();
+			var val = $col_input.val();
+			var last = $col_input.data('last') || '';
+			if (val != last) {
+				$col_input.data('last', val);
+				$col_input.trigger('change');
+			}
 		});
-		kimeraRowColMappingRefresh();
 
 		// row col clear
 		var $row_clear = $('#kbd-cfg-container #kimera-row-clear');
 		var $col_clear = $('#kbd-cfg-container #kimera-col-clear');
 		$row_clear.click(function () {
 			$row_input.tagsinput('removeAll');
-			kimeraRowMappingChange();
+			$row_input.data('last', '');
+			kimeraRowColMappingChange();
 		});
 		$col_clear.click(function () {
 			$col_input.tagsinput('removeAll');
-			kimeraColMappingChange();
+			$col_input.data('last', '');
+			kimeraRowColMappingChange();
 		});
 
 		// matrix mapping
 		var $matrix_textarea = $("#kbd-cfg-container #kimera-matrix-val");
 		$matrix_textarea.val(_keyboard_config["matrix_map_raw"]);
+		$matrix_textarea.data('last', $matrix_textarea.val());
 		$matrix_textarea.on('blur_custom', function() {
-			kimeraMatrixMappingChange();
+			var $matrix_textarea = $("#kbd-cfg-container #kimera-matrix-val");
+			var raw = $matrix_textarea.val();
+			var last = $matrix_textarea.data('last') || "";
+			if (last != raw) {
+				$matrix_textarea.data('last', raw);
+				kimeraMatrixMappingChange();
+			}
 		});
+
+		kimeraRowColMappingChange();
 		kimeraMatrixMappingRefresh();
 	}
 }
 
-function kimeraMuxMappingChange() {
-	var $mux_sels = $('#kbd-cfg-container #kimera-mux select');
-	var mux_mapping = _keyboard_config["mux_mapping"];
-	for (var i = 0; i < $mux_sels.length; i++) {
-		mux_mapping[i] = $($mux_sels[i]).val();
-	}
-
-	var row_max_count = 0;
-	var col_max_count = 0;
-	var mux_mapping = _keyboard_config["mux_mapping"];
-	var mux_ports = _keyboard_config["mux_ports"] | 0;
-	for (var i = 0; i < mux_mapping.length; i++) {
-		if (mux_mapping[i] == "row") {
-			row_max_count += mux_ports;
-		}
-		else if (mux_mapping[i] == "col") {
-			col_max_count += mux_ports;
-		}
-	}
-	_keyboard_config["matrix_max_rows"] = row_max_count;
-	_keyboard_config["matrix_max_cols"] = col_max_count;
-
-	kimeraConfigUpdate(true);
-	kimeraMuxMappingRefresh();
-	kimeraRowColMappingRefresh();
-	kimeraMatrixMappingChange(true);
-}
-
-function kimeraMuxMappingRefresh() {
-	var $mux_error = $('#kbd-cfg-container #kimera-mux').next('div');
-	var mux_mapping = _keyboard_config["mux_mapping"];
-	if (_.indexOf(mux_mapping, "row") == -1 || _.indexOf(mux_mapping, "col") == -1) {
-		$mux_error.show();
-	}
-	else {
-		$mux_error.hide();
-	}
-}
-
-function kimeraRowMappingChange(force) {
+function kimeraRowColMappingChange() {
 	var $row_input = $('#kbd-cfg-container #kimera-row-val');
-	var val = $row_input.val();
-	var last = $row_input.data('last') || "";
-	if (force) {
-		last = "";
-	}
-	if (val == last) {
-		return;
-	}
-	$row_input.data('last', val);
-	var input_ports = [];
-	if (val) {
-		input_ports = _.map(val.split(','), function(e) {
-			return parseInt(e);
-		});
-	}
-	_keyboard_config["row_mapping_input"] = input_ports;
-	_keyboard_config["row_mapping"] = _.intersection(input_ports, $row_input.data('available_ports'));
-	_keyboard_config["matrix_rows"] = _keyboard_config["row_mapping"].length;
-	kimeraConfigUpdate(true);
-	kimeraMatrixMappingChange(true);
-}
-
-function kimeraColMappingChange(force) {
 	var $col_input = $('#kbd-cfg-container #kimera-col-val');
-	var val = $col_input.val();
-	var last = $col_input.data('last') || "";
-	if (force) {
-		last = "";
-	}
-	if (val == last) {
-		return;
-	}
-	$col_input.data('last', val);
-	var input_ports = [];
-	if (val) {
-		input_ports = _.map(val.split(','), function(e) {
+	var row_val = $row_input.val();
+	var col_val = $col_input.val();
+	var row_input_pins = [];
+	var col_input_pins = [];
+	if (row_val) {
+		row_input_pins = _.map(row_val.split(','), function(e) {
 			return parseInt(e);
 		});
 	}
-	_keyboard_config["col_mapping_input"] = input_ports;
-	_keyboard_config["col_mapping"] = _.intersection(input_ports, $col_input.data('available_ports'));
+	if (col_val) {
+		col_input_pins = _.map(col_val.split(','), function(e) {
+			return parseInt(e);
+		});
+	}
+
+	var conflict_pins = _.intersection(row_input_pins, col_input_pins);
+	var valid_pins = [];
+	var available_pins = [];
+	var row_pins = [];
+	var col_pins = [];
+	var pin_count = _keyboard_config["pin_count"] | 0;
+	for (var i = 0; i < pin_count; i++) {
+		valid_pins.push(i + 1);
+	}
+	valid_pins = _.difference(valid_pins, conflict_pins);
+	row_valid_pins = _.intersection(row_input_pins, valid_pins);
+	col_valid_pins = _.intersection(col_input_pins, valid_pins);
+	available_pins = _.difference(valid_pins, row_valid_pins, col_valid_pins);
+	_keyboard_config["row_mapping_input"] = row_input_pins;
+	_keyboard_config["col_mapping_input"] = col_input_pins;
+	_keyboard_config["row_mapping"] = row_valid_pins;
+	_keyboard_config["col_mapping"] = col_valid_pins;
+	_keyboard_config["matrix_rows"] = _keyboard_config["row_mapping"].length;
 	_keyboard_config["matrix_cols"] = _keyboard_config["col_mapping"].length;
 	kimeraConfigUpdate(true);
-	kimeraMatrixMappingChange(true);
-}
+	kimeraMatrixMappingChange();
 
-function kimeraRowColMappingRefresh() {
-	var $row_input = $('#kbd-cfg-container #kimera-row-val');
-	var $col_input = $('#kbd-cfg-container #kimera-col-val');
-	var mux_mapping = _keyboard_config["mux_mapping"];
-	var mux_ports = _keyboard_config["mux_ports"] | 0;
-	var row_ports = [];
-	var col_ports = [];
-	for (var i = 0; i < mux_mapping.length; i++) {
-		if (mux_mapping[i] == "row") {
-			for (var j = 0; j < mux_ports; j++) {
-				row_ports.push(parseInt(i * mux_ports + j + 1));
-			}
-		}
-		else if (mux_mapping[i] == "col") {
-			for (var j = 0; j < mux_ports; j++) {
-				col_ports.push(parseInt(i * mux_ports + j + 1));
-			}
-		}
-	}
-	$row_input.data('available_ports', row_ports);
-	$col_input.data('available_ports', col_ports);
+	$row_input.data('valid_pins', valid_pins);
+	$col_input.data('valid_pins', valid_pins);
+	$row_input.data('available_pins', available_pins);
+	$col_input.data('available_pins', available_pins);
 	if ($row_input.data('role') == 'tagsinput') {
 		$row_input.tagsinput('refresh');
-		kimeraRowMappingChange(true);
 	}
 	if ($col_input.data('role') == 'tagsinput') {
 		$col_input.tagsinput('refresh');
-		kimeraColMappingChange(true);
+	}
+	if (!row_valid_pins.length || !col_valid_pins.length) {
+		$('#kimera-error').show();
+	}
+	else {
+		$('#kimera-error').hide();
 	}
 }
 
-function kimeraMatrixMappingChange(force) {
+function kimeraMatrixMappingChange() {
 	var $matrix_textarea = $("#kbd-cfg-container #kimera-matrix-val");
 	var raw = $matrix_textarea.val();
-	var last = $matrix_textarea.data('last') || "";
-	if (force) {
-		last = "";
-	}
-	if (last == raw) {
-		return;
-	}
 	_keyboard_config["matrix_map_state"] = tkg.parseMatrixMapLayer(raw);
 	_keyboard_config["matrix_map"] = tkg.getMatrixMap();
 	kimeraMatrixMappingRefresh();
@@ -299,7 +237,6 @@ function kimeraMatrixMappingRefresh() {
 	var $matrix_textarea = $("#kbd-cfg-container #kimera-matrix-val");
 	var raw = $matrix_textarea.val();
 	var state = _keyboard_config["matrix_map_state"];
-	$matrix_textarea.data('last', raw);
 
 	var $div = $matrix_textarea.parent();
 	// clear validation states
@@ -385,8 +322,8 @@ function kimeraSetupMatrixMappingPopover() {
 }
 
 function kimeraConfigUpdate(init) {
-	_keyboard["matrix_rows"] = _keyboard_config["matrix_max_rows"];
-	_keyboard["matrix_cols"] = _keyboard_config["matrix_max_cols"];
+	_keyboard["matrix_rows"] = _keyboard_config["matrix_rows"];
+	_keyboard["matrix_cols"] = _keyboard_config["matrix_cols"];
 	_keyboard["matrix_size"] = _keyboard_config["matrix_size"];
 	_keyboard["additional"][0]["data"] = kimeraMakeConfigData();
 	if (init) {
@@ -402,23 +339,13 @@ function kimeraConfigUpdate(init) {
 
 function kimeraMakeConfigData() {
 	var data = [];
-	var mux_ports = _keyboard_config["mux_ports"] | 0;
-	var mux_count = _keyboard_config["mux_count"];
-	var mux_mapping = _keyboard_config["mux_mapping"];
-	var row_max_count = _keyboard_config["matrix_max_rows"];
-	var col_max_count = _keyboard_config["matrix_max_cols"];
+	var row_count = _keyboard_config["matrix_rows"];
+	var col_count = _keyboard_config["matrix_cols"];
 	var row_mapping = _keyboard_config["row_mapping"];
 	var col_mapping = _keyboard_config["col_mapping"];
 
-	var mux_config = 0;
-	for (var i = 0; i < mux_count; i++) {
-		if (mux_mapping[i] == "row") {
-			mux_config |= (1 << i);
-		}
-	}
-	data.push(mux_config);
-
-	for (var i = 0; i < row_max_count; i++) {
+	data.push(row_count, col_count);
+	for (var i = 0; i < row_count; i++) {
 		if (row_mapping[i]) {
 			data.push(row_mapping[i] - 1);
 		}
@@ -426,7 +353,7 @@ function kimeraMakeConfigData() {
 			data.push(parseInt('0xFF', 16));
 		}
 	}
-	for (var i = 0; i < col_max_count; i++) {
+	for (var i = 0; i < col_count; i++) {
 		if (col_mapping[i]) {
 			data.push(col_mapping[i] - 1);
 		}

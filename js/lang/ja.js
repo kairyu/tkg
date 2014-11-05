@@ -68,7 +68,7 @@ jquery_lang_js.prototype.lang.ja = {
 	// Kimera
 	'Config':'設定',
 	'Port Mapping':'ポートマッピング',
-	'Please select at least one Row or Col.':'行と列は少なくともそれぞれ一つを選択してください',
+	'Please set at least one valid Row or Col.':'少なくとも1つの有効な行または列を設定してください',
 	'Row':'行',
 	'Col':'列',
 	'Row Mapping':'行マッピング',
