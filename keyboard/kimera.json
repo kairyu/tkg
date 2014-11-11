@@ -4,13 +4,48 @@
 	"max_layers": 3,
 	"max_fns": 32,
 	"eep_size": 1024,
-	"eep_start": 41,
+	"eep_start": 45,
 	"matrix_rows": 16,
 	"matrix_cols": 16,
 	"matrix_map": {},
+	"led_count": 4,
+	"led_map": [{
+		"name": "LED1",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NUM_LOCK",
+			"backlight": 0
+		}
+	},{
+		"name": "LED2",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_CAPS_LOCK",
+			"backlight": 0
+		}
+	},{
+		"name": "LED3",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_SCROLL_LOCK",
+			"backlight": 0
+		}
+	},{
+		"name": "LED4",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NO",
+			"backlight": 1
+		}
+	}],
+	"led_additional_index": 1,
 	"additional": [{
-		"start": 7,
+		"start": 11,
 		"size": 34,
+		"data": []
+	},{
+		"start": 7,
+		"size": 4,
 		"data": []
 	}]
 }
