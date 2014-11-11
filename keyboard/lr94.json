@@ -6,7 +6,7 @@
 	"eep_size": 1024,
 	"eep_start": 16,
 	"matrix_rows": 16,
-	"matrix_cols": 6,
+	"matrix_cols": 7,
 	"physical_rows": 6,
 	"matrix_map": {
 		"0,0": { "row": 0, "col": 6 },
