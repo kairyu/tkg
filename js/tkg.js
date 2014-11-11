@@ -70,7 +70,7 @@ function TKG() {
 		_fn_options["on"] = _generateOnOptions(_on_map);
 		_consoleInfoGroupEnd();
 	}
-	
+
 	var _setLedMaps = function(binding_map, backlight_map) {
 		_consoleInfoGroup("setLedMap");
 		_binding_map = binding_map;
@@ -86,26 +86,49 @@ function TKG() {
 
 	var _init = function(object) {
 		// get parameters
-		_max_layers = object["max_layers"];
-		_max_fns = object["max_fns"];
-		_matrix_rows = object["matrix_rows"];
-		_matrix_cols = object["matrix_cols"];
-		_matrix_map = object["matrix_map"];
-		_led_count = object["led_count"] | 0;
-		_leds = [];
-		_initLeds();
+		if ("max_layers" in object) _max_layers = object["max_layers"] || 0;
+		if ("max_fns" in object) _max_fns = object["max_fns"] || 0;
+		if ("matrix_rows" in object) _matrix_rows = object["matrix_rows"] || 0;
+		if ("matrix_cols" in object) _matrix_cols = object["matrix_cols"] || 0;
+		if ("matrix_map" in object) _matrix_map = object["matrix_map"] || {};
+		if ("led_count" in object) _led_count = object["led_count"] || 0;
 		// init variables
-		_initVariables();
+		if ("max_layers" in object ||
+		"matrix_rows" in object ||
+		"matrix_cols" in object ||
+		"matrix_map" in object) {
+			_initLayerVariables();
+		}
+		if ("max_fns" in object) {
+			_initFnVariables();
+		}
+		if ("led_count" in object) {
+			_initLedVariables();
+		}
 		// generate options
 		_fn_options["layer"] = _generateLayerOptions(_max_layers);
 	}
 
 	var _initVariables = function() {
+		_initLayerVariables();
+		_initFnVariables();
+		_initLedVariables();
+	}
+
+	var _initLayerVariables = function() {
 		_layers = [];
-		_fns = [];
 		_matrices = [];
 		_initKeymaps();
+	}
+
+	var _initFnVariables = function() {
+		_fns = [];
 		_initFnActions();
+	}
+
+	var _initLedVariables = function() {
+		_leds = [];
+		_initLeds();
 	}
 
 	var _initKeymaps = function(layer_number) {
@@ -710,7 +733,7 @@ function TKG() {
 			//_raiseError(error, "general", message, message, layer["keys"]);
 			return layer;
 		}
-		
+
 		// check label parameter
 		if (!label_property) {
 			_consoleError("Wrong function call");
@@ -1568,7 +1591,7 @@ function TKG() {
 	var _getLedsHex = function() {
 		return _led_hex;
 	}
-	
+
 	var _getLedsSymbol = function() {
 		return _led_symbol;
 	}

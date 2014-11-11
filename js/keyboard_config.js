@@ -80,7 +80,7 @@ function initKeyboardConfigPanel(name) {
 			$col_input.data('last', $col_input.val());
 		}
 		$row_input.data('role', 'tagsinput').tagsinput({
-			tagClass: function(item) { 
+			tagClass: function(item) {
 				if (_.contains($row_input.data('valid_pins'), parseInt(item))) {
 					return 'label label-primary';
 				}
@@ -329,7 +329,6 @@ function kimeraConfigUpdate(init) {
 	if (init) {
 		tkg.init({
 			"max_layers": _keyboard["max_layers"],
-			"max_fns": _keyboard["max_fns"],
 			"matrix_rows": _keyboard_config["matrix_rows"],
 			"matrix_cols": _keyboard_config["matrix_cols"],
 			"matrix_map": _keyboard_config["matrix_map"]
@@ -361,6 +360,6 @@ function kimeraMakeConfigData() {
 			data.push(parseInt('0xFF', 16));
 		}
 	}
-	
+
 	return data;
 }

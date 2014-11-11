@@ -121,7 +121,7 @@ $(function() {
 			window.lang.run();
 		}
 	});
-	
+
 	// get raw data from server
 	$('body').on('blur', '.kle-layer', function(event) {
 		var $this = $(this);
@@ -309,10 +309,10 @@ function initKeyboardInfo(keyboard) {
 		trigger: 'hover',
 		container: '#kbd-info-container',
 		//content: (function() { $('#kbd-info-dymmy').html(); })()
-		content: 
+		content:
 			'<strong><span lang="en">Name</span>: </strong>' + keyboard['name'] + '<br/>' +
 			'<strong><span lang="en">Description</span>: </strong><span lang="en">' + keyboard['description'] + '</span><br/>' +
-			'<strong><span lang="en">Max Layers</span>: </strong>' + keyboard['max_layers'] + '<br/>' + 
+			'<strong><span lang="en">Max Layers</span>: </strong>' + keyboard['max_layers'] + '<br/>' +
 			'<strong><span lang="en">Max Fns</span>: </strong>' + keyboard['max_fns']
 	});
 
