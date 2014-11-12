@@ -372,7 +372,7 @@ function TKG() {
 		if (raw_string) {
 			if (layer_mode == LAYER_NORMAL || layer_mode == LAYER_SIMPLE) {
 				// parse raw string to keys
-				var layer = _parseRawString(raw_string);
+				var layer = _parseRawData(raw_string);
 				if (layer_mode == LAYER_SIMPLE) {
 					// copy to layer_2
 					var layer_2 = JSON.parse(JSON.stringify(layer));
@@ -401,7 +401,7 @@ function TKG() {
 			}
 			else if (layer_mode == LAYER_ALL_IN_ONE) {
 				// parse raw string to keys
-				var layers = _parseRawString(raw_string, block_rows);
+				var layers = _parseRawData(raw_string, block_rows);
 				var state = _NONE;
 				for (var i = 0; i < layers.length; i++) {
 					var state_2 = _postParseLayer(layer_number + i, layers[i], "top", "bottom");
@@ -500,7 +500,7 @@ function TKG() {
 
 		// parse raw string to keys
 		if (raw_string) {
-			layer = _parseRawString(raw_string);
+			layer = _parseRawData(raw_string);
 		}
 
 		// parse keys to matrix map
@@ -522,11 +522,16 @@ function TKG() {
 		return state;
 	}
 
-	var _parseRawString = function(raw_string, block_rows) {
-		// parse raw string to object
-		try {
-			eval("var raw = [" + raw_string + "];");
-		} catch (e) {
+	var _parseRowCount = function(raw_string) {
+		// parse raw string to array
+		var raw = _parseRawString(raw_string);
+		return raw.length || 0;
+	}
+
+	var _parseRawData = function(raw_string, block_rows) {
+		// parse raw string to array
+		var raw = _parseRawString(raw_string);
+		if (_.isEmpty(raw)) {
 			var message = "Invalid raw data";
 			var error = {};
 			_raiseError(error, "general", message, message, raw_string);
@@ -538,29 +543,8 @@ function TKG() {
 			}
 		}
 
-		if (!_.isArray(raw)) {
-			var message = "Invalid raw data";
-			var layer = {};
-			_raiseError(error, "general", message, message, raw_string);
-			if (arguments.length == 1) {
-				return { "error": error, "warn": {}, "info": {} };
-			}
-			else {
-				return [{ "error": error, "warn": {}, "info": {} }];
-			}
-		}
-
-		// remove useless property
-		console.log(raw);
-		for (var i = 0; i < raw.length; i++) {
-			if (!_.isArray(raw[i])) {
-				raw.splice(i, 1);
-				i = 0;
-			}
-		}
-
 		// parse object to keys
-		if (arguments.length == 1) {
+		if (arguments.length == 1 || block_rows == 0) {
 			return _parseRawObject(raw);
 		}
 		else {
@@ -571,6 +555,28 @@ function TKG() {
 			}
 			return layers;
 		}
+	}
+
+	var _parseRawString = function(raw_string) {
+		try {
+			eval("var raw = [" + raw_string + "];");
+		} catch (e) {
+			return {};
+		}
+
+		if (!_.isArray(raw)) {
+			return {};
+		}
+
+		// remove useless property
+		for (var i = 0; i < raw.length; i++) {
+			if (!_.isArray(raw[i])) {
+				raw.splice(i, 1);
+				i = 0;
+			}
+		}
+
+		return raw;
 	}
 
 	var _parseRawObject = function(raw_object) {
@@ -1616,6 +1622,7 @@ function TKG() {
 	this.setKeycodeMap = _setKeycodeMap;
 	this.setFnMaps = _setFnMaps;
 	this.setLedMaps = _setLedMaps;
+	this.parseRowCount = _parseRowCount;
 	this.parseLayer = _parseLayer;
 	this.parseMatrixMapLayer = _parseMatrixMapLayer;
 	this.getError = _getError;

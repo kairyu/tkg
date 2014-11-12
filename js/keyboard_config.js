@@ -52,6 +52,7 @@ function afterLoadKeyboardConfig(name) {
 		});
 		_keyboard_config["matrix_map_state"] = tkg.parseMatrixMapLayer(_keyboard_config["matrix_map_raw"]);
 		_keyboard_config["matrix_map"] = tkg.getMatrixMap();
+		_keyboard_config["physical_rows"] = tkg.parseRowCount(_keyboard_config["matrix_map_raw"]);
 		kimeraConfigUpdate(true);
 	}
 }
@@ -228,6 +229,7 @@ function kimeraMatrixMappingChange() {
 	var raw = $matrix_textarea.val();
 	_keyboard_config["matrix_map_state"] = tkg.parseMatrixMapLayer(raw);
 	_keyboard_config["matrix_map"] = tkg.getMatrixMap();
+	_keyboard_config["physical_rows"] = tkg.parseRowCount(raw);
 	kimeraMatrixMappingRefresh();
 	kimeraConfigUpdate(true);
 	updateLayers();
@@ -325,6 +327,7 @@ function kimeraConfigUpdate(init) {
 	_keyboard["matrix_rows"] = _keyboard_config["matrix_rows"];
 	_keyboard["matrix_cols"] = _keyboard_config["matrix_cols"];
 	_keyboard["matrix_size"] = _keyboard_config["matrix_size"];
+	_keyboard["physical_rows"] = _keyboard_config["physical_rows"];
 	_keyboard["additional"][0]["data"] = kimeraMakeConfigData();
 	if (init) {
 		tkg.init({
