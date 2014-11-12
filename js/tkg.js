@@ -550,6 +550,15 @@ function TKG() {
 			}
 		}
 
+		// remove useless property
+		console.log(raw);
+		for (var i = 0; i < raw.length; i++) {
+			if (!_.isArray(raw[i])) {
+				raw.splice(i, 1);
+				i = 0;
+			}
+		}
+
 		// parse object to keys
 		if (arguments.length == 1) {
 			return _parseRawObject(raw);
