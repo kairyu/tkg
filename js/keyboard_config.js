@@ -1,12 +1,15 @@
 var _keyboard_config = {};
 
 function initKeyboardConfig(name) {
-	if (name == "Kimera") {
+	var result = parseKeyboardName(name);
+	var main = result["main"];
+	var variant = result["variant"];
+	if (main.match(/^kimera.*/)) {
 		$('#kbd-cfg').show();
 		$('#kbd-cfg-container').show();
-		initKeyboardConfigPopover(name);
-		_keyboard_config = loadKeyboardConfig(name);
-		afterLoadKeyboardConfig(name);
+		initKeyboardConfigPopover(main, variant);
+		_keyboard_config = loadKeyboardConfig(main, variant);
+		afterLoadKeyboardConfig(main, variant);
 		window.lang.run();
 	}
 	else {
@@ -15,10 +18,17 @@ function initKeyboardConfig(name) {
 	}
 }
 
-function loadKeyboardConfig(name) {
+function loadKeyboardConfig(main, variant) {
 	var config = {};
+	var name = "";
+	if (variant) {
+		name = main + "-" + variant + "-config.json";
+	}
+	else {
+		name = main + "-config.json";
+	}
 	$.ajaxSetup({ async: false, cache: false });
-	$.getJSON("keyboard/" + name.toLowerCase() + "_config.json", function(json) {
+	$.getJSON("keyboard/" + name.toLowerCase(), function(json) {
 		config = json;
 	}).fail(function(d, textStatus, error) {
 		console.error("getJSON failed, status: " + textStatus + ", error: "+error)
@@ -27,25 +37,25 @@ function loadKeyboardConfig(name) {
 	return config;
 }
 
-function initKeyboardConfigPopover(name) {
+function initKeyboardConfigPopover(main, variant) {
 	$('#kbd-cfg-btn').popover('destroy').popover({
 		animation: false,
 		html: true,
 		placement: 'bottom',
 		trigger: 'manual',
 		content: function() {
-			return $('#' + name.toLowerCase() + '-config').html();
+			return $('#' + main.toLowerCase() + '-config').html();
 		},
 		container: '#kbd-cfg-container'
 	}).unbind('click').click(function() {
 		$(this).popover('toggle');
 	}).on('shown.bs.popover', function() {
-		initKeyboardConfigPanel(name);
+		initKeyboardConfigPanel(main, variant);
 	});
 }
 
-function afterLoadKeyboardConfig(name) {
-	if (name == "Kimera") {
+function afterLoadKeyboardConfig(main, variant) {
+	if (main.match(/^kimera.*/)) {
 		tkg.init({
 			"matrix_rows": _keyboard_config["matrix_rows"],
 			"matrix_cols": _keyboard_config["matrix_cols"]
@@ -57,8 +67,8 @@ function afterLoadKeyboardConfig(name) {
 	}
 }
 
-function initKeyboardConfigPanel(name) {
-	if (name == "Kimera") {
+function initKeyboardConfigPanel(main, variant) {
+	if (main.match(/^kimera.*/)) {
 		// row col mapping
 		var $row_input = $('#kbd-cfg-container #kimera-row-val');
 		var $col_input = $('#kbd-cfg-container #kimera-col-val');
@@ -96,7 +106,7 @@ function initKeyboardConfigPanel(name) {
 			},
 		});
 		$row_input.change(function() {
-			kimeraRowColMappingChange();
+			kimeraRowColMappingChange(variant);
 		});
 		$col_input.data('role', 'tagsinput').tagsinput({
 			tagClass: function(item) {
@@ -114,7 +124,7 @@ function initKeyboardConfigPanel(name) {
 			},
 		});
 		$col_input.change(function() {
-			kimeraRowColMappingChange();
+			kimeraRowColMappingChange(variant);
 		});
 		$($row_input.tagsinput('input')).attr('lang', $row_input.attr('lang')).blur(function() {
 			var val = $row_input.val();
@@ -139,12 +149,12 @@ function initKeyboardConfigPanel(name) {
 		$row_clear.click(function () {
 			$row_input.tagsinput('removeAll');
 			$row_input.data('last', '');
-			kimeraRowColMappingChange();
+			kimeraRowColMappingChange(variant);
 		});
 		$col_clear.click(function () {
 			$col_input.tagsinput('removeAll');
 			$col_input.data('last', '');
-			kimeraRowColMappingChange();
+			kimeraRowColMappingChange(variant);
 		});
 
 		// matrix mapping
@@ -161,12 +171,12 @@ function initKeyboardConfigPanel(name) {
 			}
 		});
 
-		kimeraRowColMappingChange();
+		kimeraRowColMappingChange(variant);
 		kimeraMatrixMappingRefresh();
 	}
 }
 
-function kimeraRowColMappingChange() {
+function kimeraRowColMappingChange(variant) {
 	var $row_input = $('#kbd-cfg-container #kimera-row-val');
 	var $col_input = $('#kbd-cfg-container #kimera-col-val');
 	var row_val = $row_input.val();
@@ -202,7 +212,14 @@ function kimeraRowColMappingChange() {
 	_keyboard_config["row_mapping"] = row_valid_pins;
 	_keyboard_config["col_mapping"] = col_valid_pins;
 	_keyboard_config["matrix_rows"] = _keyboard_config["row_mapping"].length;
-	_keyboard_config["matrix_cols"] = _keyboard_config["col_mapping"].length;
+	console.log(variant);
+	if (variant == "two_headed") {
+		_keyboard_config["matrix_cols"] = parseInt((_keyboard_config["col_mapping"].length + 1) / 2);
+	}
+	else {
+		_keyboard_config["matrix_cols"] = _keyboard_config["col_mapping"].length;
+	}
+	console.log(_keyboard_config["matrix_cols"]);
 	kimeraConfigUpdate(true);
 	kimeraMatrixMappingChange();
 
@@ -328,6 +345,7 @@ function kimeraConfigUpdate(init) {
 	_keyboard["matrix_cols"] = _keyboard_config["matrix_cols"];
 	_keyboard["matrix_size"] = _keyboard_config["matrix_size"];
 	_keyboard["physical_rows"] = _keyboard_config["physical_rows"];
+	_keyboard["matrix_map"] = _keyboard_config["matrix_map"];
 	_keyboard["additional"][0]["data"] = kimeraMakeConfigData();
 	if (init) {
 		tkg.init({
@@ -341,10 +359,10 @@ function kimeraConfigUpdate(init) {
 
 function kimeraMakeConfigData() {
 	var data = [];
-	var row_count = _keyboard_config["matrix_rows"];
-	var col_count = _keyboard_config["matrix_cols"];
 	var row_mapping = _keyboard_config["row_mapping"];
 	var col_mapping = _keyboard_config["col_mapping"];
+	var row_count = row_mapping.length;
+	var col_count = col_mapping.length;
 
 	data.push(row_count, col_count);
 	for (var i = 0; i < row_count; i++) {

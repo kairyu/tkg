@@ -203,17 +203,22 @@ function download(id) {
 			$("<input>").attr({ "type": "hidden", "name": "keymaps", "value": JSON.stringify(keymaps) }),
 			$("<input>").attr({ "type": "hidden", "name": "fn_actions", "value": JSON.stringify(fn_actions) })
 		);
-	if (_keyboard['name'] == 'Kimera') {
-		$form = $form.append($("<input>", {
-			"type": "hidden", "name": "additional", "value": JSON.stringify(_keyboard['additional'])
-		}));
+
+	var has_additional = false;
+	if (id == 'dl_eep' && _keyboard['name'].match(/^Kimera.*/i)) {
+		has_additional = true;
 	}
 	if (id == 'dl_eep' && _keyboard['led_count']) {
-		_keyboard['additional'][0]['data'] = leds;
+		_keyboard['additional'][_keyboard['led_additional_index']]['data'] = leds;
+		console.log(leds);
+		has_additional = true;
+	}
+	if (has_additional) {
 		$form = $form.append($("<input>", {
 			"type": "hidden", "name": "additional", "value": JSON.stringify(_keyboard['additional'])
 		}));
 	}
+
 	$("body").append($form);
 
 	console.log(keymaps);
@@ -259,15 +264,9 @@ function initialize(keyboard_name, layer_mode) {
 
 function loadKeyboard(keyboard_name) {
 	var keyboard = {};
-	var rsc = /[\s\/]/g;
-	var result = keyboard_name.match(/^(.*)\((.*)\)$/);
-	if (result) {
-		var main = result[1].trim().replace(rsc, '_').toLowerCase();
-		var variant = result[2].trim().replace(rsc, '_').toLowerCase();
-	}
-	else {
-		var main = keyboard_name.trim().replace(rsc, '_').toLowerCase();
-	}
+	var result = parseKeyboardName(keyboard_name);
+	var main = result["main"];
+	var variant = result["variant"];
 	$.ajaxSetup({ async: false, cache: false });
 	$.getJSON("keyboard/" + main + ".json", function(json) {
 		keyboard = json;
@@ -606,4 +605,17 @@ function getKLERawData(url, success, fail) {
 	else {
 		fail.call(this);
 	}
+}
+
+function parseKeyboardName(name) {
+	var rsc = /[\s\/-]/g;
+	var result = name.match(/^(.*)\((.*)\)$/);
+	if (result) {
+		var main = result[1].trim().replace(rsc, '_').toLowerCase();
+		var variant = result[2].trim().replace(rsc, '_').toLowerCase();
+	}
+	else {
+		var main = name.trim().replace(rsc, '_').toLowerCase();
+	}
+	return { "main": main, "variant": variant };
 }
