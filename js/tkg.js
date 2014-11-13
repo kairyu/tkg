@@ -112,7 +112,6 @@ function TKG() {
 	var _initVariables = function() {
 		_initLayerVariables();
 		_initFnVariables();
-		_initLedVariables();
 	}
 
 	var _initLayerVariables = function() {
