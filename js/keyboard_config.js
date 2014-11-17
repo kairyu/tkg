@@ -60,7 +60,7 @@ function afterLoadKeyboardConfig(main, variant) {
 			"matrix_rows": _keyboard_config["matrix_rows"],
 			"matrix_cols": _keyboard_config["matrix_cols"]
 		});
-		_keyboard_config["matrix_map_state"] = tkg.parseMatrixMapLayer(_keyboard_config["matrix_map_raw"]);
+		_keyboard_config["matrix_map_state"] = tkg.parseMatrixMapLayer(_keyboard_config["matrix_map_raw"], (variant == "two_headed"));
 		_keyboard_config["matrix_map"] = tkg.getMatrixMap();
 		_keyboard_config["physical_rows"] = tkg.parseRowCount(_keyboard_config["matrix_map_raw"]);
 		kimeraConfigUpdate(true);
@@ -167,7 +167,7 @@ function initKeyboardConfigPanel(main, variant) {
 			var last = $matrix_textarea.data('last') || "";
 			if (last != raw) {
 				$matrix_textarea.data('last', raw);
-				kimeraMatrixMappingChange();
+				kimeraMatrixMappingChange(variant);
 			}
 		});
 
@@ -221,7 +221,7 @@ function kimeraRowColMappingChange(variant) {
 	}
 	console.log(_keyboard_config["matrix_cols"]);
 	kimeraConfigUpdate(true);
-	kimeraMatrixMappingChange();
+	kimeraMatrixMappingChange(variant);
 
 	$row_input.data('valid_pins', valid_pins);
 	$col_input.data('valid_pins', valid_pins);
@@ -241,10 +241,10 @@ function kimeraRowColMappingChange(variant) {
 	}
 }
 
-function kimeraMatrixMappingChange() {
+function kimeraMatrixMappingChange(variant) {
 	var $matrix_textarea = $("#kbd-cfg-container #kimera-matrix-val");
 	var raw = $matrix_textarea.val();
-	_keyboard_config["matrix_map_state"] = tkg.parseMatrixMapLayer(raw);
+	_keyboard_config["matrix_map_state"] = tkg.parseMatrixMapLayer(raw, (variant == "two_headed"));
 	_keyboard_config["matrix_map"] = tkg.getMatrixMap();
 	_keyboard_config["physical_rows"] = tkg.parseRowCount(raw);
 	kimeraMatrixMappingRefresh();

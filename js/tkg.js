@@ -492,7 +492,7 @@ function TKG() {
 		return state;
 	}
 
-	var _parseMatrixMapLayer = function(raw_string) {
+	var _parseMatrixMapLayer = function(raw_string, rows, cols) {
 		_consoleInfoGroup("parseMatrixMapLayer");
 		_consoleInfo("Parse matrix map layer");
 		var layer = {};
@@ -503,7 +503,7 @@ function TKG() {
 		}
 
 		// parse keys to matrix map
-		var matrix_map = _parseMatrixMap(layer, "top");
+		var matrix_map = _parseMatrixMap(layer, "top", rows, cols);
 		_matrix_map = matrix_map;
 		_matrix_map_layer = layer;
 		_consoleInfo("matrix_map:");
@@ -675,11 +675,16 @@ function TKG() {
 		return layer;
 	}
 
-	var _parseMatrixMap = function(layer, label_property) {
+	var _parseMatrixMap = function(layer, label_property, col_collapse) {
 		var error = layer["error"];
 		var warn = layer["warn"];
 		var info = layer["info"];
 		var matrix_map = {};
+
+		if (col_collapse) {
+			var half_rows = parseInt((_matrix_rows + 1) / 2);
+			var half_cols = _matrix_cols;
+		}
 
 		// check keys property
 		if (!layer["keys"] || !_.isArray(layer["keys"])) {
@@ -718,13 +723,30 @@ function TKG() {
 					// check validness
 					var row = parseInt(mapping[1]) - 1;
 					var col = parseInt(mapping[2]) - 1;
-					if (row >= 0 && row < _matrix_rows && col >= 0 && col < _matrix_cols) {
-						matrix_map[index] = {};
-						matrix_map[index]["row"] = row;
-						matrix_map[index]["col"] = col;
+					if (col_collapse) {
+						if (row >= 0 && row < half_rows && col >= 0 && col < half_cols) {
+							matrix_map[index] = {};
+							matrix_map[index]["row"] = row;
+							matrix_map[index]["col"] = col;
+						}
+						else if (row >= half_rows && row < _matrix_rows && col >= half_cols && (col - half_cols) < _matrix_cols) {
+							matrix_map[index] = {};
+							matrix_map[index]["row"] = row;
+							matrix_map[index]["col"] = col - half_cols;
+						}
+						else {
+							_raiseError(error, "matrix_map_invalid_mapping", key, row + ',' + col, key);
+						}
 					}
 					else {
-						_raiseError(error, "matrix_map_invalid_mapping", key, row + ',' + col, key);
+						if (row >= 0 && row < _matrix_rows && col >= 0 && col < _matrix_cols) {
+							matrix_map[index] = {};
+							matrix_map[index]["row"] = row;
+							matrix_map[index]["col"] = col;
+						}
+						else {
+							_raiseError(error, "matrix_map_invalid_mapping", key, row + ',' + col, key);
+						}
 					}
 				}
 			}
