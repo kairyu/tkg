@@ -290,6 +290,21 @@ var action_map = {
 		"name": "Step",
 		"description": "Step through backlight levels",
 		"code": "0xD003"
+	},
+	"ACTION_FUNCTION": {
+		"group": "Others",
+		"name": "Built-in function",
+		"description": "Built-in functions in firmware",
+		"code": function(opt, id) {
+			if (opt >= 0 && opt < 16 && id >= 0 && id < 255) {
+				return "0xF" + dechex(opt) + dechex(id, 2);
+			}
+			else {
+				return "";
+			}
+		},
+		"param": [ "af_id", "af_opt" ],
+		"default": [ 0, 0 ]
 	}
 }
 

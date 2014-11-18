@@ -130,6 +130,8 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Decrease':'降低亮度',
 	'Toogle':'开关',
 	'Step':'步进',
+	'Others':'其他',
+	'Built-in function':'内置功能',
 	// Fn layer
 	'layer':'层',
 	// Fn on

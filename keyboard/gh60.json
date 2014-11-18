@@ -92,5 +92,10 @@
 		"12.5,4": { "row": 4, "col": 12 },
 		"13.75,4,1.25": { "row": 4, "col": 13 },
 		"13.5,4,1.5": { "row": 4, "col": 13 }
-	}
+	},
+	"action_functions": [{
+		"name": "Tricky Esc",
+		"description": "Pressing this key with shift key, you will get a ~(tilde)!",
+		"opt": []
+	}]
 }

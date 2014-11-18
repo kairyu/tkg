@@ -24,7 +24,6 @@ $(function() {
 	appendAvailableLabelTable();
 
 	tkg.setKeycodeMap(keycode_map);
-	tkg.setFnMaps(action_map, lr_map, mod_map, on_map);
 	tkg.setLedMaps(binding_map, backlight_map);
 
 	// select keyboard
@@ -285,6 +284,12 @@ function loadKeyboard(keyboard_name) {
 			"matrix_map": keyboard["matrix_map"],
 			"led_count": keyboard["led_count"]
 		});
+		if (keyboard["action_functions"]) {
+			tkg.setFnMaps(action_map, lr_map, mod_map, on_map, keyboard["action_functions"]);
+		}
+		else {
+			tkg.setFnMaps(action_map, lr_map, mod_map, on_map);
+		}
 		if (keyboard["led_count"] && keyboard["led_map"]) {
 			for (var i = 0; i < keyboard["led_count"]; i++) {
 				tkg.setLeds(i, keyboard["led_map"][i]["default"]);

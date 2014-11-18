@@ -126,6 +126,8 @@ jquery_lang_js.prototype.lang.ja = {
 	'Decrease':'明るさを下げる',
 	'Toogle':'オン／オフ',
 	'Step':'ステップ',
+	'Others':'その他',
+	'Built-in function':'ビルドイン機能',
 	// Fn layer
 	'layer':'レイヤー',
 	// Fn on
