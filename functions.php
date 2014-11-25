@@ -128,8 +128,24 @@ function process_additional($bin, $addl) {
 			$start = $block["start"];
 			$size = $block["size"];
 			$data = $block["data"];
+			$format = "C";
+			$sizeof = 1;
+			if (isset($block["type"])) {
+				$type = $block["type"];
+				if ($type == "byte") {
+					$format = "C";
+					$sizeof = 1;
+				}
+				else if ($type == "word") {
+					$format = "v";
+					$sizeof = 2;
+				}
+			}
 			for ($j = 0; $j < count($data); $j++) {
-				$bin[$start + $j] = pack('C', $data[$j]);
+				$array = pack($format, $data[$j]);
+				for ($k = 0; $k < $sizeof; $k++) {
+					$bin[$start + $j * $sizeof + $k] = $array[$k];
+				}
 			}
 		}
 	}
