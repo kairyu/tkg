@@ -142,6 +142,7 @@ jquery_lang_js.prototype.lang.ja = {
 	// Fn key
 	'key':'一般キー',
 	// LED
+	'Reverse':'リバース',
 	'Backlight':'バックライト',
 	'Bind to default layer':'既定レイヤーにバインド',
 	'Bind to layer':'レイヤーにバインド',

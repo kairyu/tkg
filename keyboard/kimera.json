@@ -45,7 +45,8 @@
 		"data": []
 	},{
 		"start": 7,
-		"size": 4,
+		"size": 8,
+		"type": "word",
 		"data": []
 	}]
 }

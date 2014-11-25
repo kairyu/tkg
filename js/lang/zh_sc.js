@@ -146,6 +146,7 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	// Fn key
 	'key':'按键',
 	// LED
+	'Reverse':'反向',
 	'Backlight':'背光',
 	'Bind to default layer':'绑定默认层',
 	'Bind to layer':'绑定层',

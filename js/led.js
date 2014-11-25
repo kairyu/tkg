@@ -11,7 +11,7 @@ function appendLeds() {
 			var led = leds[index];
 			$('#led-wrapper').append(
 				$('<div>').attr({ "class": "form-group"  }).append(
-					$('<label>').attr({ "for": "led" + index + 'binding', "class": "col-md-2 control-label" })
+					$('<label>').attr({ "for": "led" + index + '-binding', "class": "col-md-2 control-label" })
 					.text(_keyboard["led_map"][index]["name"])
 				).append(
 					$('<div>').attr({ "id": "led" + index, "class": "led-row col-md-10" })
@@ -33,13 +33,24 @@ $.fn.led = function() {
 		var index = Number(id.slice('led'.length));
 		var led = tkg.getLeds(index);
 		var binding = led["binding"];
+		var reverse = led["reverse"] | 0;
 		var backlight = led["backlight"] | 0;
 		$row.removeData();
 		$row.data('index', index);
 		$row.data('binding', binding);
+		$row.data('reverse', reverse);
 		$row.data('backlight', backlight);
 		var $binding = $('<div>').attr({ "class": "led-binding" }).append(
 			makeSelect({ "id": id + "-binding", "class": "multiselect" }, tkg.getLedOptions("binding"), binding)
+		);
+		var $reverse = $('<div>').attr({ "class": "led-reverse" }).append(
+			$('<div>').attr({ "class": "checkbox" }).append(
+				$('<label>').append(
+					$('<input>').attr({ "id": id + "-reverse", "type": "checkbox" }).prop('checked', reverse)
+				).append(
+					$('<span>').attr({ "lang": "en" }).text("Reverse")
+				)
+			)
 		);
 		var $backlight = $('<div>').attr({ "class": "led-backlight" }).append(
 			$('<div>').attr({ "class": "checkbox" }).append(
@@ -50,7 +61,7 @@ $.fn.led = function() {
 				)
 			)
 		);
-		$row.empty().append($binding).append($backlight);
+		$row.empty().append($binding).append($reverse).append($backlight);
 		window.lang.run();
 		$row.find('.led-binding select').multiselect({
 			buttonTitle: function(options, select) {
@@ -66,6 +77,10 @@ $.fn.led = function() {
 			$row.data('backlight', $(this).is(':checked') ? 1 : 0);
 			onLedChange(id);
 		});
+		$row.find('.led-reverse input').change(function() {
+			$row.data('reverse', $(this).is(':checked') ? 1 : 0);
+			onLedChange(id);
+		});
 		onLedChange(id);
 	});
 }
@@ -74,13 +89,16 @@ function onLedChange(id) {
 	var $row = $('#led-wrapper #' + id);
 	var index = $row.data('index');
 	var binding = $row.data('binding');
+	var reverse = $row.data('reverse');
 	var backlight = $row.data('backlight');
 	$row.removeData();
 	$row.data('index', index);
 	$row.data('binding', binding);
+	$row.data('reverse', reverse);
 	$row.data('backlight', backlight);
 	tkg.setLeds(index, {
 		"binding": binding,
+		"reverse": reverse,
 		"backlight": backlight
 	});
 	appendLedParams(id);
@@ -112,7 +130,7 @@ function appendLedParams(id) {
 					break;
 			}
 		}
-		$row.find('.led-backlight').before($params);
+		$row.find('.led-reverse').before($params);
 		window.lang.run();
 		// layer param
 		$row.find('.led-param-layer select').multiselect({
@@ -134,6 +152,7 @@ function onLedParamsChange(id) {
 	var $row = $('#led-wrapper #' + id);
 	var index = $row.data('index');
 	var binding = $row.data('binding');
+	var reverse = $row.data('reverse');
 	var backlight = $row.data('backlight');
 	var led = tkg.getLeds(index);
 	var param = led["param"];
@@ -144,6 +163,7 @@ function onLedParamsChange(id) {
 	tkg.setLeds(index, {
 		"binding": binding,
 		"args": args,
+		"reverse": reverse,
 		"backlight": backlight
 	});
 }

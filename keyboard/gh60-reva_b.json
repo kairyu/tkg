@@ -44,7 +44,8 @@
 	"led_additional_index": 0,
 	"additional": [{
 		"start": 7,
-		"size": 5,
+		"size": 10,
+		"type": "word",
 		"data": []
 	}]
 }

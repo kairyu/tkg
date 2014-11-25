@@ -17,6 +17,7 @@ function TKG() {
 	var _mod_map = {};
 	var _on_map = {};
 	var _binding_map = {};
+	var _reverse_map = {};
 	var _backlight_map = {};
 	var _fn_options = {};
 	var _action_options = [];
@@ -77,15 +78,19 @@ function TKG() {
 		_consoleInfoGroupEnd();
 	}
 
-	var _setLedMaps = function(binding_map, backlight_map) {
+	var _setLedMaps = function(binding_map, reverse_map, backlight_map) {
 		_consoleInfoGroup("setLedMap");
 		_binding_map = binding_map;
+		_reverse_map = reverse_map;
 		_backlight_map = backlight_map;
 		_consoleInfo("binding_map:");
 		_consoleInfo(_binding_map);
+		_consoleInfo("reverse map:");
+		_consoleInfo(_reverse_map);
 		_consoleInfo("backlight map:");
 		_consoleInfo(_backlight_map);
 		_led_options["binding"] = _generateBindingOptions(_binding_map);
+		_led_options["reverse"] = _generateBindingOptions(_reverse_map);
 		_led_options["backlight"] = _generateBacklightOptions(_backlight_map);
 		_consoleInfoGroupEnd();
 	}
@@ -322,6 +327,10 @@ function TKG() {
 
 	var _generateBindingOptions = function(binding_map) {
 		return _generateGroupedOptions(binding_map);
+	}
+
+	var _generateReverseOptions = function(reverse_map) {
+		return _generateUngroupedOptions(reverse_map);
 	}
 
 	var _generateBacklightOptions = function(backlight_map) {
@@ -1232,25 +1241,25 @@ function TKG() {
 
 	var _generateLedHex = function(led) {
 		if (led["binding"]) {
-			var dec = 0;
+			var hex = "0x0000";
 			var binding = led["binding"];
 			if (_binding_map[binding]) {
 				var code = _binding_map[binding]["code"];
 				if (_.isFunction(code)) {
-					dec = code.apply(code, led["args"]);
+					hex = code.apply(code, led["args"]);
 				}
 				else {
-					dec = code;
+					hex = code;
 				}
 			}
+			var dec =  parseInt(hex, 16);
+			var reverse = led["reverse"] | 0;
 			var backlight = led["backlight"] | 0;
-			var code = _backlight_map["LEDMAP_BACKLIGHT"]["code"];
-			if (_.isFunction(code)) {
-				dec |= code.apply(code, [ backlight ]);
-			}
-			else {
-				dec |= code;
-			}
+			var code;
+			code = _reverse_map["LEDMAP_REVERSE"]["code"];
+			dec |= code.apply(code, [ reverse ]);
+			code = _backlight_map["LEDMAP_BACKLIGHT"]["code"];
+			dec |= code.apply(code, [ backlight ]);
 			return dec;
 		}
 		else {
@@ -1611,6 +1620,13 @@ function TKG() {
 						delete led["args"];
 					}
 				}
+				_led_hex[index] = _generateLedHex(led);
+				_led_symbol[index] = _generateLedSymbol(led);
+			}
+		}
+		if (object["reverse"] !== undefined) {
+			if (led["reverse"] != object["reverse"]) {
+				led["reverse"] = object["reverse"];
 				_led_hex[index] = _generateLedHex(led);
 				_led_symbol[index] = _generateLedSymbol(led);
 			}

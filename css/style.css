@@ -113,6 +113,7 @@ body {
 	padding: 0 2px 0 15px;
 }
 .led-binding,
+.led-reverse,
 .led-backlight,
 .led-param {
 	display: table-cell;
