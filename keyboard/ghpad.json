@@ -77,6 +77,11 @@
 			"backlight": 1
 		}
 	}],
+	"action_macros": [{
+		"name": "00",
+		"description": "Keypad 00",
+		"opt": []
+	}],
 	"led_additional_index": 0,
 	"additional": [{
 		"start": 7,

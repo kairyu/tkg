@@ -12,10 +12,11 @@ function TKG() {
 	var _keycode_map = {};
 	var _keycode_map_reversed = {};
 	var _action_map = {};
-	var _action_function_map = [];
 	var _lr_map = {};
 	var _mod_map = {};
 	var _on_map = {};
+	var _af_map = [];
+	var _am_map = [];
 	var _binding_map = {};
 	var _reverse_map = {};
 	var _backlight_map = {};
@@ -52,13 +53,14 @@ function TKG() {
 		_consoleInfoGroupEnd();
 	}
 
-	var _setFnMaps = function(action_map, lr_map, mod_map, on_map, action_function_map) {
+	var _setFnMaps = function(object) {
 		_consoleInfoGroup("setFnMaps");
-		_action_map = action_map;
-		_action_function_map = action_function_map || [];
-		_lr_map = lr_map;
-		_mod_map = mod_map;
-		_on_map = on_map;
+		_action_map = object["action_map"];
+		_lr_map = object["lr_map"];
+		_mod_map = object["mod_map"];
+		_on_map = object["on_map"];
+		_af_map = object["af_map"] || [];
+		_am_map = object["am_map"] || [];
 		_consoleInfo("action_map:");
 		_consoleInfo(_action_map);
 		_consoleInfo("lr_map:");
@@ -67,14 +69,18 @@ function TKG() {
 		_consoleInfo(_mod_map);
 		_consoleInfo("on_map:");
 		_consoleInfo(_on_map);
-		_consoleInfo("action_function_map:");
-		_consoleInfo(_action_function_map);
+		_consoleInfo("af_map:");
+		_consoleInfo(_af_map);
+		_consoleInfo("am_map:");
+		_consoleInfo(_am_map);
 		_fn_options["action"] = _generateActionOptions(_action_map);
 		_fn_options["lr"] = _generateLrOptions(_lr_map);
 		_fn_options["mod"] = _generateModOptions(_mod_map);
 		_fn_options["on"] = _generateOnOptions(_on_map);
-		_fn_options["af_id"] = _generateAfIdOptions(_action_function_map);
-		_fn_options["af_opt"] = _generateAfOptOptions(_action_function_map);
+		_fn_options["af_id"] = _generateAfIdOptions(_af_map);
+		_fn_options["af_opt"] = _generateAfOptOptions(_af_map);
+		_fn_options["am_id"] = _generateAmIdOptions(_am_map);
+		_fn_options["am_opt"] = _generateAmOptOptions(_am_map);
 		_consoleInfoGroupEnd();
 	}
 
@@ -305,6 +311,27 @@ function TKG() {
 		var options = [];
 		for (var i = 0; i < af_map.length; i++) {
 			options.push(af_map[i]["opt"]);
+		}
+		return options;
+	}
+
+	var _generateAmOptOptions = function(am_map) {
+		var options = [];
+		for (var i = 0; i < am_map.length; i++) {
+			options.push(am_map[i]["opt"]);
+		}
+		return options;
+	}
+
+	var _generateAmIdOptions = function(am_map) {
+		var options = [];
+		for (var i = 0; i < am_map.length; i++) {
+			var item = am_map[i];
+			options.push({
+				"value": i,
+				"text": item["name"],
+				"title": item["description"]
+			});
 		}
 		return options;
 	}

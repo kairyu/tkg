@@ -150,6 +150,19 @@ function appendFnParams(id) {
 					if (!_.isEmpty(opts)) {
 					}
 					break;
+				case "am_id":
+					$params = $params.add($('<div>').attr({ "class": "fn-param fn-param-am-id" }).append(
+						$('<div>').attr({ "class": "input-group btn-group" }).append(
+							makeSelect({ "id": id + "-param-am-id" }, tkg.getFnOptions("am_id"), arg)
+						)
+					));
+					break;
+				case "am_opt":
+					var am_id = args[i - 1];
+					var opts = tkg.getFnOptions("am_opt")[am_id];
+					if (!_.isEmpty(opts)) {
+					}
+					break;
 			}
 		}
 		$row.append($params);
@@ -234,6 +247,17 @@ function appendFnParams(id) {
 			},
 			onChange: function(option, checked) {
 				$row.data('af_id', $(option).val());
+				onFnParamsChange(id);
+			}
+		});
+		// am_id param
+		$row.find('.fn-param-am-id select').multiselect({
+			buttonTitle: function(options, select) {
+				var $selected = $(options[0]);
+				return $selected.attr('title');
+			},
+			onChange: function(option, checked) {
+				$row.data('am_id', $(option).val());
 				onFnParamsChange(id);
 			}
 		});

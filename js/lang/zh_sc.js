@@ -132,6 +132,7 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Step':'步进',
 	'Others':'其他',
 	'Built-in function':'内置功能',
+	'Built-in macro':'内置宏',
 	// Fn layer
 	'layer':'层',
 	// Fn on

@@ -284,12 +284,19 @@ function loadKeyboard(keyboard_name) {
 			"matrix_map": keyboard["matrix_map"],
 			"led_count": keyboard["led_count"]
 		});
+		var fn_maps = {
+			"action_map": action_map,
+			"lr_map": lr_map,
+			"mod_map": mod_map,
+			"on_map": on_map
+		}
 		if (keyboard["action_functions"]) {
-			tkg.setFnMaps(action_map, lr_map, mod_map, on_map, keyboard["action_functions"]);
+			fn_maps["af_map"] = keyboard["action_functions"];
 		}
-		else {
-			tkg.setFnMaps(action_map, lr_map, mod_map, on_map);
+		if (keyboard["action_macros"]) {
+			fn_maps["am_map"] = keyboard["action_macros"];
 		}
+		tkg.setFnMaps(fn_maps);
 		if (keyboard["led_count"] && keyboard["led_map"]) {
 			for (var i = 0; i < keyboard["led_count"]; i++) {
 				tkg.setLeds(i, keyboard["led_map"][i]["default"]);

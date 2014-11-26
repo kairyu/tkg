@@ -291,6 +291,21 @@ var action_map = {
 		"description": "Step through backlight levels",
 		"code": "0xD003"
 	},
+	"ACTION_MACRO": {
+		"group": "Others",
+		"name": "Built-in macro",
+		"description": "Built-in macro (key sequence) in firmware",
+		"code": function(opt, id) {
+			if (opt >= 0 && opt < 16 && id >= 0 && id < 255) {
+				return "0xC" + dechex(opt) + dechex(id, 2);
+			}
+			else {
+				return "";
+			}
+		},
+		"param": [ "am_id", "am_opt" ],
+		"default": [ 0, 0 ]
+	},
 	"ACTION_FUNCTION": {
 		"group": "Others",
 		"name": "Built-in function",

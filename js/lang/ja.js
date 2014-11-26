@@ -128,6 +128,7 @@ jquery_lang_js.prototype.lang.ja = {
 	'Step':'ステップ',
 	'Others':'その他',
 	'Built-in function':'ビルドイン機能',
+	'Built-in macro':'ビルドインマクロ',
 	// Fn layer
 	'layer':'レイヤー',
 	// Fn on
