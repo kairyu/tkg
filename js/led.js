@@ -40,10 +40,10 @@ $.fn.led = function() {
 		$row.data('binding', binding);
 		$row.data('reverse', reverse);
 		$row.data('backlight', backlight);
-		var $binding = $('<div>').attr({ "class": "led-binding" }).append(
+		var $binding = $('<div>').attr({ "class": "led-param led-binding" }).append(
 			makeSelect({ "id": id + "-binding", "class": "multiselect" }, tkg.getLedOptions("binding"), binding)
 		);
-		var $reverse = $('<div>').attr({ "class": "led-reverse" }).append(
+		var $reverse = $('<div>').attr({ "class": "led-param led-reverse" }).append(
 			$('<div>').attr({ "class": "checkbox" }).append(
 				$('<label>').append(
 					$('<input>').attr({ "id": id + "-reverse", "type": "checkbox" }).prop('checked', reverse)
@@ -52,7 +52,7 @@ $.fn.led = function() {
 				)
 			)
 		);
-		var $backlight = $('<div>').attr({ "class": "led-backlight" }).append(
+		var $backlight = $('<div>').attr({ "class": "led-param led-backlight" }).append(
 			$('<div>').attr({ "class": "checkbox" }).append(
 				$('<label>').append(
 					$('<input>').attr({ "id": id + "-backlight", "type": "checkbox" }).prop('checked', backlight)
@@ -107,7 +107,7 @@ function onLedChange(id) {
 function appendLedParams(id) {
 	var $row = $('#led-wrapper #' + id);
 	var $binding = $row.find('.led-binding');
-	$binding.nextAll('.led-param').remove();
+	$binding.nextAll('.led-param-layer').remove();
 	var index = $row.data('index');
 	var led = tkg.getLeds(index);
 	var binding = led["binding"];
@@ -169,5 +169,5 @@ function onLedParamsChange(id) {
 }
 
 function rebuildLedSelect() {
-	$('.led-binding select').multiselect('rebuild');
+	$('.led-param select').multiselect('rebuild');
 }

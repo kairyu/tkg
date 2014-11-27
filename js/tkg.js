@@ -21,7 +21,6 @@ function TKG() {
 	var _reverse_map = {};
 	var _backlight_map = {};
 	var _fn_options = {};
-	var _action_options = [];
 	var _led_options = {};
 	var _max_layers = 0;
 	var _max_fns = 0;
