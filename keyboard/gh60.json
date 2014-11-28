@@ -4,7 +4,7 @@
 	"max_layers": 8,
 	"max_fns": 32,
 	"eep_size": 1024,
-	"eep_start": 16,
+	"eep_start": 17,
 	"matrix_rows": 5,
 	"matrix_cols": 14,
 	"physical_rows": 5,
