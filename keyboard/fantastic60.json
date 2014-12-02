@@ -92,7 +92,7 @@
 		"13.75,4,1.25": { "row": 7, "col": 7, "note": "sw64 oem rctrl" },
 		"13.5,4,1.5": { "row": 7, "col": 7, "note": "sw64a wkl rctrl" }
 	},
-	"led_count": 2,
+	"led_count": 3,
 	"led_map": [{
 		"name": "Caps Lock",
 		"description": "",
@@ -107,11 +107,18 @@
 			"binding": "LEDMAP_NO",
 			"backlight": 1
 		}
+	},{
+		"name": "RGB",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NO",
+			"backlight": 1
+		}
 	}],
 	"led_additional_index": 0,
 	"additional": [{
 		"start": 7,
-		"size": 4,
+		"size": 6,
 		"type": "word",
 		"data": []
 	}]
