@@ -1,6 +1,7 @@
 /.htaccess
 .DS_Store
 *.swp
+.vimrc
 cache/c/*
 cache/eep/*
 !.gitkeep
