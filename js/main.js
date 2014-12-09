@@ -319,7 +319,6 @@ function initKeyboardInfo(keyboard) {
 		html: true,
 		trigger: 'hover',
 		container: '#kbd-info-container',
-		//content: (function() { $('#kbd-info-dymmy').html(); })()
 		content:
 			'<strong><span lang="en">Name</span>: </strong>' + keyboard['name'] + '<br/>' +
 			'<strong><span lang="en">Description</span>: </strong><span lang="en">' + keyboard['description'] + '</span><br/>' +

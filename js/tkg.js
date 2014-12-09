@@ -1316,6 +1316,7 @@ function TKG() {
 			return leds;
 		}
 	}
+
 	var _parseLabelString = function(label_string) {
 		var strings = label_string.split("\n");
 		var label = {};
@@ -1568,7 +1569,7 @@ function TKG() {
 		catch (e) {
 			_consoleError(e);
 			return false;
-		};
+		}
 		_consoleDebug("Import Fns:");
 		_consoleDebug(data);
 		for (var index in data) {
