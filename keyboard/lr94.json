@@ -124,5 +124,33 @@
 		"15,5": { "row": 15, "col": 1 },
 		"16,5": { "row": 14, "col": 0 },
 		"17,5": { "row": 15, "col": 0 }
-	}
+	},
+	"led_count": 2,
+	"led_map": [{
+		"name": "Caps Lock",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_CAPS_LOCK",
+			"backlight": 0
+		}
+	},{
+		"name": "Backlight",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NO",
+			"backlight": 1
+		}
+	}],
+	"action_macros": [{
+		"name": "00",
+		"description": "Keypad 00",
+		"opt": []
+	}],
+	"led_additional_index": 0,
+	"additional": [{
+		"start": 7,
+		"size": 4,
+		"type": "word",
+		"data": []
+	}]
 }
