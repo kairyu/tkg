@@ -267,6 +267,10 @@ function appendFnParams(id) {
 		});
 		// af_id param
 		$row.find('.fn-param-af-id select').multiselect({
+			buttonText: function(options, select) {
+				var $selected = $(options[0]);
+				return $selected.html() + ' <b class="caret"></b>';
+			},
 			buttonTitle: function(options, select) {
 				var $selected = $(options[0]);
 				return $selected.attr('title');
@@ -278,6 +282,10 @@ function appendFnParams(id) {
 		});
 		// am_id param
 		$row.find('.fn-param-am-id select').multiselect({
+			buttonText: function(options, select) {
+				var $selected = $(options[0]);
+				return $selected.html() + ' <b class="caret"></b>';
+			},
 			buttonTitle: function(options, select) {
 				var $selected = $(options[0]);
 				return $selected.attr('title');
