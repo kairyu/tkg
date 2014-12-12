@@ -121,7 +121,7 @@ body {
 	text-align: left;
 }
 .multiselect-container {
-	max-height: 200px;
+	max-height: 400px;
 	overflow-y: scroll;
 }
 .multiselect-container input[type="radio"] {
