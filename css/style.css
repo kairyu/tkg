@@ -138,6 +138,10 @@ body {
 	text-decoration: underline;
 }
 
+.btn.multiselect-clear-filter {
+	padding: 9px 3px;
+}
+
 .bootstrap-tagsinput {
 	width: 100%;
 	margin-bottom: 0;
