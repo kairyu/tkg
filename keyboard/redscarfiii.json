@@ -165,7 +165,7 @@
 	"action_functions": [{
 		"name": "RGB On",
 		"description": "Turn RGB light on",
-		"opt": [ 1, 2 ]
+		"opt": []
 	},
 	{
 		"name": "RGB Off",
