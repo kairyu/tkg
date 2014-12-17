@@ -307,11 +307,20 @@ function TKG() {
 	}
 
 	var _generateAfOptOptions = function(af_map) {
-		var options = [];
+		var options_array = [];
 		for (var i = 0; i < af_map.length; i++) {
-			options.push(af_map[i]["opt"]);
+			var opt = af_map[i]["opt"] || [];
+			var options = [];
+			for (var j = 0; j < opt.length; j++) {
+				options.push({
+					"value": j,
+					"text": opt[j],
+					"title": opt[j]
+				});
+			}
+			options_array.push(options);
 		}
-		return options;
+		return options_array;
 	}
 
 	var _generateAmOptOptions = function(am_map) {

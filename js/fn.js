@@ -46,7 +46,6 @@ $.fn.fn = function() {
 		if (_keyboard["action_macros"] === undefined) {
 			_.each(action_options, function(element) {
 				var object = _.findWhere(element, { "value": "ACTION_MACRO" });
-				console.log(object);
 				if (object) {
 					object["disabled"] = true;
 				}
@@ -157,7 +156,6 @@ function appendFnParams(id) {
 					break;
 				case "af_id":
 					var options = tkg.getFnOptions("af_id");
-					console.log(options);
 					if (options.length) {
 						$params = $params.add($('<div>').attr({ "class": "fn-param fn-param-af-id" }).append(
 							$('<div>').attr({ "class": "input-group btn-group" }).append(
@@ -166,27 +164,14 @@ function appendFnParams(id) {
 						));
 					}
 					break;
-				case "af_opt":
-					var af_id = args[i - 1];
-					var options = tkg.getFnOptions("af_opt")[af_id];
-					if (options.length) {
-					}
-					break;
 				case "am_id":
 					var options = tkg.getFnOptions("am_id");
-					console.log(options);
 					if (options.length) {
 						$params = $params.add($('<div>').attr({ "class": "fn-param fn-param-am-id" }).append(
 							$('<div>').attr({ "class": "input-group btn-group" }).append(
 								makeSelect({ "id": id + "-param-am-id" }, options, arg)
 							)
 						));
-					}
-					break;
-				case "am_opt":
-					var am_id = args[i - 1];
-					var options = tkg.getFnOptions("am_opt")[am_id];
-					if (options.length) {
 					}
 					break;
 			}
@@ -277,7 +262,7 @@ function appendFnParams(id) {
 			},
 			onChange: function(option, checked) {
 				$row.data('af_id', $(option).val());
-				onFnParamsChange(id);
+				appendFnSubParams(id);
 			}
 		});
 		// am_id param
@@ -292,11 +277,47 @@ function appendFnParams(id) {
 			},
 			onChange: function(option, checked) {
 				$row.data('am_id', $(option).val());
-				onFnParamsChange(id);
+				appendFnSubParams(id);
 			}
 		});
-		onFnParamsChange(id);
+		appendFnSubParams(id);
 	}
+}
+
+function appendFnSubParams(id) {
+	var $row = $('#fn-wrapper #' + id);
+	var index = $row.data('index');
+	var action = $row.data('action');
+	var fn = tkg.getFns(index);
+	var param = fn["param"];
+	var args = fn["args"];
+	switch (fn["param"][0]) {
+		case 'af_id':
+			var af_id = $row.data('af_id');
+			var af_opt = args[1];
+			var options = tkg.getFnOptions("af_opt")[af_id];
+			$row.find('.fn-param-af-opt').remove();
+			if (options.length) {
+				$row = $row.append($('<div>').attr({ "class": "fn-param fn-param-af-opt" }).append(
+					$('<div>').attr({ "class": "input-group btn-group" }).append(
+						makeSelect({ "id": id + "-param-af-opt" }, options, af_opt)
+					)
+				));
+			}
+			break;
+	}
+	// af_id param
+	$row.find('.fn-param-af-opt select').multiselect({
+		buttonTitle: function(options, select) {
+			var $selected = $(options[0]);
+			return $selected.attr('title');
+		},
+		onChange: function(option, checked) {
+			$row.data('af_opt', $(option).val());
+			onFnParamsChange(id);
+		}
+	});
+	onFnParamsChange(id);
 }
 
 function onFnParamsChange(id) {
