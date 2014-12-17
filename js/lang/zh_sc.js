@@ -18,6 +18,7 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	// Keyboard
 	'SMART68 Module Keyboard by DeeLonG':'SMART68模块化键盘 by DeeLonG',
 	'RedScarfII 77 Keyboard by 悬壶济世':'红领巾二道杠77键盘 by 悬壶济世',
+	'RedScarfIII 96 Keyboard by 悬壶济世':'红领巾三道杠96键盘 by 悬壶济世',
 	// Main
 	'General':'一般',
 	'Layer':'层',
