@@ -146,6 +146,16 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Right':'右',
 	// Fn key
 	'key':'按键',
+	// Fn af
+	'RGB On':'RGB开',
+	'RGB Off':'RGB关',
+	'RGB Toggle':'RGB开关',
+	'RGB Increase':'RGB增',
+	'RGB Decrease':'RGB减',
+	'RGB Static Color':'RGB静态颜色',
+	'RGB Animate Mode':'RGB动态模式',
+	// Fn am
+	'Keypad 00':'小键盘00',
 	// LED
 	'Reverse':'反向',
 	'Backlight':'背光',

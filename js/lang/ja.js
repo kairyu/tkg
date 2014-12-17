@@ -142,6 +142,16 @@ jquery_lang_js.prototype.lang.ja = {
 	'Right':'右',
 	// Fn key
 	'key':'一般キー',
+	// Fn af
+	'RGB On':'RGBオン',
+	'RGB Off':'RGBオフ',
+	'RGB Toggle':'RGBオン／オフ',
+	'RGB Increase':'RGB上げる',
+	'RGB Decrease':'RGB下げる',
+	'RGB Static Color':'RGB静的カラー',
+	'RGB Animate Mode':'RGB動的モード',
+	// Fn am
+	'Keypad 00':'小键盘00',
 	// LED
 	'Reverse':'リバース',
 	'Backlight':'バックライト',
