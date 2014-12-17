@@ -295,7 +295,7 @@ var action_map = {
 		"group": "Others",
 		"name": "Built-in macro",
 		"description": "Built-in macro (key sequence) in firmware",
-		"code": function(opt, id) {
+		"code": function(id, opt) {
 			if (opt >= 0 && opt < 16 && id >= 0 && id < 255) {
 				return "0xC" + dechex(opt) + dechex(id, 2);
 			}
@@ -310,7 +310,7 @@ var action_map = {
 		"group": "Others",
 		"name": "Built-in function",
 		"description": "Built-in functions in firmware",
-		"code": function(opt, id) {
+		"code": function(id, opt) {
 			if (opt >= 0 && opt < 16 && id >= 0 && id < 255) {
 				return "0xF" + dechex(opt) + dechex(id, 2);
 			}
