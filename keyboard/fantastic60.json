@@ -98,7 +98,7 @@
 		"description": "",
 		"default": {
 			"binding": "LEDMAP_CAPS_LOCK",
-			"backlight": 1
+			"backlight": 0
 		}
 	},{
 		"name": "Backlight",
@@ -117,7 +117,7 @@
 	}],
 	"led_additional_index": 0,
 	"additional": [{
-		"start": 7,
+		"start": 8,
 		"size": 6,
 		"type": "word",
 		"data": []
