@@ -1144,7 +1144,7 @@ var keycode_map = {
 		"name": "Media Play/Pause",
 		"description": "Media Play/Pause",
 		"keycode": "0xAE",
-		"label": [ "play" ],
+		"label": [ "play", "apple play" ],
 		"short_name": "KC_MPLY"
 	},
 	"KC_MEDIA_SELECT": {
@@ -1232,6 +1232,21 @@ var keycode_map = {
 		"label": [ "www favorites", "wwwfavorites", "wfav" ],
 		"short_name": "KC_WFAV"
 	},
+	"KC_MEDIA_FAST_FORWARD": {
+		"name": "Media Fast Forward",
+		"description": "Media Fast Forward",
+		"keycode": "0xBB",
+		"label": [ "apple next", "fast forward", "fastforward", "ffwd" ],
+		"short_name": "KC_MFFD"
+	},
+	"KC_MEDIA_REWIND": {
+		"name": "Media Rewind",
+		"description": "Media Rewind",
+		"keycode": "0xBC",
+		"label": [ "apple prev", "rewind", "rwd" ],
+		"short_name": "KC_MRWD"
+	},
+	
 	/* Fn Key */
 	"KC_FN0": {
 		"name": "Fn Key 0",
