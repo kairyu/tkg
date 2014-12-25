@@ -102,5 +102,14 @@
 		"name": "Tricky Esc",
 		"description": "Pressing this key with shift key, you will get a ~(tilde)!",
 		"opt": []
+	},{
+		"name": "Apple Fn",
+		"description": "Pressing directly: the key you selected, pressing with shift: Apple fn + the key you selected.",
+		"opt": [
+			"F1", "F2", "F3", "F4",
+			"F5", "F6", "F7", "F8",
+			"F9", "F10", "F11", "F12",
+			"F13", "F14", "F15", "F16"
+		]
 	}]
 }
