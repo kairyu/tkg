@@ -188,22 +188,29 @@
 		"opt": []
 	},
 	{
-		"name": "RGB Static Color",
-		"description": "Change RGB light to static color",
+		"name": "RGB Fixed Color",
+		"description": "Change RGB light to fixed color",
 		"opt": [
+			"White",
 			"Red", "Green", "Blue",
 			"Red_1", "Green_1", "Blue_1",
 			"Red_2", "Green_2", "Blue_2",
 			"Red_3", "Green_3", "Blue_3",
-			"Red_4", "Green_4", "Blue_4",
-			"White"
+			"Red_4", "Green_4", "Blue_4"
 		]
 	},
 	{
-		"name": "RGB Animate Mode",
-		"description": "Change RGB light to animate mode",
+		"name": "RGB Variable Mode",
+		"description": "Change RGB light to variable mode",
 		"opt": [
 			"Flase", "Strobe", "Fade", "Smooth"
+		]
+	},
+	{
+		"name": "RGB Step",
+		"description": "Change RGB light mode by step",
+		"opt": [
+			"Fixed", "Variable"
 		]
 	}],
 	"led_additional_index": 0,

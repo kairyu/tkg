@@ -153,8 +153,9 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'RGB Toggle':'RGB开关',
 	'RGB Increase':'RGB增',
 	'RGB Decrease':'RGB减',
-	'RGB Static Color':'RGB静态颜色',
-	'RGB Animate Mode':'RGB动态模式',
+	'RGB Fixed Color':'RGB静态颜色',
+	'RGB Variable Mode':'RGB动态模式',
+	'RGB Step':'RGB步进',
 	// Fn am
 	'Keypad 00':'小键盘00',
 	// LED

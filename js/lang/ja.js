@@ -148,8 +148,9 @@ jquery_lang_js.prototype.lang.ja = {
 	'RGB Toggle':'RGBオン／オフ',
 	'RGB Increase':'RGB上げる',
 	'RGB Decrease':'RGB下げる',
-	'RGB Static Color':'RGB静的カラー',
-	'RGB Animate Mode':'RGB動的モード',
+	'RGB Fixed Color':'RGB固定カラー',
+	'RGB Variable Mode':'RGB変動モード',
+	'RGB Step':'RGBステップ',
 	// Fn am
 	'Keypad 00':'小键盘00',
 	// LED
