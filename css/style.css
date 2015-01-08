@@ -91,9 +91,11 @@ body {
 	text-align: center;
 	font-size: 0.8em;
 }
-#dl_c,
-#dl_eep {
+.dl-btn {
 	margin-bottom: 15px;
+}
+#qz_div {
+	position: absolute;
 }
 .fn-row {
 	float: left;
@@ -261,4 +263,30 @@ span.glyphicon-chevron-down,
 span.glyphicon-chevron-up {
 	font-size: 0.5em;
 	line-height: 3.5;
+}
+
+.glyphicon.spin {
+	animation-name: spin;
+	animation-duration: .5s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	-webkit-animation-name: spin;
+	-webkit-animation-duration: .5s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+}
+@-moz-keyframes spin
+{
+    from { -moz-transform: rotate(0deg); transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-webkit-keyframes spin
+{
+    from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@keyframes spin
+{
+    from { -wekbit-transform: rotate(0deg); -moz-transform: rotate(0deg); transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); -moz-transform: rotate(360deg); transform: rotate(360deg); }
 }

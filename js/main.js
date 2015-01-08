@@ -404,6 +404,14 @@ function updateDownloadButtonState() {
 			}
 		}
 	});
+
+	if (_keyboard['name'].match(/^RedScarfIII/i)) {
+		appendBurnButton();
+	}
+	else {
+		removeBurnButton();
+	}
+
 	var $dl_btn = $('.dl-btn');
 	$dl_btn.removeClass('btn-default btn-success btn-warning btn-danger');
 	if (has_error) {
@@ -424,6 +432,12 @@ function updateDownloadButtonState() {
 	}
 	else {
 		$('.dl-btn').addClass('disabled');
+	}
+
+	if ($('#burn_eep').length) {
+		if (!ConfirmQZ()) {
+			$('#burn_eep').addClass('disabled');
+		}
 	}
 }
 
