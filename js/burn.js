@@ -10,10 +10,9 @@ function ConfirmQZ() {
 	var qz = document.getElementById('qz');
 	if (qz) {
 		try {
-			console.log(qz.getVersion());
+			qz.getVersion();
 		}
 		catch (e) {
-			console.error(e);
 			return false;
 		}
 		return true;
@@ -168,7 +167,10 @@ $(window).keydown(function(e) {
 		var $burn_btn = $('#burn_eep');
 		if ($burn_btn.length) {
 			var html = $burn_btn.html();
-			$burn_btn.html(html.replace(".eep", ".hex")).attr("id", "burn_hex").removeClass("disabled");
+			$burn_btn.html(html.replace(".eep", ".hex")).attr("id", "burn_hex");
+			if (ConfirmQZ()) {
+				$burn_btn.removeClass("disabled");
+			}
 		}
 	}
 });
@@ -179,7 +181,7 @@ $(window).keyup(function(e) {
 		if ($burn_btn.length) {
 			var html = $burn_btn.html();
 			$burn_btn.html(html.replace(".hex", ".eep")).attr("id", "burn_eep");
-			if ($burn_btn.is(".btn-default,.btn-danger")) {
+			if (!ConfirmQZ() || $burn_btn.is(".btn-default,.btn-danger")) {
 				$burn_btn.addClass("disabled");
 			}
 		}

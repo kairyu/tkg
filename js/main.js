@@ -434,9 +434,9 @@ function updateDownloadButtonState() {
 		$('.dl-btn').addClass('disabled');
 	}
 
-	if ($('#burn_eep').length) {
+	if ($('.burn-btn').length) {
 		if (!ConfirmQZ()) {
-			$('#burn_eep').addClass('disabled');
+			$('.burn-btn').addClass('disabled');
 		}
 	}
 }
