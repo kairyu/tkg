@@ -6,11 +6,6 @@ function qzReady() {
 	$('#qz_div').css('visibility', 'hidden');
 }
 
-function qzDonePrinting() {
-	console.log("QZ Done Printing");
-	setTimeout(changeBurnIconFire, 1000);
-}
-
 function ConfirmQZ() {
 	var qz = document.getElementById('qz');
 	if (qz) {
@@ -26,8 +21,7 @@ function ConfirmQZ() {
 	return false;
 }
 
-function BurnFile(id) {
-	var type = '';
+function PreparePostData(id) {
 	var keymaps = [];
 	var fn_actions = [];
 	var leds = [];
@@ -60,25 +54,40 @@ function BurnFile(id) {
 		post_data["additional"] = _keyboard["additional"];
 	}
 
-	$.post("download.php?file=" + type, post_data, function(data) {
-		console.log(data);
-		if ($('#qz').length) {
-			var qz = $('#qz').get(0);
-			qz.findPrinter(PRINTER_NAME);
-			window['qzDoneFinding'] = function() {
-				if (qz.getPrinter()) {
-					changeBurnIconRefresh();
-					qz.append(data);
-					qz.print();
-				}
-				else {
-					alert('"' + PRINTER_NAME + '" not found.');
-				}
-				window['qzDoneFinding'] = null;
-			};
+	return post_data;
+}
+
+function BurnFile(id) {
+	var $qz = $('#qz');
+	if ($qz.length == 0) {
+		return;
+	}
+
+	var type = '';
+	if (id == 'burn_eep') {
+		type = 'eep';
+	}
+
+	changeBurnIconRefresh();
+	$qz.qzFindPrinter(PRINTER_NAME, function() {
+		if (this.getPrinter()) {
+			var post_data = PreparePostData(id);
+			$.post("download.php?file=" + type, post_data, function(data) {
+				console.log(data);
+				$qz.qzAppend(data, function() {
+					$qz.qzPrint(function() {
+						console.log("QZ Done Printing");
+						setTimeout(changeBurnIconFire, 1000);
+					});
+				});
+			}).fail(function(d, textStatus, error) {
+				console.error("post failed, status: " + textStatus + ", error: "+error)
+			});
 		}
-	}).fail(function(d, textStatus, error) {
-		console.error("post failed, status: " + textStatus + ", error: "+error)
+		else {
+			alert('"' + PRINTER_NAME + '" not found.');
+			changeBurnIconFire();
+		}
 	});
 }
 
@@ -132,3 +141,35 @@ function removeBurnButton() {
 	}
 }
 
+$.fn.qzGetPrinter = function() {
+	return this[0].getPrinter();
+};
+
+$.fn.qzFindPrinter = function(name, done) {
+	return this.each(function() {
+		var self = this;
+		self.findPrinter(name);
+		window['qzDoneFinding'] = function() {
+			done.apply(self);
+			window["qzDoneFinding"] = null;
+		};
+	});
+};
+
+$.fn.qzAppend = function(data, done) {
+	return this.each(function() {
+		var self = this;
+		this.append(data);
+		done.apply(self);
+	});
+};
+
+$.fn.qzPrint = function(done) {
+	return this.each(function() {
+		this.print();
+		window["qzDonePrinting"] = function() {
+			done.apply(this);
+			window["qzDonePrinting"] = null;
+		};
+	});
+};
