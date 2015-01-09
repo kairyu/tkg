@@ -267,10 +267,10 @@ function loadKeyboard(keyboard_name) {
 	var main = result["main"];
 	var variant = result["variant"];
 	$.ajaxSetup({ async: false, cache: false });
-	$.getJSON("keyboard/" + main + ".json", function(json) {
+	$.getJSON("keyboard/config/" + main + ".json", function(json) {
 		keyboard = json;
 		if (variant) {
-			$.getJSON("keyboard/" + main + "-" + variant + ".json", function(json) {
+			$.getJSON("keyboard/config/" + main + "-" + variant + ".json", function(json) {
 				keyboard = _.extend(keyboard, json);
 			}).fail(function(d, textStatus, error) {
 				console.error("getJSON failed, status: " + textStatus + ", error: "+error)

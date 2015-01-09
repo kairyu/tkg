@@ -63,26 +63,47 @@ function BurnFile(id) {
 		return;
 	}
 
-	var type = '';
-	if (id == 'burn_eep') {
-		type = 'eep';
-	}
-
 	changeBurnIconRefresh();
 	$qz.qzFindPrinter(PRINTER_NAME, function() {
 		if (this.getPrinter()) {
-			var post_data = PreparePostData(id);
-			$.post("download.php?file=" + type, post_data, function(data) {
-				console.log(data);
-				$qz.qzAppend(data, function() {
-					$qz.qzPrint(function() {
-						console.log("QZ Done Printing");
-						setTimeout(changeBurnIconFire, 1000);
+			if (id == 'burn_eep') {
+				var post_data = PreparePostData(id);
+				$.post("download.php?file=eep", post_data, function(data) {
+					console.log(data);
+					$qz.qzAppend(data, function() {
+						$qz.qzPrint(function() {
+							console.log("burn eep done");
+							setTimeout(changeBurnIconFire, 1000);
+						});
 					});
+				}).fail(function(d, textStatus, error) {
+					console.error("post failed, status: " + textStatus + ", error: "+error)
 				});
-			}).fail(function(d, textStatus, error) {
-				console.error("post failed, status: " + textStatus + ", error: "+error)
-			});
+			}
+			else if (id == 'burn_hex') {
+				var result = parseKeyboardName(_keyboard["name"]);
+				var main = result["main"];
+				var variant = result["variant"];
+				var url = "keyboard/firmware/" + main;
+				if (variant) {
+					url += "-" + variant;
+				}
+				url += ".hex";
+				$.get(url, function(data) {
+					console.log(data);
+					$qz.qzAppend(data, function() {
+						$qz.qzPrint(function() {
+							console.log("burn hex done");
+							setTimeout(changeBurnIconFire, 1000);
+						});
+					});
+				}).fail(function(d, textStatus, error) {
+					console.error("get failed, status: " + textStatus + ", error: "+error)
+				});
+			}
+			else {
+				changeBurnIconFire();
+			}
 		}
 		else {
 			alert('"' + PRINTER_NAME + '" not found.');
@@ -100,12 +121,12 @@ function changeBurnIconFire() {
 }
 
 function appendBurnButton() {
-	if ($('#burn_eep').length == 0) {
+	if ($('.burn-btn').length == 0) {
 		$('#dl_eep').parent().prepend(
 			$('<button>').attr({
 				"id": "burn_eep",
 				"type": "button",
-				"class": "dl-btn btn btn-default",
+				"class": "dl-btn burn-btn btn btn-default",
 			}).append(
 				$('<i>').attr({ "id": "burn_icon" }),
 				" ",
@@ -127,7 +148,7 @@ function appendBurnButton() {
 					$('<param>').attr({ "name": "printer", "value": PRINTER_NAME })
 				)
 			)
-		).on('click', '#burn_eep', function() {
+		).on('click', '.burn-btn', function() {
 			BurnFile($(this).attr('id'));
 		});
 		$('#qz_div').offset($('#burn_icon').offset());
@@ -136,11 +157,34 @@ function appendBurnButton() {
 }
 
 function removeBurnButton() {
-	if ($('#burn_eep').length) {
-		$('#burn_eep').remove();
+	if ($('.burn-btn').length) {
+		$('.burn-btn').remove();
 		$('#qz_div').remove();
 	}
 }
+
+$(window).keydown(function(e) {
+	if (e.keyCode == 16) {
+		var $burn_btn = $('#burn_eep');
+		if ($burn_btn.length) {
+			var html = $burn_btn.html();
+			$burn_btn.html(html.replace(".eep", ".hex")).attr("id", "burn_hex").removeClass("disabled");
+		}
+	}
+});
+
+$(window).keyup(function(e) {
+	if (e.keyCode == 16) {
+		var $burn_btn = $('#burn_hex');
+		if ($burn_btn.length) {
+			var html = $burn_btn.html();
+			$burn_btn.html(html.replace(".hex", ".eep")).attr("id", "burn_eep");
+			if ($burn_btn.is(".btn-default,.btn-danger")) {
+				$burn_btn.addClass("disabled");
+			}
+		}
+	}
+});
 
 $.fn.qzGetPrinter = function() {
 	return this[0].getPrinter();
@@ -162,6 +206,17 @@ $.fn.qzAppend = function(data, done) {
 		var self = this;
 		this.append(data);
 		done.apply(self);
+	});
+};
+
+$.fn.qzAppendFile = function(name, done) {
+	return this.each(function() {
+		var self = this;
+		this.appendFile(name);
+		window['qzDoneAppending'] = function() {
+			done.apply(self);
+			window["qzDoneAppending"] = null;
+		};
 	});
 };
 
