@@ -265,6 +265,11 @@ span.glyphicon-chevron-up {
 	line-height: 3.5;
 }
 
+#burn_icon {
+	width: 14px;
+}
+
+.fa.spin,
 .glyphicon.spin {
 	animation-name: spin;
 	animation-duration: .5s;
@@ -274,6 +279,7 @@ span.glyphicon-chevron-up {
 	-webkit-animation-duration: .5s;
 	-webkit-animation-iteration-count: infinite;
 	-webkit-animation-timing-function: linear;
+	-webkit-filter: blur(0);
 }
 @-moz-keyframes spin
 {
@@ -289,4 +295,8 @@ span.glyphicon-chevron-up {
 {
     from { -wekbit-transform: rotate(0deg); -moz-transform: rotate(0deg); transform: rotate(0deg); }
     to { -webkit-transform: rotate(360deg); -moz-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+.fa-spin {
+	-webkit-filter: blur(0);
 }

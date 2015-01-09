@@ -92,7 +92,7 @@ function BurnFile(id) {
 }
 
 function changeBurnIconRefresh() {
-	$('#burn_icon').removeAttr("class").addClass("glyphicon glyphicon-refresh spin");
+	$('#burn_icon').removeAttr("class").addClass("fa fa-spinner spin");
 }
 
 function changeBurnIconFire() {
@@ -107,7 +107,7 @@ function appendBurnButton() {
 				"type": "button",
 				"class": "dl-btn btn btn-default",
 			}).append(
-				$('<span>').attr({ "id": "burn_icon", "class": "glyphicon glyphicon-fire" }),
+				$('<i>').attr({ "id": "burn_icon" }),
 				" ",
 				$('<span>').attr({ "lang": "en" }).text("Burn"),
 				" .eep ",
@@ -131,6 +131,7 @@ function appendBurnButton() {
 			BurnFile($(this).attr('id'));
 		});
 		$('#qz_div').offset($('#burn_icon').offset());
+		changeBurnIconFire();
 	}
 }
 
