@@ -151,8 +151,8 @@ function appendBurnButton() {
 		).on('click', '.burn-btn', function() {
 			BurnFile($(this).attr('id'));
 		});
-		$('#qz_div').offset($('#burn_icon').offset());
 		changeBurnIconFire();
+		$('#qz_div').offset($('#burn_icon').offset());
 	}
 }
 
