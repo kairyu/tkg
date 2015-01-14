@@ -8,6 +8,7 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'Tools':'工具',
 	'Import Fn':'导入 Fn 设置',
 	'Export Fn':'导出 Fn 设置',
+	'Advanced Mode':'高级模式',
 	'Cancel':'取消',
 	'Close':'关闭',
 	'Import':'导入',

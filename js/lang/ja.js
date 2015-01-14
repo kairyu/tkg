@@ -8,6 +8,7 @@ jquery_lang_js.prototype.lang.ja = {
 	'Tools':'ツール',
 	'Import Fn':'Fn 設定をインポート',
 	'Export Fn':'Fn 設定をエクスポート',
+	'Advanced Mode':' アドバンスモード',
 	'Cancel':'キャンセル',
 	'Close':'閉じる',
 	'Import':'インポート',
