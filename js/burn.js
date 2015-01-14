@@ -62,7 +62,7 @@ function BurnFile(id) {
 		return;
 	}
 
-	changeBurnIconRefresh();
+	changeBurnButtonPending();
 	$qz.qzFindPrinter(PRINTER_NAME, function() {
 		if (this.getPrinter()) {
 			if (id == 'burn_eep') {
@@ -72,7 +72,7 @@ function BurnFile(id) {
 					$qz.qzAppend(data, function() {
 						$qz.qzPrint(function() {
 							console.log("burn eep done");
-							setTimeout(changeBurnIconFire, 1000);
+							setTimeout(changeBurnButtonReady, 1000);
 						});
 					});
 				}).fail(function(d, textStatus, error) {
@@ -93,7 +93,7 @@ function BurnFile(id) {
 					$qz.qzAppend(data, function() {
 						$qz.qzPrint(function() {
 							console.log("burn hex done");
-							setTimeout(changeBurnIconFire, 1000);
+							setTimeout(changeBurnButtonReady, 1000);
 						});
 					});
 				}).fail(function(d, textStatus, error) {
@@ -101,22 +101,14 @@ function BurnFile(id) {
 				});
 			}
 			else {
-				changeBurnIconFire();
+				changeBurnButtonReady();
 			}
 		}
 		else {
 			alert('"' + PRINTER_NAME + '" not found.');
-			changeBurnIconFire();
+			changeBurnButtonReady();
 		}
 	});
-}
-
-function changeBurnIconRefresh() {
-	$('#burn_icon').removeAttr("class").addClass("fa fa-spinner spin");
-}
-
-function changeBurnIconFire() {
-	$('#burn_icon').removeAttr("class").addClass("glyphicon glyphicon-fire");
 }
 
 function appendBurnButton() {
@@ -150,7 +142,7 @@ function appendBurnButton() {
 		).on('click', '.burn-btn', function() {
 			BurnFile($(this).attr('id'));
 		});
-		changeBurnIconFire();
+		changeBurnButtonReady();
 		$('#qz_div').offset($('#burn_icon').offset());
 	}
 }
@@ -162,29 +154,59 @@ function removeBurnButton() {
 	}
 }
 
+function changeBurnButtonPending() {
+	$('.burn-btn').data("pending", true).addClass("disabled");
+	$('#burn_icon').removeAttr("class").addClass("fa fa-spinner spin");
+}
+
+function changeBurnButtonReady() {
+	$('#burn_icon').removeAttr("class").addClass("glyphicon glyphicon-fire");
+	if ($('.burn-btn').data("pending")) {
+		$('.burn-btn').data("pending", false);
+		switch ($('.burn-btn').data("file")) {
+			case "eep":
+				changeBurnButtonEEP();
+				break;
+			case "hex":
+				changeBurnButtonHEX();
+				break;
+		}
+	}
+}
+
+function changeBurnButtonHEX() {
+	var $burn_btn = $('.burn-btn');
+	if ($burn_btn.length && !$burn_btn.data("pending")) {
+		var html = $burn_btn.html();
+		$burn_btn.html(html.replace(".eep", ".hex")).attr("id", "burn_hex");
+		if (ConfirmQZ()) {
+			$burn_btn.removeClass("disabled");
+		}
+	}
+}
+
+function changeBurnButtonEEP() {
+	var $burn_btn = $('.burn-btn');
+	if ($burn_btn.length && !$burn_btn.data("pending")) {
+		var html = $burn_btn.html();
+		$burn_btn.html(html.replace(".hex", ".eep")).attr("id", "burn_eep");
+		if (!ConfirmQZ() || $burn_btn.is(".btn-default,.btn-danger")) {
+			$burn_btn.addClass("disabled");
+		}
+	}
+}
+
 $(window).keydown(function(e) {
 	if (e.keyCode == 16) {
-		var $burn_btn = $('#burn_eep');
-		if ($burn_btn.length) {
-			var html = $burn_btn.html();
-			$burn_btn.html(html.replace(".eep", ".hex")).attr("id", "burn_hex");
-			if (ConfirmQZ()) {
-				$burn_btn.removeClass("disabled");
-			}
-		}
+		$('.burn-btn').data("file", "hex");
+		changeBurnButtonHEX();
 	}
 });
 
 $(window).keyup(function(e) {
 	if (e.keyCode == 16) {
-		var $burn_btn = $('#burn_hex');
-		if ($burn_btn.length) {
-			var html = $burn_btn.html();
-			$burn_btn.html(html.replace(".hex", ".eep")).attr("id", "burn_eep");
-			if (!ConfirmQZ() || $burn_btn.is(".btn-default,.btn-danger")) {
-				$burn_btn.addClass("disabled");
-			}
-		}
+		$('.burn-btn').data("file", "eep");
+		changeBurnButtonEEP();
 	}
 });
 
