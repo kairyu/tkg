@@ -2,6 +2,7 @@ window.lang = new jquery_lang_js();
 var tkg = new TKG();
 var _keyboard = {};
 var _layer_mode = LAYER_NORMAL;
+var _advanced_mode = false;
 
 $(function() {
 
@@ -18,6 +19,10 @@ $(function() {
 	}
 
 	$('.btn').button();
+
+	if (localStorage) {
+		_advanced_mode = JSON.parse(localStorage.getItem('tkg_advancedMode'));
+	}
 
 	showNotification();
 
@@ -120,6 +125,15 @@ $(function() {
 			window.lang.run();
 		}
 	});
+
+	// advanced mode
+	$('#tools-advanced-mode').click(function() {
+		_advanced_mode = !_advanced_mode;
+		localStorage.setItem('tkg_advancedMode', JSON.stringify(_advanced_mode));
+		updateAdvancedModeState();
+		updateDownloadButtonState();
+	});
+	updateAdvancedModeState();
 
 	// get raw data from server
 	$('body').on('blur', '.kle-layer', function(event) {
@@ -447,6 +461,15 @@ function updateToolsMenuState() {
 	}
 	else {
 		$('#tools-import-fn, #tools-export-fn').parent().addClass('disabled');
+	}
+}
+
+function updateAdvancedModeState() {
+	if (_advanced_mode) {
+		$('#tools-advanced-mode').parent().find('i').css('visibility', 'visible');
+	}
+	else {
+		$('#tools-advanced-mode').parent().find('i').css('visibility', 'hidden');
 	}
 }
 
