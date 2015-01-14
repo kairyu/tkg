@@ -1,6 +1,6 @@
 {
-	"name": "GH60 (RevA/B)",
-	"description": "GH60 Keyboard (Revision A/B)",
+	"name": "GH60 (RevA/B/C)",
+	"description": "GH60 Keyboard (Revision A/B/C)",
 	"led_count": 5,
 	"led_map": [{
 		"name": "Caps Lock",
