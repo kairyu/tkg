@@ -28,7 +28,7 @@ function loadKeyboardConfig(main, variant) {
 		name = main + "-config.json";
 	}
 	$.ajaxSetup({ async: false, cache: false });
-	$.getJSON("keyboard/" + name.toLowerCase(), function(json) {
+	$.getJSON("keyboard/config/" + name.toLowerCase(), function(json) {
 		config = json;
 	}).fail(function(d, textStatus, error) {
 		console.error("getJSON failed, status: " + textStatus + ", error: "+error)
