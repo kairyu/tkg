@@ -420,7 +420,7 @@ function updateDownloadButtonState() {
 	});
 
 	if (_keyboard['name'].match(/^RedScarfIII/i) ||
-	(_keyboard['name'].match(/^GH60/i) && _advanced_mode)) {
+	(_keyboard['name'].match(/^(GH60|SMART68)/i) && _advanced_mode)) {
 		appendBurnButton();
 	}
 	else {
