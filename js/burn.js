@@ -50,7 +50,7 @@ function PreparePostData(id) {
 		has_additional = true;
 	}
 	if (has_additional) {
-		post_data["additional"] = _keyboard["additional"];
+		post_data["additional"] = JSON.stringify(_keyboard['additional']);
 	}
 
 	return post_data;
