@@ -306,6 +306,7 @@ function appendFnSubParams(id) {
 			}
 			break;
 	}
+	window.lang.run();
 	// af_id param
 	$row.find('.fn-param-af-opt select').multiselect({
 		buttonTitle: function(options, select) {
