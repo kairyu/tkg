@@ -158,6 +158,8 @@ jquery_lang_js.prototype.lang.zh_sc = {
 	'RGB Fixed Color':'RGB静态颜色',
 	'RGB Variable Mode':'RGB动态模式',
 	'RGB Step':'RGB步进',
+	'Fixed Color':'静态颜色',
+	'Variable Mode':'动态模式',
 	// Fn am
 	'Keypad 00':'小键盘00',
 	// LED

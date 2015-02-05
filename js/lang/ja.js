@@ -152,6 +152,8 @@ jquery_lang_js.prototype.lang.ja = {
 	'RGB Fixed Color':'RGB固定カラー',
 	'RGB Variable Mode':'RGB変動モード',
 	'RGB Step':'RGBステップ',
+	'Fixed Color':'固定カラー',
+	'Variable Mode':'変動モード',
 	// Fn am
 	'Keypad 00':'小键盘00',
 	// LED

@@ -203,14 +203,14 @@
 		"name": "RGB Variable Mode",
 		"description": "Change RGB light to variable mode",
 		"opt": [
-			"Flase", "Strobe", "Fade", "Smooth"
+			"Flash", "Strobe", "Fade", "Smooth"
 		]
 	},
 	{
 		"name": "RGB Step",
 		"description": "Change RGB light mode by step",
 		"opt": [
-			"Fixed", "Variable"
+			"Fixed Color", "Variable Mode"
 		]
 	}],
 	"led_additional_index": 0,
