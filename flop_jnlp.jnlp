@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp codebase="." href="flop_jnlp.jnlp" spec="1.0+">
+	<information>
+		<title>Flop Plugin</title>
+		<vendor>Kai Ryu</vendor>
+	</information>
+	<security>
+		<all-permissions/>
+	</security>
+	<resources>
+		<j2se version="1.5+" />
+		<jar href="flop.jar" eager="true" download="eager" main="true" />
+	</resources> 
+	<applet-desc name="Flop Plugin" main-class="com.github.kairyu.flop.applet.FlopApplet" width="100" height="100" />
+	<update check="always" policy="always" />
+</jnlp>
