@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -26,6 +26,8 @@
 	<script src="js/led.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/keyboard_config.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/burn.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/bootloader_printer.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/bootloader_dfu.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/main.js" charset="utf-8" type="text/javascript"></script>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/bootstrap-multiselect.css">
@@ -104,7 +106,7 @@
 					<div id="general-field" class="collapse in">
 						<div class="form-group">
 							<label for="keyboard-sel" lang="en" class="col-md-2 control-label">Keyboard</label>
-							<div class="col-md-5">
+							<div class="col-md-6">
 								<div class="btn-group input-group">
 									<select id="keyboard-sel" class="form-control">
 										<option>GH60 (RevA/B/C)</option>
@@ -164,9 +166,9 @@
 				</fieldset>
 				<hr>
 				<div class="form-group">
-					<div class="col-md-offset-2 col-md-5">
-						<button id="dl_eep" type="button" class="dl-btn btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> <span lang="en">Download</span> .eep <span lang="en">file</span></button>
-						<button id="dl_c" type="button" class="dl-btn btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> <span lang="en">Download</span> .c <span lang="en">file</span></button>
+					<div id="btns" class="col-md-offset-2 col-md-6">
+						<button id="dl_eep" type="button" class="dl-btn dl-btn-restrict btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> <span lang="en">Download</span> .eep <span lang="en">file</span></button>
+						<button id="dl_c" type="button" class="dl-btn dl-btn-restrict btn btn-default"><span class="glyphicon glyphicon-floppy-disk"></span> <span lang="en">Download</span> .c <span lang="en">file</span></button>
 					</div>
 				</div>
 			</form>

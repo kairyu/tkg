@@ -94,8 +94,8 @@ body {
 .dl-btn {
 	margin-bottom: 15px;
 }
-#qz_div {
-	position: absolute;
+.dl-btn ~ ul {
+	margin-top: -13px;
 }
 .fn-row {
 	float: left;

@@ -38,9 +38,12 @@ $(function() {
 	$('#keyboard-sel').change(function() {
 		var name = this.value;
 		initialize(name, _layer_mode);
-	}).change();
+	});
 
-	updateDownloadButtonState();
+	$(window).load(function() {
+		$('#keyboard-sel').change();
+		updateDownloadButtonState();
+	});
 
 	// on navbar click
 	$('.navbar-brand').click(function(e) {
@@ -419,9 +422,9 @@ function updateDownloadButtonState() {
 		}
 	});
 
-	if (_keyboard['name'].match(/^RedScarfIII/i) ||
-	(_keyboard['name'].match(/^(GH60|SMART68)/i) && _advanced_mode)) {
-		appendBurnButton();
+	if ((_keyboard['bootloader'] && _keyboard['bootloader'].length) &&
+	_keyboard['name'].match(/^RedScarfIII/i) || _advanced_mode) {
+		appendBurnButton(_keyboard['bootloader']);
 	}
 	else {
 		removeBurnButton();
@@ -443,16 +446,10 @@ function updateDownloadButtonState() {
 	}
 	var enabled = !has_error && (empty_count < $('.layer').length);
 	if (enabled) {
-		$('.dl-btn').removeClass('disabled');
+		$('.dl-btn-restrict').removeClass('disabled');
 	}
 	else {
-		$('.dl-btn').addClass('disabled');
-	}
-
-	if ($('.burn-btn').length) {
-		if (!ConfirmQZ()) {
-			$('.burn-btn').addClass('disabled');
-		}
+		$('.dl-btn-restrict').addClass('disabled');
 	}
 }
 
