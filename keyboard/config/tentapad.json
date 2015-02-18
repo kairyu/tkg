@@ -12,5 +12,9 @@
 		"0,0": { "row": 0, "col": 0 },
 		"1,0": { "row": 0, "col": 1 },
 		"2,0": { "row": 0, "col": 2 }
-	}
+	},
+	"bootloader": [{
+		"name": "DFU",
+		"mcu": "atmega32u2"
+	}]
 }

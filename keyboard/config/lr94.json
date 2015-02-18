@@ -147,6 +147,10 @@
 		"opt": []
 	}],
 	"led_additional_index": 0,
+	"bootloader": [{
+		"name": "DFU",
+		"mcu": "atmega32u4"
+	}],
 	"additional": [{
 		"start": 7,
 		"size": 4,

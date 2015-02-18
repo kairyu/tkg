@@ -214,6 +214,10 @@
 		]
 	}],
 	"led_additional_index": 0,
+	"bootloader": [{
+		"name": "Printer",
+		"printer_name": "Generic / Text Only"
+	}],
 	"additional": [{
 		"start": 8,
 		"size": 6,
