@@ -43,6 +43,7 @@ $(function() {
 	$(window).load(function() {
 		$('#keyboard-sel').change();
 		updateDownloadButtonState();
+		updateBurnButtonState();
 	});
 
 	// on navbar click
@@ -134,7 +135,7 @@ $(function() {
 		_advanced_mode = !_advanced_mode;
 		localStorage.setItem('tkg_advancedMode', JSON.stringify(_advanced_mode));
 		updateAdvancedModeState();
-		updateDownloadButtonState();
+		updateBurnButtonState();
 	});
 	updateAdvancedModeState();
 
@@ -422,14 +423,6 @@ function updateDownloadButtonState() {
 		}
 	});
 
-	if ((_keyboard['bootloader'] && _keyboard['bootloader'].length) &&
-	_keyboard['name'].match(/^RedScarfIII/i) || _advanced_mode) {
-		appendBurnButton(_keyboard['bootloader']);
-	}
-	else {
-		removeBurnButton();
-	}
-
 	var $dl_btn = $('.dl-btn');
 	$dl_btn.removeClass('btn-default btn-success btn-warning btn-danger');
 	if (has_error) {
@@ -450,6 +443,16 @@ function updateDownloadButtonState() {
 	}
 	else {
 		$('.dl-btn-restrict').addClass('disabled');
+	}
+}
+
+function updateBurnButtonState() {
+	if ((_keyboard['bootloader'] && _keyboard['bootloader'].length) &&
+	_keyboard['name'].match(/^RedScarfIII/i) || _advanced_mode) {
+		appendBurnButton(_keyboard['bootloader']);
+	}
+	else {
+		removeBurnButton();
 	}
 }
 

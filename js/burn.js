@@ -146,25 +146,27 @@ function appendBurnButton(bootloaders) {
 		window.lang.run();
 		changeBurnButtonReady();
 
-		for (var i = 0; i < bootloaders.length; i++) {
-			$('#bootloader_list').append($('<li>').append(
-				$('<a>').attr({
-					"href": "javascript:void(0)"
-				}).append(
-					$('<i>').attr({
-						"class": "glyphicon glyphicon-ok",
-						"style": "visibility:hidden;"
-					}),
-					" " + bootloaders[i]["name"]
-				).data("param", bootloaders[i])
-			));
-		}
-		$('#btns').on('click', '#bootloader_list a', function() {
+		$('#burn_btn').on('click', '#bootloader_list a', function() {
 			selectBootloader(this);
 		});
-
-		selectBootloader($('#bootloader_list a:first'));
 	}
+
+	$('#bootloader_list a').parent().remove();
+	for (var i = 0; i < bootloaders.length; i++) {
+		$('#bootloader_list').append($('<li>').append(
+			$('<a>').attr({
+				"href": "javascript:void(0)"
+			}).append(
+				$('<i>').attr({
+					"class": "glyphicon glyphicon-ok",
+					"style": "visibility:hidden;"
+				}),
+				" " + bootloaders[i]["name"]
+			).data("param", bootloaders[i])
+		));
+	}
+
+	selectBootloader($('#bootloader_list a:first'));
 }
 
 function selectBootloader(a) {
