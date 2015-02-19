@@ -17,12 +17,12 @@ BootloaderDfu.prototype.appendTo = function(selector, ready) {
 			"id": "flop",
 			"name": "Flop Plugin",
 			"code": ".",
-			"archive": "./flop.jar",
+			"archive": "./plugin/flop.jar",
 			"width": "14",
 			"height": "16",
 			"border": "0"
 		}).append(
-			$('<param>').attr({ "name": "jnlp_href", "value": "./flop_jnlp.jnlp" })
+			$('<param>').attr({ "name": "jnlp_href", "value": "./plugin/flop_jnlp.jnlp" })
 		);
 		this._div = $('<div>').attr({
 			"id": "flop_div",

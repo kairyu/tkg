@@ -17,12 +17,12 @@ BootloaderPrinter.prototype.appendTo = function(selector, ready) {
 			"id": "qz",
 			"name": "QZ Print Plugin",
 			"code": "qz.PrintApplet.class",
-			"archive": "./qz-print.jar",
+			"archive": "./plugin/qz-print.jar",
 			"width": "14",
 			"height": "16",
 			"border": "0"
 		}).append(
-			$('<param>').attr({ "name": "jnlp_href", "value": "qz-print_jnlp.jnlp" }),
+			$('<param>').attr({ "name": "jnlp_href", "value": "./plugin/qz-print_jnlp.jnlp" }),
 			$('<param>').attr({ "name": "printer", "value": this._printer_name })
 		);
 		this._div = $('<div>').attr({
