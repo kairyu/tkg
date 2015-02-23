@@ -27,10 +27,10 @@ var action_map = {
 		"description": "Send modifier",
 		"code": function(lr, mods) {
 			if (lrCode(lr)) {
-				return "0x01" + dechex(modsCode(mods) & 0xF);
+				return "0x1" + dechex(modsCode(mods) & 0xF) + "00";
 			}
 			else {
-				return "0x00" + dechex(modsCode(mods) & 0xF);
+				return "0x0" + dechex(modsCode(mods) & 0xF) + "00";
 			}
 		},
 		"param": [ "lr", "mods" ],
@@ -42,10 +42,10 @@ var action_map = {
 		"description": "Send modifier and key",
 		"code": function(lr, mods, key) {
 			if (lrCode(lr)) {
-				return "0x01" + dechex(modsCode(mods) & 0xF) + keyCode(key);
+				return "0x1" + dechex(modsCode(mods) & 0xF) + keyCode(key);
 			}
 			else {
-				return "0x00" + dechex(modsCode(mods) & 0xF) + keyCode(key);
+				return "0x0" + dechex(modsCode(mods) & 0xF) + keyCode(key);
 			}
 		},
 		"param": [ "lr", "mods", "key" ],
@@ -65,18 +65,6 @@ var action_map = {
 		},
 		"param": [ "layer" ],
 		"default": [ 0 ]
-	},
-	"ACTION_LAYER_CLEAR": {
-		"group": "Layer advanced action",
-		"name": "Clear all",
-		"description": "Clear state of all layers",
-		"code": function(on) {
-			if (validOn(on)) {
-				return "0x8" + onCode(on) + "00";
-			}
-		},
-		"param": [ "on" ],
-		"default": [ "ON_RELEASE" ]
 	},
 	"ACTION_LAYER_MOMENTARY": {
 		"group": "Layer action",
@@ -111,21 +99,6 @@ var action_map = {
 		},
 		"param": [ "layer" ],
 		"default": [ 1 ]
-	},
-	"ACTION_LAYER_INVERT": {
-		"group": "Layer advanced action",
-		"name": "Invert",
-		"description": "Invert current state of layer",
-		"code": function(layer, on) {
-			if (validLayer(layer) && validOn(on)) {
-				return "0x8" + dechex(8 + onCode(on)) + dechex((layer / 4) << 1) + dechex(1 << (layer % 4));
-			}
-			else {
-				return "";
-			}
-		},
-		"param": [ "layer", "on" ],
-		"default": [ 1, "ON_PRESS" ]
 	},
 	"ACTION_LAYER_ON": {
 		"group": "Layer action",
@@ -171,6 +144,78 @@ var action_map = {
 		},
 		"param": [ "layer", "on" ],
 		"default": [ 1, "ON_RELEASE" ]
+	},
+	"ACTION_MODS_TAP_KEY": {
+		"group": "Key advanced action",
+		"name": "Dual role modifier",
+		"description": "Works as modifier when holding, but registers normal key when tapping",
+		"code": function(lr, mods, key) {
+			if (lrCode(lr)) {
+				return "0x3" + dechex(modsCode(mods) & 0xF) + keyCode(key);
+			}
+			else {
+				return "0x2" + dechex(modsCode(mods) & 0xF) + keyCode(key);
+			}
+		},
+		"param": [ "lr", "mods", "key" ],
+		"default": [ "LR_LEFT", [], "KC_NO" ]
+	},
+	"ACTION_MODS_ONESHOT": {
+		"group": "Key advanced action",
+		"name": "Oneshot modifier",
+		"description": "Workds as normal modifier key when holding down, while oneshot modifier when tapping",
+		"code": function(lr, mods) {
+			if (lrCode(lr)) {
+				return "0x3" + dechex(modsCode(mods) & 0xF) + "00";
+			}
+			else {
+				return "0x2" + dechex(modsCode(mods) & 0xF) + "00";
+			}
+		},
+		"param": [ "lr", "mods" ],
+		"default": [ "LR_LEFT", [] ]
+	},
+	"ACTION_MODS_TAP_TOGGLE": {
+		"group": "Key advanced action",
+		"name": "Tap toggle modifier",
+		"description": "Works as a momentary modifier when holding, but toggles on with several taps",
+		"code": function(lr, mods) {
+			if (lrCode(lr)) {
+				return "0x3" + dechex(modsCode(mods) & 0xF) + "01";
+			}
+			else {
+				return "0x2" + dechex(modsCode(mods) & 0xF) + "01";
+			}
+		},
+		"param": [ "lr", "mods" ],
+		"default": [ "LR_LEFT", [] ]
+	},
+	"ACTION_LAYER_CLEAR": {
+		"group": "Layer advanced action",
+		"name": "Clear all",
+		"description": "Clear state of all layers",
+		"code": function(on) {
+			if (validOn(on)) {
+				return "0x8" + onCode(on) + "00";
+			}
+		},
+		"param": [ "on" ],
+		"default": [ "ON_RELEASE" ]
+	},
+	"ACTION_LAYER_INVERT": {
+		"group": "Layer advanced action",
+		"name": "Invert",
+		"description": "Invert current state of layer",
+		"code": function(layer, on) {
+			if (validLayer(layer) && validOn(on)) {
+				return "0x8" + dechex(8 + onCode(on)) + dechex((layer / 4) << 1) + dechex(1 << (layer % 4));
+			}
+			else {
+				return "";
+			}
+		},
+		"param": [ "layer", "on" ],
+		"default": [ 1, "ON_PRESS" ]
 	},
 	"ACTION_LAYER_ON_OFF": {
 		"group": "Layer advanced action",
