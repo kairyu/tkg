@@ -18,7 +18,7 @@ $(function() {
 
 	$('.btn').button();
 
-	if ($.cookie) {
+	if ($.cookie && $.cookie('tkg_advancedMode')) {
 		_advanced_mode = JSON.parse($.cookie('tkg_advancedMode'));
 	}
 
