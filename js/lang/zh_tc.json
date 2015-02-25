@@ -1,0 +1,22 @@
+{
+	"token": {
+		"Home":"首頁",
+		"Help":"幫助",
+		"About":"關於",
+		"Language":"語言",
+		"Keyboard":"鍵盤",
+		"Simple Mode":"簡單模式",
+		"Composite Layer":"複合層",
+		"Detail":"詳細",
+		"Number of Layers":"層數",
+		"Download":"下載",
+		"file":"文件",
+		"Name":"名稱",
+		"Description":"描述",
+		"Max Layers":"最大層數",
+		"Max Fns":"最大Fn鍵數"
+	},
+	"regex": [
+		[ "Layer(\\d+)", "第$1層" ]
+	]
+}

@@ -58,7 +58,6 @@ $.fn.fn = function() {
 			makeSelect({ "id": id + "-action", "class": "multiselect" }, action_options, action)
 		);
 		$row.empty().append($action);
-		window.lang.run();
 		$row.find('.fn-action select').multiselect({
 			buttonText: function(options, select) {
 				var $selected = $(options[0]);
@@ -177,7 +176,6 @@ function appendFnParams(id) {
 			}
 		}
 		$row.append($params);
-		window.lang.run();
 		// layer param
 		$row.find('.fn-param-layer select').multiselect({
 			buttonTitle: function(options, select) {
@@ -299,14 +297,13 @@ function appendFnSubParams(id) {
 			$row.find('.fn-param-af-opt').remove();
 			if (options.length) {
 				$row = $row.append($('<div>').attr({ "class": "fn-param fn-param-af-opt" }).append(
-					$('<div>').attr({ "class": "input-group btn-group" }).append(
+					$('<div>').attr({ "class": "input-group" }).append(
 						makeSelect({ "id": id + "-param-af-opt" }, options, af_opt)
 					)
 				));
 			}
 			break;
 	}
-	window.lang.run();
 	// af_id param
 	$row.find('.fn-param-af-opt select').multiselect({
 		buttonTitle: function(options, select) {
@@ -322,7 +319,6 @@ function appendFnSubParams(id) {
 }
 
 function onFnParamsChange(id) {
-	window.lang.run();
 	var $row = $('#fn-wrapper #' + id);
 	var index = $row.data('index');
 	var action = $row.data('action');

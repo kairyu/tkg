@@ -1,4 +1,8 @@
-window.lang = new jquery_lang_js();
+window.lang = new Lang('en', undefined, undefined, {
+	"ja": "js/lang/ja.json",
+	"zh_sc": "js/lang/zh_sc.json",
+	"zh_tc": "js/lang/zh_tc.json"
+});
 var tkg = new TKG();
 var _keyboard = {};
 var _layer_mode = LAYER_NORMAL;
@@ -6,17 +10,11 @@ var _advanced_mode = false;
 
 $(function() {
 
+	Lang.prototype.attrList.push('label');
+
 	$(window).on('hashchange', function() {
 		switchPage(location.hash.slice(1));
 	}).trigger('hashchange');
-
-	window.lang.beforeRun = function() {
-		detachLinks();
-	}
-	window.lang.afterChange = function(lang) {
-		attachLinks();
-		changeFont(lang);
-	}
 
 	$('.btn').button();
 
@@ -76,7 +74,6 @@ $(function() {
 		$('#import-fn-button').addClass('disabled');
 		$('#import-fn-error').addClass('hide');
 		$('#import-fn-val').parent().removeClass('has-error');
-		window.lang.run();
 	}).on('shown.bs.modal', function() {
 		$('#import-fn-val').focus();
 	});
@@ -90,7 +87,6 @@ $(function() {
 		$('#export-fn-dialog').modal('show');
 	});
 	$('#export-fn-dialog').on('show.bs.modal', function() {
-		window.lang.run();
 		$('#export-fn-val').val(tkg.exportFns());
 	}).on('shown.bs.modal', function() {
 		$('#export-fn-val').focus().select();
@@ -126,7 +122,6 @@ $(function() {
 		else {
 			$('#import-fn-error').removeClass('hide');
 			$('#import-fn-val').focus().parent().addClass('has-error');
-			window.lang.run();
 		}
 	});
 
@@ -343,12 +338,6 @@ function initKeyboardInfo(keyboard) {
 			'<strong><span lang="en">Max Layers</span>: </strong>' + keyboard['max_layers'] + '<br/>' +
 			'<strong><span lang="en">Max Fns</span>: </strong>' + keyboard['max_fns']
 	});
-
-	// translate when shown
-	$('#kbd-info').on('shown.bs.popover', function() {
-		//$('#kbd-info-container .popover').css('top', $(this).offset().top + 'px');
-		window.lang.run();
-	});
 }
 
 function initForm(layer_mode) {
@@ -361,14 +350,10 @@ function initForm(layer_mode) {
 
 	// update buttons
 	updateDownloadButtonState();
-
-	// translate
-	window.lang.run();
 }
 
 function appendNotification() {
 	$('.navbar-fixed-top').prepend('<div id="notification"><div id="notification-inner" lang="en">This website is under construction, any feature will be removed or be modified at any time without advance notice.</div></div>');
-	window.lang.run();
 }
 
 function showNotification() {
@@ -378,9 +363,13 @@ function showNotification() {
 }
 
 function onLangChange(lang) {
-	window.lang.change(lang);
-	rebuildFnSelect();
-	rebuildLedSelect();
+	detachLinks();
+	window.lang.change(lang, undefined, function() {
+		attachLinks();
+		changeFont(lang);
+		rebuildFnSelect();
+		rebuildLedSelect();
+	});
 }
 
 function changeFont(lang) {

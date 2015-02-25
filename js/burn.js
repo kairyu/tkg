@@ -120,9 +120,7 @@ function appendBurnButton(bootloaders) {
 				}).append(
 					$('<i>').attr({ "id": "burn_icon" }),
 					" ",
-					$('<span>').attr({ "lang": "en" }).text("Burn"),
-					" .eep ",
-					$('<span>').attr({ "lang": "en" }).text("file")
+					$('<span>').attr({ "lang": "en" }).text("Burn .eep file")
 				),
 				$('<button>').attr({
 					"type": "button",
@@ -131,7 +129,7 @@ function appendBurnButton(bootloaders) {
 					"aria-expanded": "false"
 				}).append(
 					$('<span>').attr({ "class": "caret" }),
-					$('<span>').attr({ "class": "sr-only" }).text("Toogle Dropdown")
+					$('<span>').attr({ "class": "sr-only" }).text("Toggle Dropdown")
 				),
 				$('<ul>').attr({ "id": "bootloader_list", "class": "dropdown-menu", "role": "menu" }).append(
 					$('<li>').attr({
@@ -143,7 +141,6 @@ function appendBurnButton(bootloaders) {
 		).on('click', '.burn-btn', function() {
 			BurnFile($(this).attr('id'));
 		});
-		window.lang.run();
 		changeBurnButtonReady();
 
 		$('#burn_btn').on('click', '#bootloader_list a', function() {

@@ -85,16 +85,9 @@ function appendLayers(layer_mode) {
 						removeLastLayer();
 					}
 				}
-
-				// translate
-				window.lang.run();
 			});
 			break;
 	}
-	// translate popover
-	$('#layer-wrapper .layer').on('shown.bs.popover', function() {
-		window.lang.run();
-	});
 }
 
 function makeLayer(index) {

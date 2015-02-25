@@ -1,0 +1,14 @@
+{
+  "name": "jquery-lang-js",
+  "homepage": "https://github.com/coolbloke1324/jquery-lang-js",
+  "version": "2.5.0",
+  "_release": "2.5.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.5.0",
+    "commit": "6d119081cbffb16c03a9a15b9294772ed7d24118"
+  },
+  "_source": "git://github.com/coolbloke1324/jquery-lang-js.git",
+  "_target": "~2.5.0",
+  "_originalSource": "jquery-lang-js"
+}

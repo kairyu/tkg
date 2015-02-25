@@ -23,10 +23,13 @@
     "bootstrap-tagsinput": "~0.4.2",
     "bootstrap3-typeahead": "~3.1.0",
     "bootstrap-touchspin": "~3.0.1",
-    "bootstrap-multiselect": "~0.9.10"
+    "bootstrap-multiselect": "~0.9.10",
+    "jquery-lang-js": "~2.5.0",
+    "jquery-cookie": "~1.4.1"
   },
   "dependenciesIgnore": {
     "jquery": [
+      "!**/dist/jquery.js",
       "!**/jquery.min.js",
       "!**/jquery.min.map"
     ],
@@ -55,9 +58,15 @@
       "!**/jquery.bootstrap-touchspin.min.js",
       "!**/jquery.bootstrap-touchspin.min.css"
     ],
-    "bootstrap-multiselect" : [
+    "bootstrap-multiselect": [
       "!**/bootstrap-multiselect.js",
       "!**/bootstrap-multiselect.css"
+    ],
+    "jquery-lang-js": [
+      "!**/jquery-lang.js"
+    ],
+    "jquery-cookie": [
+      "!**/jquery.cookie.js"
     ]
   }
 }
