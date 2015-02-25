@@ -123,7 +123,7 @@ function appendLedParams(id) {
 						$('<div>').attr({ "class": "input-group btn-group" }).append(
 							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("layer")
 						).append(
-							makeSelect({ "id": id + "-param-layer" }, tkg.getFnOptions("layer"), arg)
+							makeSelect({ "id": id + "-param-layer" }, tkg.getFnOptions("layer"), arg, false)
 						)
 					));
 					break;

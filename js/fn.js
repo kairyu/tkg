@@ -113,7 +113,7 @@ function appendFnParams(id) {
 						$('<div>').attr({ "class": "input-group btn-group" }).append(
 							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("layer")
 						).append(
-							makeSelect({ "id": id + "-param-layer" }, tkg.getFnOptions("layer"), arg)
+							makeSelect({ "id": id + "-param-layer" }, tkg.getFnOptions("layer"), arg, false)
 						)
 					));
 					break;
@@ -139,6 +139,7 @@ function appendFnParams(id) {
 							makeSelect({ "id": id + "-param-mods", "class": "btn", "multiple": "multiple" },
 								tkg.getFnOptions("mod"),
 								arg,
+								true,
 								function(value, current) { return _.indexOf(current, value) != -1; }
 							)
 						)
@@ -334,7 +335,7 @@ function onFnParamsChange(id) {
 	});
 }
 
-function makeSelect(attr, data, current, selected) {
+function makeSelect(attr, data, current, lang, selected) {
 	return $('<select>').attr(attr).append(
 		(function() {
 			function makeOption(data, current, selected) {
@@ -362,14 +363,14 @@ function makeSelect(attr, data, current, selected) {
 				return $('<option>').attr({
 					"value": value,
 					"title": title,
-					"lang": "en",
+					"lang": lang ? "en" : undefined,
 					"selected": selected.call(selected, value, current)
 				}).prop('disabled', disabled).text(text);
 			}
 			var $options = $();
 			for (var index in data) {
 				if (_.isArray(data[index])) {
-					var $optgroup = $('<optgroup>', { "label": index, "lang": "en" });
+					var $optgroup = $('<optgroup>', { "label": index, "lang": lang ? "en" : undefined });
 					var $sub_options = $();
 					for (var i = 0; i < data[index].length; i++) {
 						$sub_options = $sub_options.add(makeOption(data[index][i], current, selected));
