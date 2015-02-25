@@ -22,6 +22,13 @@ $(function() {
 		_advanced_mode = JSON.parse($.cookie('tkg_advancedMode'));
 	}
 
+	if ($.cookie && $.cookie('tkg_keyboardName')) {
+		$('#keyboard-sel').val($.cookie('tkg_keyboardName')).multiselect('refresh');
+	}
+	else {
+		$('#keyboard-sel').multiselect('refresh');
+	}
+
 	showNotification();
 
 	appendAvailableLabelTable();
@@ -32,7 +39,7 @@ $(function() {
 	// select keyboard
 	$('#keyboard-sel').multiselect({
 		buttonContainer: '<div class="btn-group" />'
-	}).next().find('button').html('&nbsp;');
+	});
 	$('#keyboard-sel').change(function() {
 		var name = this.value;
 		if ($.cookie) {
@@ -45,9 +52,6 @@ $(function() {
 	});
 
 	$(window).load(function() {
-		if ($.cookie) {
-			$('#keyboard-sel').val($.cookie('tkg_keyboardName')).multiselect('refresh');
-		}
 		$('#keyboard-sel').change();
 		updateDownloadButtonState();
 		updateBurnButtonState();
