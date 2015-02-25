@@ -158,7 +158,7 @@ function appendFnParams(id) {
 					var options = tkg.getFnOptions("af_id");
 					if (options.length) {
 						$params = $params.add($('<div>').attr({ "class": "fn-param fn-param-af-id" }).append(
-							$('<div>').attr({ "class": "input-group btn-group" }).append(
+							$('<div>').attr({ "class": "input-group" }).append(
 								makeSelect({ "id": id + "-param-af-id" }, options, arg)
 							)
 						));
@@ -168,7 +168,7 @@ function appendFnParams(id) {
 					var options = tkg.getFnOptions("am_id");
 					if (options.length) {
 						$params = $params.add($('<div>').attr({ "class": "fn-param fn-param-am-id" }).append(
-							$('<div>').attr({ "class": "input-group btn-group" }).append(
+							$('<div>').attr({ "class": "input-group" }).append(
 								makeSelect({ "id": id + "-param-am-id" }, options, arg)
 							)
 						));
