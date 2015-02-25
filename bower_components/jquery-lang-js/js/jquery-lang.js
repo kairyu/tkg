@@ -76,8 +76,7 @@ var Lang = (function () {
 		$(function () {
 			// Setup data on the language items
 			self._start();
-			console.log(currentLang);
-	
+
 			// Check if the current language is not the same as our default
 			if (currentLang && currentLang !== self.defaultLang) {
 				// Switch to the current language

@@ -364,11 +364,13 @@ function showNotification() {
 
 function onLangChange(lang) {
 	detachLinks();
+	console.groupCollapsed("lang");
 	window.lang.change(lang, undefined, function() {
 		attachLinks();
 		changeFont(lang);
 		rebuildFnSelect();
 		rebuildLedSelect();
+		console.groupEnd("lang");
 	});
 }
 
