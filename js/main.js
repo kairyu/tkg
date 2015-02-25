@@ -32,7 +32,7 @@ $(function() {
 	// select keyboard
 	$('#keyboard-sel').multiselect({
 		buttonContainer: '<div class="btn-group" />'
-	});
+	}).next().find('button').html('&nbsp;');
 	$('#keyboard-sel').change(function() {
 		var name = this.value;
 		if ($.cookie) {
