@@ -18,8 +18,8 @@ $(function() {
 
 	$('.btn').button();
 
-	if (localStorage) {
-		_advanced_mode = JSON.parse(localStorage.getItem('tkg_advancedMode'));
+	if ($.cookie) {
+		_advanced_mode = JSON.parse($.cookie('tkg_advancedMode'));
 	}
 
 	showNotification();
@@ -128,7 +128,10 @@ $(function() {
 	// advanced mode
 	$('#tools-advanced-mode').click(function() {
 		_advanced_mode = !_advanced_mode;
-		localStorage.setItem('tkg_advancedMode', JSON.stringify(_advanced_mode));
+		$.cookie('tkg_advancedMode', _advanced_mode, {
+			expires: 365,
+			path: '/'
+		});
 		updateAdvancedModeState();
 		updateBurnButtonState();
 	});
