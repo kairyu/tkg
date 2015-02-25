@@ -35,10 +35,19 @@ $(function() {
 	});
 	$('#keyboard-sel').change(function() {
 		var name = this.value;
+		if ($.cookie) {
+			$.cookie('tkg_keyboardName', name, {
+				expires: 365,
+				path: '/'
+			});
+		}
 		initialize(name, _layer_mode);
 	});
 
 	$(window).load(function() {
+		if ($.cookie) {
+			$('#keyboard-sel').val($.cookie('tkg_keyboardName')).multiselect('refresh');
+		}
 		$('#keyboard-sel').change();
 		updateDownloadButtonState();
 		updateBurnButtonState();
@@ -128,10 +137,12 @@ $(function() {
 	// advanced mode
 	$('#tools-advanced-mode').click(function() {
 		_advanced_mode = !_advanced_mode;
-		$.cookie('tkg_advancedMode', _advanced_mode, {
-			expires: 365,
-			path: '/'
-		});
+		if ($.cookie) {
+			$.cookie('tkg_advancedMode', _advanced_mode, {
+				expires: 365,
+				path: '/'
+			});
+		}
 		updateAdvancedModeState();
 		updateBurnButtonState();
 	});
