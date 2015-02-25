@@ -336,6 +336,9 @@ function onFnParamsChange(id) {
 }
 
 function makeSelect(attr, data, current, lang, selected) {
+	if (arguments.length < 4) {
+		lang = true;
+	}
 	return $('<select>').attr(attr).append(
 		(function() {
 			function makeOption(data, current, selected) {
