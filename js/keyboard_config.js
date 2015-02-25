@@ -43,7 +43,9 @@ function initKeyboardConfigPopover(main, variant) {
 		placement: 'bottom',
 		trigger: 'manual',
 		content: function() {
-			return $('#' + main.toLowerCase() + '-config').html();
+			return $('#' + main.toLowerCase() + '-config').contents().filter(function() {
+				return this.nodeType == 8;
+			}).get(0).nodeValue;
 		},
 		container: '#kbd-cfg-container'
 	}).unbind('click').click(function() {
