@@ -203,17 +203,36 @@ function join_with_func_glur() {
 	$callback = array_shift($params);
 	$array = array_shift($params);
 	$count = count($array);
+	$find_next = array_shift($params);
+	if (is_null($find_next)) {
+		$find_next = function($array, $index) {
+			if ($index + 1 < count($array)) {
+				return $array[$index + 1];
+			}
+			else {
+				return null;
+			}
+		};
+	}
 	$join = '';
+	$current = '';
+	$next = '';
 	for ($i = 0; $i < $count; $i++) {
 		$join .= $array[$i];
-		if ($i + 1 < $count) {
-			$join .= call_user_func_array($callback, array_merge(array($array[$i], $array[$i + 1]), $params));
-		}
-		else {
-			$join .= call_user_func_array($callback, array_merge(array($array[$i], null), $params));
-		}
+		$current = $array[$i];
+		$next = call_user_func($find_next, $array, $i);
+		$join .= call_user_func_array($callback, array_merge(array($current, $next), $params));
 	}
 	return $join;
+}
+
+function find_next_non_empty($array, $index) {
+	for ($i = $index + 1; $i < count($array); $i++) {
+		if (!empty($array[$i])) {
+			return $array[$i];
+		}
+	}
+	return null;
 }
 
 function str_patch($input, $length, $patch_string = " ") {
@@ -237,7 +256,7 @@ function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_e
 	// generate macro
 	$macro = "#define $macro_name( \\\n    ";
 	$macro .= join_with_func_glur(function($current, $next, $width) {
-			if ($next === null) {
+			if (is_null($next)) {
 				return "";
 			}
 			else {
@@ -246,18 +265,22 @@ function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_e
 			}
 		}, array_map(function($array) {
 			return join_with_func_glur(function($current, $next) {
-				if ($next === null) {
-					return empty($current) ? "   " : "";
+				if (is_null($next)) {
+					return empty($current) ? "     " : "";
 				}
 				else {
-					$glue = empty($current) || empty($next) ? " " : ",";
+					$glue = empty($current) ? " " : ",";
 					return $glue . str_patch($current, 4);
 				}
-			}, $array);
-		}, $symbols), $matrix_cols * 5 - 1);
+			}, $array, function($array, $index) {
+				return find_next_non_empty($array, $index);
+			});
+		}, $symbols), function($array, $index) {
+			return find_next_non_empty($array, $index);
+		}, $matrix_cols * 5 - 1);
 	$macro .= "  \\\n) { \\\n    { ";
 	$macro .= join_with_func_glur(function($current, $next, $width) {
-			if ($next === null) {
+			if (is_null($next)) {
 				return "";
 			}
 			else {
@@ -265,7 +288,7 @@ function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_e
 			}
 		}, array_map(function($array) {
 			return join_with_func_glur(function($current, $next) {
-				if ($next === null) {
+				if (is_null($next)) {
 					return str_patch($current, 8);
 				}
 				else {
@@ -273,8 +296,12 @@ function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_e
 				}
 			}, array_map(function($val) {
 				return empty($val) ? "KC_NO" : "KC_##$val";
-			}, $array));
-		}, $symbols), $matrix_cols * 10 - 1);
+			}, $array), function($array, $index) {
+				return find_next_non_empty($array, $index);
+			});
+		}, $symbols), function($array, $index) {
+			return find_next_non_empty($array, $index);
+		}, $matrix_cols * 10 - 1);
 	$macro .= " }  \\\n}\n\n";
 	return $macro;
 }
@@ -293,7 +320,7 @@ function generate_keymaps_content($macro_name, $matrix_rows, $matrix_cols, $matr
 	foreach ($matrices as $layer => $matrix) {
 		$content .= "    [$layer] = $macro_name(\n        ";
 		$content .= join_with_func_glur(function($current, $next, $width) {
-			if ($next === null) {
+			if (is_null($next)) {
 				return "";
 			}
 			else {
@@ -302,17 +329,21 @@ function generate_keymaps_content($macro_name, $matrix_rows, $matrix_cols, $matr
 			}
 		}, array_map(function($array) {
 			return join_with_func_glur(function($current, $next) {
-				if ($next === null) {
+				if (is_null($next)) {
 					return "";
 				}
 				else {
-					$glue = empty($current) || empty($next) ? " " : ",";
+					$glue = empty($current) ? " " : ",";
 					return $glue . str_patch($current, 4);
 				}
 			}, array_map(function($val) {
 				return substr($val, 3);
-			}, $array));
-		}, $matrix), $matrix_cols * 5 - 1);
+			}, $array), function($array, $index) {
+				return find_next_non_empty($array, $index);
+			});
+		}, $matrix), function($array, $index) {
+			return find_next_non_empty($array, $index);
+		}, $matrix_cols * 5 - 1);
 		$content .= "),\n";
 	}
 	return $content;
