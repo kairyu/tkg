@@ -53,8 +53,6 @@ $(function() {
 
 	$(window).load(function() {
 		$('#keyboard-sel').change();
-		updateDownloadButtonState();
-		updateBurnButtonState();
 	});
 
 	// on navbar click
@@ -290,6 +288,8 @@ function initialize(keyboard_name, layer_mode) {
 	initKeyboardInfo(keyboard);
 	initForm(layer_mode);
 	appendLeds();
+	updateDownloadButtonState();
+	updateBurnButtonState();
 }
 
 function loadKeyboard(keyboard_name) {
