@@ -457,7 +457,7 @@ function updateDownloadButtonState() {
 
 function updateBurnButtonState() {
 	if ((_keyboard['bootloader'] && _keyboard['bootloader'].length) &&
-	_keyboard['name'].match(/^RedScarfIII/i) || _advanced_mode) {
+	(_keyboard['name'].match(/^RedScarfIII/i) || _advanced_mode)) {
 		appendBurnButton(_keyboard['bootloader']);
 	}
 	else {
