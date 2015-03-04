@@ -7,6 +7,7 @@
 		"About":"关于",
 		"Language":"语言",
 		"Tools":"工具",
+		"Show Tour":"显示帮助",
 		"Import Fn":"导入 Fn 设置",
 		"Export Fn":"导出 Fn 设置",
 		"Advanced Mode":"高级模式",
@@ -138,6 +139,15 @@
 		"Bind to default layer":"绑定默认层",
 		"Bind to layer":"绑定层",
 		"Indicator":"指示灯",
+
+		"Title of this site, aka TKG.":"本站标题，简称TKG。",
+		"1. Select your keyboard here.":"1. 在此处选择您的键盘。",
+		"2. Select proper layer mode.":"2. 选择适当的层模式。",
+		"3. Make your layout at <a href=\"http://www.keyboard-layout-editor.com\" target=\"_blank\">keyboard-layout-editor</a> and paste it here.":"3. 访问 <a href=\"http://www.keyboard-layout-editor.com\" target=\"_blank\">keyboard-layout-editor</a> 制作您的布局并将其粘贴于此。",
+		"4. Fn settings show here if your layout contains Fn keys.":"4. 如果您的布局包含Fn键，Fn设置将显示于此。",
+		"5. Download your keymap.":"5. 下载您的键盘布局。",
+		"Show this tour again.":"再次显示本帮助。",
+		"You can import and export Fn settings from here.":"您可以从此处导入和导出Fn设置。",
 
 		"How to Use":"使用方法",
 		"Available Labels":"可用标签",

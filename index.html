@@ -15,6 +15,7 @@
 	<script src="./bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js" charset="utf-8" type="text/javascript"></script>
 	<script src="./bower_components/jquery-lang-js/js/jquery-lang.js" charset="utf-8" type="text/javascript"></script>
 	<script src="./bower_components/jquery-cookie/jquery.cookie.js" charset="utf-8" type="text/javascript"></script>
+	<script src="./bower_components/chardin.js/chardinjs.min.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/keycode_map.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/fn_map.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/led_map.js" charset="utf-8" type="text/javascript"></script>
@@ -26,12 +27,14 @@
 	<script src="js/burn.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/bootloader_printer.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/bootloader_dfu.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/tour.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/main.js" charset="utf-8" type="text/javascript"></script>
 	<link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="./bower_components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css">
 	<link rel="stylesheet" href="./bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css">
 	<link rel="stylesheet" href="./bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
 	<link rel="stylesheet" href="./bower_components/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="./bower_components/chardin.js/chardinjs.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -45,7 +48,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">TMK Keymap Generator <sup>BETA</sup></a>
+					<a class="navbar-brand" id="logo" href="#">TMK Keymap Generator <sup>BETA</sup></a>
 				</div>
 				<div class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
@@ -64,6 +67,10 @@
 							<a href="javascript:void(0)" id="tools" role="button" class="dropdown-toggle" data-toggle="dropdown"><span lang="en">Tools</span> <b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu" role="menu" aria-labelledby="tools">
+								<li role="presentation">
+									<a id="tools-show-tour" role="menuitem" tabindex="-1" href="javascript:void(0)"><i class="glyphicon glyphicon-info-sign"></i> <span lang="en">Show Tour</span></a>
+								</li>
+								<li class="divider" role="presentation"></li>
 								<li class="disabled" role="presentation">
 									<a id="tools-import-fn" role="menuitem" tabindex="-1" href="javascript:void(0)"><i class="glyphicon glyphicon-import"></i> <span lang="en">Import Fn</span></a>
 								</li>
@@ -150,7 +157,7 @@
 					</div>
 				</fieldset>
 				<fieldset style="display: none;">
-					<legend data-toggle="collapse" data-target="#fn-field"><span lang="en">Fn</span><div class="pull-right"><span class="glyphicon glyphicon-chevron-up"></span></div></legend>
+					<legend id="fn-legend" data-toggle="collapse" data-target="#fn-field"><span lang="en">Fn</span><div class="pull-right"><span class="glyphicon glyphicon-chevron-up"></span></div></legend>
 					<div id="fn-field" class="collapse in">
 						<div id="fn-wrapper">
 						</div>

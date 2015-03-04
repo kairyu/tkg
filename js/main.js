@@ -53,6 +53,9 @@ $(function() {
 
 	$(window).load(function() {
 		$('#keyboard-sel').change();
+		if (_tour_once) {
+			showTour();
+		}
 	});
 
 	// on navbar click
@@ -70,6 +73,11 @@ $(function() {
 		$(this).parent().find('legend span.glyphicon').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
 	}).on('show.bs.collapse', function() {
 		$(this).parent().find('legend span.glyphicon').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+	});
+
+	// show tour
+	$('#tools-show-tour').click(function(e) {
+		setTimeout(showTour, 100);
 	});
 
 	// import fn dialog
@@ -676,4 +684,23 @@ function parseKeyboardName(name) {
 		var main = name.trim().replace(rsc, '_').toLowerCase();
 	}
 	return { "main": main, "variant": variant };
+}
+
+versionCompare = function(left, right) {
+	if (typeof left + typeof right != 'stringstring')
+		return false;
+
+	var a = left.split('.')
+		,   b = right.split('.')
+		,   i = 0, len = Math.max(a.length, b.length);
+
+	for (; i < len; i++) {
+		if ((a[i] && !b[i] && parseInt(a[i]) > 0) || (parseInt(a[i]) > parseInt(b[i]))) {
+			return 1;
+		} else if ((b[i] && !a[i] && parseInt(b[i]) > 0) || (parseInt(a[i]) < parseInt(b[i]))) {
+			return -1;
+		}
+	}
+
+	return 0;
 }

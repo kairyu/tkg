@@ -296,3 +296,8 @@ span.glyphicon-chevron-up {
 .fa-spin {
 	-webkit-filter: blur(0);
 }
+
+.chardinjs-helper-layer {
+	z-index: 9999999;
+	box-sizing: content-box;
+}

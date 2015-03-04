@@ -7,6 +7,7 @@
 		"About":"サイトについて",
 		"Language":"言語",
 		"Tools":"ツール",
+		"Show Tour":"チュートリアルを表示",
 		"Import Fn":"Fn 設定をインポート",
 		"Export Fn":"Fn 設定をエクスポート",
 		"Advanced Mode":" アドバンスモード",
@@ -133,6 +134,15 @@
 		"Bind to default layer":"既定レイヤーにバインド",
 		"Bind to layer":"レイヤーにバインド",
 		"Indicator":"インディケーター",
+
+		"Title of this site, aka TKG.":"本サイトのタイトル、略称してTKG。",
+		"1. Select your keyboard here.":"1. ここでキーボードを選んでください。",
+		"2. Select proper layer mode.":"2. 適切なレイヤーモードを選んでください。",
+		"3. Make your layout at <a href=\"http://www.keyboard-layout-editor.com\" target=\"_blank\">keyboard-layout-editor</a> and paste it here.":"3. <a href=\"http://www.keyboard-layout-editor.com\" target=\"_blank\">keyboard-layout-editor</a> にて配列を作り、ここに貼り付けてください。",
+		"4. Fn settings show here if your layout contains Fn keys.":"4. 配列にFnキーが含まれた場合、Fn設定はここに表示されます。",
+		"5. Download your keymap.":"5. キーマップをダウンロードしてください。",
+		"Show this tour again.":"このチュートリアルをもう一度表示します。",
+		"You can import and export Fn settings from here.":"ここでFn設定をインポート/エクスポートすることが可能です。",
 
 		"How to Use":"使い方",
 		"Available Labels":"識別可能なラベル",
