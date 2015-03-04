@@ -11,6 +11,9 @@ var _advanced_mode = false;
 $(function() {
 
 	Lang.prototype.attrList.push('label');
+	$(window.lang).on('afterUpdate', function(e, currentLang, lang) {
+		afterLangChange(lang);
+	});
 
 	$(window).on('hashchange', function() {
 		switchPage(location.hash.slice(1));
@@ -392,12 +395,15 @@ function onLangChange(lang) {
 	detachLinks();
 	console.groupCollapsed("lang");
 	window.lang.change(lang, undefined, function() {
-		attachLinks();
-		changeFont(lang);
-		rebuildFnSelect();
-		rebuildLedSelect();
 		console.groupEnd("lang");
 	});
+}
+
+function afterLangChange(lang) {
+	attachLinks();
+	changeFont(lang);
+	rebuildFnSelect();
+	rebuildLedSelect();
 }
 
 function changeFont(lang) {
