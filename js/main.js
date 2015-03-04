@@ -10,6 +10,8 @@ var _advanced_mode = false;
 
 $(function() {
 
+	changeFont();
+
 	Lang.prototype.attrList.push('label');
 	$(window.lang).on('afterUpdate', function(e, currentLang, lang) {
 		afterLangChange(lang);
@@ -407,12 +409,12 @@ function afterLangChange(lang) {
 }
 
 function changeFont(lang) {
-	var font = '"Helvetica Neue",Helvetica,"Segoe UI",Arial';
+	var font = '"Helvetica Neue","Segoe UI",Helvetica,Arial';
 	switch (lang) {
 		case 'en':
 			break;
 		case 'ja':
-			font += ',"MS UIGothic"';
+			font += ',"Hiragino Kaku Gothic",Meiryo,"MS UIGothic"';
 			break;
 		case 'zh_sc':
 			font += ',"Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei"';
