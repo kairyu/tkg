@@ -377,7 +377,7 @@ function initForm(layer_mode) {
 	appendLayers(layer_mode);
 
 	// clear fns
-	emptyFns();
+	clearFns();
 
 	// update buttons
 	updateDownloadButtonState();

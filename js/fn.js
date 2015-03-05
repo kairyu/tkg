@@ -1,3 +1,10 @@
+var _fn_clipboard = {};
+
+function clearFns() {
+	_fn_clipboard = {};
+	emptyFns();
+}
+
 function emptyFns() {
 	$('#fn-wrapper').empty();
 	$('#fn-field').parent().hide();
@@ -76,6 +83,33 @@ $.fn.fn = function() {
 			},
 		});
 		onFnActionChange(id);
+		$row.append(
+			$('<div>').attr({ "class": "fn-btn" }).hide().append(
+				$('<a>').attr({
+					"href": "javascript:void(0)",
+					"class": "fn-copy btn btn-xs btn-default"
+				}).append(
+					$('<span>').attr({ "class": "glyphicon glyphicon-duplicate" })
+				),
+				$('<a>').attr({
+					"href": "javascript:void(0)",
+					"class": "fn-paste btn btn-xs btn-default"
+				}).append(
+					$('<span>').attr({ "class": "glyphicon glyphicon-paste" })
+				)
+			)
+		);
+		$row.parent().on('mouseover', function() {
+			$(this).find('.fn-btn').show();
+		}).on('mouseout', function() {
+			$(this).find('.fn-btn').hide();
+		});
+		$row.on('click', '.fn-copy', function() {
+			_fn_clipboard = tkg.getFns($row.data('index'));
+		}).on('click', '.fn-paste', function() {
+			tkg.setFns($row.data('index'), _fn_clipboard);
+			$row.fn();
+		});
 	});
 }
 
@@ -95,7 +129,7 @@ function onFnActionChange(id) {
 function appendFnParams(id) {
 	var $row = $('#fn-wrapper #' + id);
 	var $action = $row.find('.fn-action');
-	$action.nextAll().remove();
+	$action.nextAll('.fn-param').remove();
 	var index = $row.data('index');
 	var fn = tkg.getFns(index);
 	var action = fn["action"];
@@ -176,7 +210,7 @@ function appendFnParams(id) {
 					break;
 			}
 		}
-		$row.append($params);
+		$action.after($params);
 		// layer param
 		$row.find('.fn-param-layer select').multiselect({
 			buttonTitle: function(options, select) {
@@ -297,7 +331,7 @@ function appendFnSubParams(id) {
 			var options = tkg.getFnOptions("af_opt")[af_id];
 			$row.find('.fn-param-af-opt').remove();
 			if (options.length) {
-				$row = $row.append($('<div>').attr({ "class": "fn-param fn-param-af-opt" }).append(
+				$row.find('.fn-param').last().after($('<div>').attr({ "class": "fn-param fn-param-af-opt" }).append(
 					$('<div>').attr({ "class": "input-group" }).append(
 						makeSelect({ "id": id + "-param-af-opt" }, options, af_opt)
 					)

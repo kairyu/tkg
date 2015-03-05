@@ -109,6 +109,19 @@ body {
 	vertical-align: top;
 	padding: 0 15px 0 0;
 }
+.fn-btn {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 0 15px 0 0;
+}
+.fn-btn .btn {
+	color: #9d9d9d;
+	border-color: transparent;
+	background: inherit;
+}
+.fn-btn .btn:hover {
+	color: #333;
+}
 .led-row {
 	float: left;
 	padding: 0 2px 0 15px;
