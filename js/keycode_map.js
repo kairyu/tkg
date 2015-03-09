@@ -692,7 +692,7 @@ var keycode_map = {
 		"name": "Non-US \\ and |",
 		"description": "Non-US \\ and |",
 		"keycode": "0x64",
-		"label": [ "|" ],
+		"label": [ "|", "iso |" ],
 		"label_2": [ "\\" ],
 		"short_name": "KC_NUBS"
 	},
