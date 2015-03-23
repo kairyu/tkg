@@ -188,8 +188,8 @@ function setupLayerPopover(id, layer_mode) {
 	var error = $layer.data('error');
 	var warning = $layer.data('warning');
 	var info = $layer.data('info');
-	var top_prop = [ "top", "side_print" ];
-	var bottom_prop = [ "bottom", "side_print_secondary" ];
+	var top_prop = [ "top", "side_print", "top_secondary" ];
+	var bottom_prop = [ "bottom", "side_print_secondary", "bottom_secondary" ];
 	var $content = $('<div>');
 	var max_layers = 0;
 
@@ -198,7 +198,7 @@ function setupLayerPopover(id, layer_mode) {
 			max_layers = 1;
 			break;
 		case LAYER_SIMPLE:
-			max_layers = 2;
+			max_layers = 3;
 			break;
 		case LAYER_ALL_IN_ONE:
 			max_layers = _keyboard['max_layers'];

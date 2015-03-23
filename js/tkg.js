@@ -446,11 +446,13 @@ function TKG() {
 				if (layer_mode == LAYER_SIMPLE) {
 					// copy to layer_2
 					var layer_2 = JSON.parse(JSON.stringify(layer));
+					var layer_3 = JSON.parse(JSON.stringify(layer));
 				}
 				// parse keys
 				var state = _postParseLayer(layer_number, layer, "top", "bottom");
 				if (layer_mode == LAYER_SIMPLE) {
 					var state_2 = _postParseLayer(layer_number + 1, layer_2, "side_print", "side_print_secondary");
+					var state_3 = _postParseLayer(layer_number + 2, layer_3, "top_secondary", "bottom_secondary");
 					// fn hack
 					if (_fns[0] && _fns[0]["action"] == "ACTION_NO") {
 						_setFns(0, { "action": "ACTION_LAYER_MOMENTARY", "args": [ layer_number + 1 ] });
@@ -464,7 +466,11 @@ function TKG() {
 					if (_fns[3] && _fns[3]["action"] == "ACTION_NO") {
 						_setFns(3, { "action": "ACTION_BACKLIGHT_INCREASE" });
 					}
+					if (_fns[4] && _fns[4]["action"] == "ACTION_NO") {
+						_setFns(4, { "action": "ACTION_LAYER_TOGGLE", "args": [ layer_number + 2 ] });
+					}
 					state = _worseState(state, state_2);
+					state = _worseState(state, state_3);
 				}
 				// return state
 				return state;
@@ -847,6 +853,10 @@ function TKG() {
 			return false;
 		}
 
+		if (_isLayerEmpty(layer, label_property, label_property_2)) {
+			return layer;
+		}
+
 		// guess keycode from label
 		var keys = layer["keys"];
 		for (var i = 0; i < keys.length; i++) {
@@ -932,6 +942,17 @@ function TKG() {
 		}
 
 		return layer;
+	}
+
+	var _isLayerEmpty = function(layer, label_property, label_property_2) {
+		var keys = layer["keys"];
+		for (var i = 0; i < keys.length; i++) {
+			var label = keys[i]["label"];
+			if (label[label_property] || (label_property_2 && label[label_property_2])) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	var _matchLabelsWithSymbol = function(label, label_2, symbol, property_name) {
