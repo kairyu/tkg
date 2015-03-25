@@ -474,7 +474,7 @@ function updateDownloadButtonState() {
 function updateBurnButtonState() {
 	if ((_keyboard['bootloader'] && _keyboard['bootloader'].length) &&
 	(_keyboard['name'].match(/^RedScarfIII/i) || _advanced_mode)) {
-		appendBurnButton(_keyboard['bootloader']);
+		appendBurnButton(_keyboard['bootloader'], _keyboard['firmware']);
 	}
 	else {
 		removeBurnButton();
@@ -682,16 +682,20 @@ function getKLERawData(url, success, fail) {
 }
 
 function parseKeyboardName(name) {
-	var rsc = /[\s\/-]/g;
 	var result = name.match(/^(.*)\((.*)\)$/);
 	if (result) {
-		var main = result[1].trim().replace(rsc, '_').toLowerCase();
-		var variant = result[2].trim().replace(rsc, '_').toLowerCase();
+		var main = normalizeString(result[1]);
+		var variant = normalizeString(result[2]);
 	}
 	else {
-		var main = name.trim().replace(rsc, '_').toLowerCase();
+		var main = normalizeString(name);
 	}
 	return { "main": main, "variant": variant };
+}
+
+function normalizeString(str) {
+	var rsc = /[\s\/-]/g;
+	return str.trim().replace(rsc, '_').toLowerCase();
 }
 
 versionCompare = function(left, right) {
