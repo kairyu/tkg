@@ -51,8 +51,11 @@ function initKeyboardConfigPopover(main, variant) {
 	}).unbind('click').click(function() {
 		$(this).popover('toggle');
 	}).on('shown.bs.popover', function() {
+		$('#kbd-cfg-btn').text(window.lang.translate('Close'));
 		initKeyboardConfigPanel(main, variant);
-	});
+	}).on('hidden.bs.popover', function() {
+		$('#kbd-cfg-btn').text(window.lang.translate('Config'));
+	});;
 }
 
 function afterLoadKeyboardConfig(main, variant) {
