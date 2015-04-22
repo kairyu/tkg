@@ -228,11 +228,15 @@ function join_with_func_glur() {
 
 function find_next_non_empty($array, $index) {
 	for ($i = $index + 1; $i < count($array); $i++) {
-		if (!empty($array[$i])) {
+		if (!str_empty($array[$i])) {
 			return $array[$i];
 		}
 	}
 	return null;
+}
+
+function str_empty($string) {
+	return (empty($string) && $string !== '0');
 }
 
 function str_patch($input, $length, $patch_string = " ") {
@@ -266,10 +270,10 @@ function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_e
 		}, array_map(function($array) {
 			return join_with_func_glur(function($current, $next) {
 				if (is_null($next)) {
-					return empty($current) ? "     " : "";
+					return str_empty($current) ? "     " : "";
 				}
 				else {
-					$glue = empty($current) ? " " : ",";
+					$glue = str_empty($current) ? " " : ",";
 					return $glue . str_patch($current, 4);
 				}
 			}, $array, function($array, $index) {
@@ -295,7 +299,7 @@ function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_e
 					return "," . str_patch($current, 9);
 				}
 			}, array_map(function($val) {
-				return empty($val) ? "KC_NO" : "KC_##$val";
+				return str_empty($val) ? "KC_NO" : "KC_##$val";
 			}, $array), function($array, $index) {
 				return find_next_non_empty($array, $index);
 			});
@@ -333,7 +337,7 @@ function generate_keymaps_content($macro_name, $matrix_rows, $matrix_cols, $matr
 					return "";
 				}
 				else {
-					$glue = empty($current) ? " " : ",";
+					$glue = str_empty($current) ? " " : ",";
 					return $glue . str_patch($current, 4);
 				}
 			}, array_map(function($val) {
