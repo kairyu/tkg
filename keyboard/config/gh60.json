@@ -118,5 +118,8 @@
 	},{
 		"name": "Printer",
 		"printer_name": "Generic / Text Only"
+	}],
+	"firmware": [{
+		"name": "No Console"
 	}]
 }

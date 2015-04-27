@@ -87,6 +87,9 @@
 		"name": "DFU",
 		"mcu": "atmega32u4"
 	}],
+	"firmware": [{
+		"name": "No Console"
+	}],
 	"additional": [{
 		"start": 7,
 		"size": 10,
