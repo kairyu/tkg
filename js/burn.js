@@ -313,14 +313,14 @@ function changeBurnButtonReady() {
 	$('#burn_icon').removeAttr("class").addClass("glyphicon glyphicon-fire");
 	if ($('.burn-btn').data("pending")) {
 		$('.burn-btn').data("pending", false);
-		switch ($('.burn-btn').data("file")) {
-			case "eep":
-				changeBurnButtonEEP();
-				break;
-			case "hex":
-				changeBurnButtonHEX();
-				break;
-		}
+	}
+	switch ($('.burn-btn').data("file")) {
+		case "eep":
+			changeBurnButtonEEP();
+			break;
+		case "hex":
+			changeBurnButtonHEX();
+			break;
 	}
 }
 
@@ -355,14 +355,29 @@ function changeBurnButtonEEP() {
 
 $(window).keydown(function(e) {
 	if (e.keyCode == 16) {
-		$('.burn-btn').data("file", "hex");
-		changeBurnButtonHEX();
+		if ($('.burn-btn').data("file") != "hex") {
+			$('.burn-btn').data("file", "hex");
+			changeBurnButtonHEX();
+		}
 	}
 });
 
 $(window).keyup(function(e) {
 	if (e.keyCode == 16) {
+		if ($('.burn-btn').data("file") != "eep") {
+			$('.burn-btn').data("file", "eep");
+			changeBurnButtonEEP();
+		}
+	}
+});
+
+$(window).mousemove(function(e) {
+	if (!e.shiftKey && $('.burn-btn').data("file") != "eep") {
 		$('.burn-btn').data("file", "eep");
 		changeBurnButtonEEP();
+	}
+	if (e.shiftKey && $('.burn-btn').data("file") != "hex") {
+		$('.burn-btn').data("file", "hex");
+		changeBurnButtonHEX();
 	}
 });

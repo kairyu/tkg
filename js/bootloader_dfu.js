@@ -62,6 +62,7 @@ BootloaderDfu.prototype.isAvailable = function() {
 BootloaderDfu.prototype.prepare = function(done, fail) {
 	if (this._flop && this._flop.length) {
 		this._flop.flopSetDebug(200);
+		this._flop.flopSetTarget(this._targetName);
 		if (this._flop.flopGet() >= 0) {
 			done.apply(this);
 		}
