@@ -58,7 +58,9 @@ if (
 			$additional = json_decode($_POST['additional'], true);
 		}
 	}
-	$matrix_size = intval($_POST['matrix_size']);
+	if (isset($_POST['matrix_size'])) {
+		$matrix_size = intval($_POST['matrix_size']);
+	}
 }
 else {
 	die('Invalid Data');
