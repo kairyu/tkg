@@ -1,0 +1,42 @@
+{
+	"name": "STARYÚ",
+	"description": "STARYÚ 5-key keypad",
+	"max_layers": 32,
+	"max_fns": 32,
+	"eep_size": 512,
+	"eep_start": 16,
+	"matrix_rows": 1,
+	"matrix_cols": 5,
+	"physical_rows": 2,
+	"matrix_map": {
+		"1,0": { "row": 0, "col": 0 },
+		"2,0": { "row": 0, "col": 1 },
+		"0,1": { "row": 0, "col": 4 },
+		"1,1": { "row": 0, "col": 3 },
+		"2,1": { "row": 0, "col": 2 }
+	},
+	"action_functions": [{
+		"name": "RGB Toggle",
+		"description": "Toggle RGB light",
+		"opt": []
+	},
+	{
+		"name": "RGB Decrease",
+		"description": "Decrease level of RGB light",
+		"opt": []
+	},
+	{
+		"name": "RGB Increase",
+		"description": "Increase level of RGB light",
+		"opt": []
+	},
+	{
+		"name": "RGB Step",
+		"description": "Change RGB light level by step",
+		"opt": []
+	}],
+	"bootloader": [{
+		"name": "DFU",
+		"mcu": "atmega16u2"
+	}]
+}
