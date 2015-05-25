@@ -164,6 +164,7 @@ function initKeyboardConfigPanel(main, variant) {
 		// matrix mapping
 		var $matrix_textarea = $("#kbd-cfg-container #kimera-matrix-val");
 		$matrix_textarea.val(_keyboard_config["matrix_map_raw"]);
+		console.log($matrix_textarea.val());
 		$matrix_textarea.data('last', $matrix_textarea.val());
 		$matrix_textarea.on('blur_custom', function() {
 			var $matrix_textarea = $("#kbd-cfg-container #kimera-matrix-val");
@@ -246,6 +247,7 @@ function kimeraRowColMappingChange(variant) {
 function kimeraMatrixMappingChange(variant) {
 	var $matrix_textarea = $("#kbd-cfg-container #kimera-matrix-val");
 	var raw = $matrix_textarea.val();
+	_keyboard_config["matrix_map_raw"] = raw;
 	_keyboard_config["matrix_map_state"] = tkg.parseMatrixMapLayer(raw, (variant == "two_headed"));
 	_keyboard_config["matrix_map"] = tkg.getMatrixMap();
 	_keyboard_config["physical_rows"] = tkg.parseRowCount(raw);
