@@ -1,0 +1,65 @@
+[{
+	"name": "GH60 (RevA/B/C)",
+	"size": 60,
+	"group": "third-party"
+},{
+	"name": "GH60 (RevCHN)",
+	"size": 60,
+	"group": "second-party"
+},{
+	"name": "GHPad",
+	"size": 10,
+	"group": "third-party"
+},{
+	"name": "RedScarfII",
+	"size": 77,
+	"group": "second-party"
+},{
+	"name": "RedScarfIII",
+	"size": 96,
+	"group": "second-party"
+},{
+	"name": "SMART68",
+	"size": 68,
+	"group": "second-party"
+},{
+	"name": "LR94",
+	"size": 94,
+	"group": "second-party"
+},{
+	"name": "Fantastic60",
+	"size": 60,
+	"group": "second-party"
+},{
+	"name": "AKB96",
+	"size": 96,
+	"group": "second-party"
+},{
+	"name": "YUK86",
+	"size": 86,
+	"group": "second-party"
+},{
+	"name": "TentaPad",
+	"size": 2,
+	"group": "second-party"
+},{
+	"name": "Kimera",
+	"size": 0,
+	"group": "first-party"
+},{
+	"name": "Kimera (Two-Headed)",
+	"size": 0,
+	"group": "first-party"
+},{
+	"name": "Staryu",
+	"size": 5,
+	"group": "first-party"
+},{
+	"name": "NerD (60)",
+	"size": 60,
+	"group": "third-party"
+},{
+	"name": "NerD (TKL)",
+	"size": 80,
+	"group": "third-party"
+}]

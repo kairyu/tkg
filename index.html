@@ -71,6 +71,27 @@
 									<a id="tools-show-tour" role="menuitem" tabindex="-1" href="javascript:void(0)"><i class="glyphicon glyphicon-info-sign"></i> <span lang="en">Show Tour</span></a>
 								</li>
 								<li class="divider" role="presentation"></li>
+								<li class="menu-item dropdown dropdown-submenu" role="presentation">
+									<a role="menuitem" tabindex="-1" href="javascript:void(0)"><i class="glyphicon glyphicon-th-list"></i> <span lang="en">View</span> </a>
+									<ul class="dropdown-menu" role="menu">
+										<li class="menu-item dropdown dropdown-submenu" role="presentation">
+											<a role="menuitem" tabindex="-1" href="javascript:void(0)"><i class="glyphicon glyphicon-sort"></i> <span lang="en">Sort by</span></a>
+											<ul class="dropdown-menu" role="menu">
+												<li role="presentation">
+													<a class="tools-view-sortby" id="tools-view-sortby-name" role="menuitem" tabindex="-1" href="javascript:void(0)"><i class="glyphicon glyphicon-ok" style="visibility:hidden;"></i> <span lang="en">Name</span></a>
+												</li>
+												<li role="presentation">
+													<a class="tools-view-sortby" id="tools-view-sortby-size" role="menuitem" tabindex="-1" href="javascript:void(0)"><i class="glyphicon glyphicon-ok" style="visibility:hidden;"></i> <span lang="en">Size</span></a>
+												</li>
+											</ul>
+										</li>
+										<li class="divider" role="presentation"></li>
+										<li role="presentation">
+											<a id="tools-view-group" role="menuitem" tabindex="-1" href="javascript:void(0)"><i class="glyphicon glyphicon-ok" style="visibility:hidden;"></i> <span lang="en">Group</span></a>
+										</li>
+									</ul>
+								</li>
+								<li class="divider" role="presentation"></li>
 								<li class="disabled" role="presentation">
 									<a id="tools-import-fn" role="menuitem" tabindex="-1" href="javascript:void(0)"><i class="glyphicon glyphicon-import"></i> <span lang="en">Import Fn</span></a>
 								</li>
@@ -114,23 +135,7 @@
 							<label for="keyboard-sel" lang="en" class="col-md-2 control-label">Keyboard</label>
 							<div class="col-md-6">
 								<div class="btn-group input-group">
-									<select id="keyboard-sel" class="form-control">
-										<option>GH60 (RevA/B/C)</option>
-										<option>GH60 (RevCHN)</option>
-										<option>GHPad</option>
-										<option>Fantastic60</option>
-										<option>SMART68</option>
-										<option>RedScarfII</option>
-										<option>RedScarfIII</option>
-										<option>YUK86</option>
-										<option>LR94</option>
-										<option>AKB96</option>
-										<option>TentaPad</option>
-										<option data-role="divider"></option>
-										<option>Staryu</option>
-										<option>Kimera</option>
-										<option>Kimera (Two-Headed)</option>
-									</select>
+									<select id="keyboard-sel" class="form-control"></select>
 									<div id="kbd-cfg" class="btn-group" style="display: none;">
 										<button type="button" id="kbd-cfg-btn" class="btn btn-default" lang="en">Config</button>
 									</div>

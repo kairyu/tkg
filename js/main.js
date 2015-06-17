@@ -7,6 +7,8 @@ var tkg = new TKG();
 var _keyboard = {};
 var _layer_mode = LAYER_NORMAL;
 var _advanced_mode = false;
+var _view_sortby = "name";
+var _view_group = true;
 
 $(function() {
 
@@ -23,9 +25,19 @@ $(function() {
 
 	$('.btn').button();
 
+	// cookies
+	if ($.cookie && $.cookie('tkg_viewSortBy')) {
+		_view_sortby = $.cookie('tkg_viewSortBy');
+	}
+	if ($.cookie && $.cookie('tkg_viewGroup')) {
+		_view_group  = JSON.parse($.cookie('tkg_viewGroup'));
+	}
+
 	if ($.cookie && $.cookie('tkg_advancedMode')) {
 		_advanced_mode = JSON.parse($.cookie('tkg_advancedMode'));
 	}
+
+	updateKeyboardSelect();
 
 	if ($.cookie && $.cookie('tkg_keyboardName')) {
 		$('#keyboard-sel').val($.cookie('tkg_keyboardName')).multiselect('refresh');
@@ -42,9 +54,6 @@ $(function() {
 	tkg.setLedMaps(binding_map, reverse_map, backlight_map);
 
 	// select keyboard
-	$('#keyboard-sel').multiselect({
-		buttonContainer: '<div class="btn-group" />'
-	});
 	$('#keyboard-sel').change(function() {
 		var name = this.value;
 		if ($.cookie) {
@@ -84,6 +93,34 @@ $(function() {
 	$('#tools-show-tour').click(function(e) {
 		setTimeout(showTour, 100);
 	});
+
+	// view sort by
+	$('.tools-view-sortby').click(function() {
+		_view_sortby = this.id.split('-').pop();
+		if ($.cookie) {
+			$.cookie('tkg_viewSortBy', _view_sortby, {
+				expires: 365,
+				path: '/'
+			});
+		}
+		updateViewSortByState();
+		updateKeyboardSelect();
+	});
+	updateViewSortByState();
+
+	// view group
+	$('#tools-view-group').click(function() {
+		_view_group = !_view_group;
+		if ($.cookie) {
+			$.cookie('tkg_viewGroup', _view_group, {
+				expires: 365,
+				path: '/'
+			});
+		}
+		updateViewGroupState();
+		updateKeyboardSelect();
+	});
+	updateViewGroupState();
 
 	// import fn dialog
 	$('#tools-import-fn').click(function(e) {
@@ -294,6 +331,51 @@ function switchPage(id) {
 	}
 }
 
+function updateKeyboardSelect() {
+	$('#keyboard-sel').multiselect({
+		buttonContainer: '<div class="btn-group" />'
+	});
+	$.ajaxSetup({ async: false, cache: false });
+	$.getJSON("keyboard/list.json", function(list) {
+		var $sel = $('#keyboard-sel');
+		var value = $sel.val();
+		$sel.empty();
+		list = _.sortBy(list, _view_sortby);
+		if (_view_group) {
+			list = _.groupBy(list, 'group');
+			list = _.sortBy(_.pairs(list), function(o) { return o[0]; });
+			for (var i = 0; i < list.length; i++) {
+				var name = list[i][0];
+				var sublist = list[i][1];
+				$sel.append($('<optgroup>').attr({
+					"label": name[0].toUpperCase() + name.slice(1),
+					"lang": lang ? "en" : undefined
+				}));
+				for (var j = 0; j < sublist.length; j++) {
+					$sel.append($('<option>').text(sublist[j]["name"]));
+				}
+				if (i < list.length - 1) {
+					$sel.append($('<option>').attr("data-role", "divider"));
+				}
+			}
+		}
+		else {
+			for (var i = 0; i < list.length; i++) {
+				$sel.append($('<option>').text(list[i]["name"]));
+			}
+		}
+		$sel.val(value);
+		rebuildKeyboardSelect();
+	}).fail(function(d, textStatus, error) {
+		console.error("getJSON failed, status: " + textStatus + ", error: "+error)
+	});
+	$.ajaxSetup({ async: true });
+}
+
+function rebuildKeyboardSelect() {
+	$('#keyboard-sel').multiselect('rebuild');
+}
+
 function initialize(keyboard_name, layer_mode) {
 	var keyboard = loadKeyboard(keyboard_name);
 	_keyboard = keyboard;
@@ -404,6 +486,7 @@ function onLangChange(lang) {
 function afterLangChange(lang) {
 	attachLinks();
 	changeFont(lang);
+	rebuildKeyboardSelect();
 	rebuildFnSelect();
 	rebuildLedSelect();
 }
@@ -487,6 +570,20 @@ function updateToolsMenuState() {
 	}
 	else {
 		$('#tools-import-fn, #tools-export-fn').parent().addClass('disabled');
+	}
+}
+
+function updateViewSortByState() {
+	$('.tools-view-sortby').parent().find('i').css('visibility', 'hidden');
+	$('#tools-view-sortby-' + _view_sortby).parent().find('i').css('visibility', 'visible');
+}
+
+function updateViewGroupState() {
+	if (_view_group) {
+		$('#tools-view-group').parent().find('i').css('visibility', 'visible');
+	}
+	else {
+		$('#tools-view-group').parent().find('i').css('visibility', 'hidden');
 	}
 }
 
