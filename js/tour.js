@@ -37,6 +37,7 @@ function showTour() {
 }
 
 function appendTour() {
+	$('#tools-show-tour').parent().addClass("disabled");
 	$('#logo')
 		.attr('data-intro', window.lang.translate('Title of this site, aka TKG.'))
 		.attr('data-position', 'right');
@@ -78,6 +79,7 @@ function appendTour() {
 }
 
 function removeTour() {
+	$('#tools-show-tour').parent().removeClass("disabled");
 	if ($('#fn-legend').parent().data('visible') == 'hidden') {
 		$('#fn-legend').parent().data('visible', '').hide();
 	}
