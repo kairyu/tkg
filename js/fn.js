@@ -294,7 +294,7 @@ function appendFnParams(id) {
 				return $selected.attr('title');
 			},
 			onChange: function(option, checked) {
-				$row.data('af_id', $(option).val());
+				$row.data('af_id', Number($(option).val()));
 				appendFnSubParams(id);
 			}
 		});
@@ -309,7 +309,7 @@ function appendFnParams(id) {
 				return $selected.attr('title');
 			},
 			onChange: function(option, checked) {
-				$row.data('am_id', $(option).val());
+				$row.data('am_id', Number($(option).val()));
 				appendFnSubParams(id);
 			}
 		});
@@ -327,8 +327,15 @@ function appendFnSubParams(id) {
 	switch (fn["param"][0]) {
 		case 'af_id':
 			var af_id = $row.data('af_id');
-			var af_opt = args[1];
 			var options = tkg.getFnOptions("af_opt")[af_id];
+			var af_opt = args[1];
+			if (options.length == 0) {
+				$row.removeData('af_opt');
+			}
+			if (af_opt >= options.length) {
+				af_opt = 0;
+				$row.data('af_opt', af_opt);
+			}
 			$row.find('.fn-param-af-opt').remove();
 			if (options.length) {
 				$row.find('.fn-param').last().after($('<div>').attr({ "class": "fn-param fn-param-af-opt" }).append(
@@ -346,7 +353,7 @@ function appendFnSubParams(id) {
 			return $selected.attr('title');
 		},
 		onChange: function(option, checked) {
-			$row.data('af_opt', $(option).val());
+			$row.data('af_opt', Number($(option).val()));
 			onFnParamsChange(id);
 		}
 	});
