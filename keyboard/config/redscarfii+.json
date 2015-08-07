@@ -1,0 +1,224 @@
+{
+	"name": "RedScarfII+",
+	"description": "RedScarfII+ Keyboard by 悬壶济世",
+	"max_layers": 8,
+	"max_fns": 32,
+	"eep_size": 1024,
+	"eep_start": 16,
+	"matrix_rows": 6,
+	"matrix_cols": 18,
+	"physical_rows": 5,
+	"matrix_map": {
+		"0,0": { "row": 5, "col": 1, "note": "F1" },
+		"1,0": { "row": 5, "col": 2, "note": "F2" },
+		"0,1": { "row": 5, "col": 3, "note": "F3" },
+		"1,1": { "row": 5, "col": 4, "note": "F4" },
+		"0,2": { "row": 5, "col": 5, "note": "F5" },
+		"1,2": { "row": 5, "col": 6, "note": "F6" },
+		"0,3": { "row": 5, "col": 7, "note": "F7" },
+		"1,3": { "row": 5, "col": 8, "note": "F8" },
+		"0,4": { "row": 5, "col": 9, "note": "F9" },
+		"1,4": { "row": 5, "col": 10, "note": "F10" },
+		"2.25,0": { "row": 0, "col": 0, "note": "Esc" },
+		"3.25,0": { "row": 0, "col": 1, "note": "1!" },
+		"4.25,0": { "row": 0, "col": 2, "note": "2@" },
+		"5.25,0": { "row": 0, "col": 3, "note": "3#" },
+		"6.25,0": { "row": 0, "col": 4, "note": "4$" },
+		"7.25,0": { "row": 0, "col": 5, "note": "5%" },
+		"8.25,0": { "row": 0, "col": 6, "note": "6^" },
+		"9.25,0": { "row": 0, "col": 7, "note": "7&" },
+		"10.25,0": { "row": 0, "col": 8, "note": "8*" },
+		"11.25,0": { "row": 0, "col": 9, "note": "9(" },
+		"12.25,0": { "row": 0, "col": 10, "note": "0)" },
+		"13.25,0": { "row": 0, "col": 11, "note": "-_" },
+		"14.25,0": { "row": 0, "col": 12, "note": "=+" },
+		"15.25,0": { "row": 0, "col": 13, "note": "Backspace (1x)" },
+		"15.25,0,2": { "row": 0, "col": 13, "note": "Backspace (2x)" },
+		"16.25,0": { "row": 2, "col": 12, "note": "~` (Split Backspace)" },
+		"2.25,1,1.5": { "row": 1, "col": 0, "note": "Tab" },
+		"3.75,1": { "row": 1, "col": 1, "note": "Q" },
+		"4.75,1": { "row": 1, "col": 2, "note": "W" },
+		"5.75,1": { "row": 1, "col": 3, "note": "E" },
+		"6.75,1": { "row": 1, "col": 4, "note": "R" },
+		"7.75,1": { "row": 1, "col": 5, "note": "T" },
+		"8.75,1": { "row": 1, "col": 6, "note": "Y" },
+		"9.75,1": { "row": 1, "col": 7, "note": "U" },
+		"10.75,1": { "row": 1, "col": 8, "note": "I" },
+		"11.75,1": { "row": 1, "col": 9, "note": "O" },
+		"12.75,1": { "row": 1, "col": 10, "note": "P" },
+		"13.75,1": { "row": 1, "col": 11, "note": "[{" },
+		"14.75,1": { "row": 1, "col": 12, "note": "]}" },
+		"15.75,1,1.5": { "row": 1, "col": 13, "note": "\\|" },
+		"15.75,1,1.5,2,13.75,1.25": { "row": 2, "col": 13, "note": "Enter (ISO)" },
+		"2.25,2,1.75": { "row": 2, "col": 0, "note": "Caps Lock" },
+		"4,2": { "row": 2, "col": 1, "note": "A" },
+		"5,2": { "row": 2, "col": 2, "note": "S" },
+		"6,2": { "row": 2, "col": 3, "note": "D" },
+		"7,2": { "row": 2, "col": 4, "note": "F" },
+		"8,2": { "row": 2, "col": 5, "note": "G" },
+		"9,2": { "row": 2, "col": 6, "note": "H" },
+		"10,2": { "row": 2, "col": 7, "note": "J" },
+		"11,2": { "row": 2, "col": 8, "note": "K" },
+		"12,2": { "row": 2, "col": 9, "note": "L" },
+		"13,2": { "row": 2, "col": 10, "note": ";:" },
+		"14,2": { "row": 2, "col": 11, "note": "'\"" },
+		"15,2": { "row": 1, "col": 13, "note": "#~ (ISO)" },
+		"15,2,2.25": { "row": 2, "col": 13, "note": "Enter" },
+		"2.25,3,2.25": { "row": 3, "col": 0, "note": "LShift" },
+		"2.25,3,1.25": { "row": 3, "col": 0, "note": "LShift (ISO)" },
+		"3.5,3": { "row": 3, "col": 1, "note": "\\| (ISO)" },
+		"4.5,3": { "row": 3, "col": 2, "note": "Z" },
+		"5.5,3": { "row": 3, "col": 3, "note": "X" },
+		"6.5,3": { "row": 3, "col": 4, "note": "C" },
+		"7.5,3": { "row": 3, "col": 5, "note": "V" },
+		"8.5,3": { "row": 3, "col": 6, "note": "B" },
+		"9.5,3": { "row": 3, "col": 7, "note": "N" },
+		"10.5,3": { "row": 3, "col": 8, "note": "M" },
+		"11.5,3": { "row": 3, "col": 9, "note": ",<" },
+		"12.5,3": { "row": 3, "col": 10, "note": ".>" },
+		"13.5,3": { "row": 3, "col": 11, "note": "/?" },
+		"14.5,3,2.75": { "row": 3, "col": 12, "note": "RShift (2.75x)" },
+		"14.5,3,1.75": { "row": 3, "col": 12, "note": "RShift (1.75x)" },
+		"16.25,3": { "row": 3, "col": 13, "note": "Fn (Split RShift)" },
+		"2.25,4,1.25": { "row": 4, "col": 0, "note": "OEM LCtrl" },
+		"3.5,4,1.25": { "row": 4, "col": 1, "note": "OEM LWin" },
+		"4.75,4,1.25": { "row": 4, "col": 2, "note": "OEM LAlt" },
+		"6,4,6.25": { "row": 4, "col": 9, "note": "OEM Spacebar" },
+		"12.25,4,1.25": { "row": 4, "col": 10, "note": "OEM RAlt" },
+		"13.5,4,1.25": { "row": 4, "col": 11, "note": "OEM RWin" },
+		"14.75,4,1.25": { "row": 4, "col": 12, "note": "OEM Menu" },
+		"16,4,1.25": { "row": 4, "col": 13, "note": "OEM RCtrl" },
+		"2.25,4,1.5": { "row": 4, "col": 0, "note": "WKL LCtrl" },
+		"3.75,4": { "row": 4, "col": 1, "note": "WKL LWin" },
+		"4.75,4,1.5": { "row": 4, "col": 2, "note": "WKL LAlt" },
+		"6.25,4,7": { "row": 4, "col": 9, "note": "WKL Spacebar" },
+		"13.25,4,1.5": { "row": 4, "col": 11, "note": "WKL RAlt" },
+		"14.75,4": { "row": 4, "col": 12, "note": "WKL RWin" },
+		"15.75,4,1.5": { "row": 4, "col": 13, "note": "WKL RWin" },
+		"3.75,4,1.5": { "row": 4, "col": 1, "note": "1.5-[1.5]-7-..." },
+		"5.25,4,7": { "row": 4, "col": 9, "note": "1.5-1.5-[7]-..." },
+		"12.25,4,1.5": { "row": 4, "col": 10, "note": "(10)-[1.5]-1.5-1-1" },
+		"13.75,4,1.5": { "row": 4, "col": 7, "note": "(10)-1.5-[1.5]-1-1" },
+		"12.25,4": { "row": 4, "col": 10, "note": "(10)-[1]-1-1-1-1" },
+		"13.25,4": { "row": 4, "col": 11, "note": "(10)-1-[1]-1-1-1" },
+		"14.25,4": { "row": 4, "col": 7, "note": "(10)-1-1-[1]-1-1" },
+		"15.25,4": { "row": 4, "col": 12, "note": "(10)-(3)-[1]-1" },
+		"16.25,4": { "row": 4, "col": 13, "note": "(10)-(3)-1-[1]" },
+		"17.25,0": { "row": 0, "col": 14, "note": "Keypad Num Lock" },
+		"18.25,0": { "row": 0, "col": 15, "note": "Keypad /" },
+		"19.25,0": { "row": 0, "col": 16, "note": "Keypad *" },
+		"20.25,0": { "row": 0, "col": 17, "note": "Keypad -" },
+		"17.25,1": { "row": 1, "col": 14, "note": "Keypad 7" },
+		"18.25,1": { "row": 1, "col": 15, "note": "Keypad 8" },
+		"19.25,1": { "row": 1, "col": 16, "note": "Keypad 9" },
+		"20.25,1": { "row": 1, "col": 17, "note": "Keypad + (1h)" },
+		"20.25,1,1,2": { "row": 1, "col": 17, "note": "Keypad + (2h)" },
+		"17.25,2": { "row": 2, "col": 14, "note": "Keypad 4" },
+		"18.25,2": { "row": 2, "col": 15, "note": "Keypad 5" },
+		"19.25,2": { "row": 2, "col": 16, "note": "Keypad 6" },
+		"20.25,2": { "row": 2, "col": 17, "note": "Keypad + (Split +)" },
+		"17.25,3": { "row": 3, "col": 14, "note": "Keypad 1" },
+		"18.25,3": { "row": 3, "col": 15, "note": "Keypad 2" },
+		"19.25,3": { "row": 3, "col": 16, "note": "Keypad 3" },
+		"20.25,3": { "row": 3, "col": 17, "note": "Keypad Enter (1h)" },
+		"20.25,3,1,2": { "row": 4, "col": 17, "note": "Keypad Enter (2h)" },
+		"17.25,4": { "row": 4, "col": 14, "note": "Keypad 0 (1x)" },
+		"17.25,4,2": { "row": 4, "col": 15, "note": "Keypad 0 (2x)" },
+		"18.25,4": { "row": 4, "col": 15, "note": "Keypad 0 (Split 0)" },
+		"19.25,4": { "row": 4, "col": 16, "note": "Keypad ." },
+		"20.25,4": { "row": 4, "col": 17, "note": "Keypad Enter (Split Enter)" }
+	},
+	"led_count": 3,
+	"led_map": [{
+		"name": "Caps Lock",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_CAPS_LOCK",
+			"backlight": 0
+		}
+	},{
+		"name": "Num Lock",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NUM_LOCK",
+			"backlight": 0
+		}
+	},{
+		"name": "Backlight",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NO",
+			"backlight": 1
+		}
+	}],
+	"action_macros": [{
+		"name": "00",
+		"description": "Keypad 00",
+		"opt": []
+	}],
+	"action_functions": [{
+		"name": "RGB On",
+		"description": "Turn RGB light on",
+		"opt": []
+	},
+	{
+		"name": "RGB Off",
+		"description": "Turn RGB light off",
+		"opt": []
+	},
+	{
+		"name": "RGB Toggle",
+		"description": "Toggle RGB light",
+		"opt": []
+	},
+	{
+		"name": "RGB Increase",
+		"description": "Increase brightness or speed of RGB light",
+		"opt": []
+	},
+	{
+		"name": "RGB Decrease",
+		"description": "Decrease brightness or speed of RGB light",
+		"opt": []
+	},
+	{
+		"name": "RGB Fixed Color",
+		"description": "Change RGB light to fixed color",
+		"opt": [
+			"White",
+			"Red", "Green", "Blue",
+			"Red_1", "Green_1", "Blue_1",
+			"Red_2", "Green_2", "Blue_2",
+			"Red_3", "Green_3", "Blue_3",
+			"Red_4", "Green_4", "Blue_4"
+		]
+	},
+	{
+		"name": "RGB Variable Mode",
+		"description": "Change RGB light to variable mode",
+		"opt": [
+			"Flash", "Strobe", "Fade", "Smooth"
+		]
+	},
+	{
+		"name": "RGB Step",
+		"description": "Change RGB light mode by step",
+		"opt": [
+			"Fixed Color", "Variable Mode"
+		]
+	}],
+	"led_additional_index": 0,
+	"bootloader": [{
+		"name": "Printer",
+		"printer_name": "Generic / Text Only"
+	}],
+	"firmware": [{
+		"name": "No Console"
+	}],
+	"additional": [{
+		"start": 8,
+		"size": 6,
+		"type": "word",
+		"data": []
+	}]
+}
