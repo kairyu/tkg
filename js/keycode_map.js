@@ -311,24 +311,26 @@ var keycode_map = {
 		"name": "[ and {",
 		"description": "[ and {",
 		"keycode": "0x2F",
-		"label": [ "{" ],
-		"label_2": [ "[" ],
+		"label": [ [ "{" ], [ "、" ] ],
+		"label_2": [ [ "[" ], [ "@" ] ],
+		"label_priority": [ "{" ],
 		"short_name": "KC_LBRC"
 	},
 	"KC_RBRACKET": {
 		"name": "] and }",
 		"description": "] and }",
 		"keycode": "0x30",
-		"label": [ "}" ],
-		"label_2": [ "]" ],
+		"label": [ [ "}" ], [ "{" ], [ "jpn [", "jpn {" ] ],
+		"label_2": [ [ "]" ], [ "["], [] ],
+		"label_priority": [ "}" ],
 		"short_name": "KC_RBRC"
 	},
 	"KC_BSLASH": {
 		"name": "\\ and |",
 		"description": "\\ and |",
 		"keycode": "0x31",
-		"label": [ "|" ],
-		"label_2": [ "\\" ],
+		"label": [ [ "|" ], [ "}" ], [ "jpn ]", "jpn }" ] ],
+		"label_2": [ [ "\\" ], [ "]" ], [] ],
 		"label_priority": [ "|" ],
 		"short_name": "KC_BSLS"
 	},
@@ -344,24 +346,24 @@ var keycode_map = {
 		"name": "; and :",
 		"description": "; and :",
 		"keycode": "0x33",
-		"label": [ [ ":" ], [ "*" ] ],
-		"label_2": [ [ ";" ], [ ":" ] ],
+		"label": [ [ ":" ], [ "+" ] ],
+		"label_2": [ [ ";" ], [ ";" ] ],
 		"short_name": "KC_SCLN"
 	},
 	"KC_QUOTE": {
 		"name": "' and \"",
 		"description": "' and \"",
 		"keycode": "0x34",
-		"label": [ [ "\"", "@" ], [ "+" ] ],
-		"label_2": [ [ "'" ], [ ";" ] ],
+		"label": [ [ "\"", "@" ], [ "*" ] ],
+		"label_2": [ [ "'" ], [ ":" ] ],
 		"short_name": "KC_QUOT"
 	},
 	"KC_GRAVE": {
 		"name": "` and ~",
 		"description": "`(grave accent) and ~(tilde)",
 		"keycode": "0x35",
-		"label": [ "~", "¬" ],
-		"label_2": [ "`" ],
+		"label": [ [ "~", "¬" ], [ "半角/全角" ], [ "e/j" ] ],
+		"label_2": [ [ "`" ], [ "漢字" ], [] ],
 		"short_name": "KC_GRV"
 	},
 	"KC_COMMA": {
@@ -905,7 +907,8 @@ var keycode_map = {
 		"name": "International1",
 		"description": "International1",
 		"keycode": "0x87",
-		"label": [ "int1", "romaji", "eisu", "e/j" ],
+		"label": [ [ "int1", "ro" ], [ "_" ] ],
+		"label_2": [ [], [ "\\" ] ],
 		"short_name": "KC_RO"
 	},
 	"KC_INT2": {
@@ -919,7 +922,8 @@ var keycode_map = {
 		"name": "International3",
 		"description": "International3",
 		"keycode": "0x89",
-		"label": [ "int3", "yen", "¥" ],
+		"label": [ [ "int3", "yen", "¥" ], [ "|" ] ],
+		"label_2": [ [], [ "¥" ] ],
 		"short_name": "KC_JYEN"
 	},
 	"KC_INT4": {

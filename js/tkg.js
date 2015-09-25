@@ -869,8 +869,10 @@ function TKG() {
 			}
 			else {
 				label = "";
-				_consoleDebug("No valid label: " + key["x"] + "," + key["y"]);
-				_consoleDebug(key);
+				if (!key["label"][label_property_2]) {
+					_consoleDebug("No valid label: " + key["x"] + "," + key["y"]);
+					_consoleDebug(key);
+				}
 			}
 			if (label_property_2 && key["label"][label_property_2]) {
 				label_2 = key["label"][label_property_2].toLowerCase();
@@ -899,8 +901,10 @@ function TKG() {
 					// parse each symbol
 					for (var j = 0; j < symbols.length; j++) {
 						var symbol = symbols[j];
-						if (_matchLabelsWithSymbol(label, label_2, symbol)) {
-							alt_symbols.push(symbol);
+						var weight = _matchLabelsWithSymbol(label, label_2, symbol);
+						if (weight) {
+							alt_symbols.push([symbol, weight]);
+
 						}
 					}
 					// check alternative symbols
@@ -910,23 +914,30 @@ function TKG() {
 					}
 					// solved
 					else if (alt_symbols.length == 1) {
-						alt_symbol = alt_symbols[0];
+						alt_symbol = alt_symbols[0][0];
 					}
-					// unsolved conflict
 					else {
-						var alt_symbols_round2 = [];
-						for (var j = 0; j < alt_symbols.length; j++) {
-							if (_matchLabelsWithSymbol(label, label_2, alt_symbols[j], "label_priority")) {
-								alt_symbols_round2.push(alt_symbols[j]);
-							}
+						// look for high weight
+						var alt_symbol_high_weight = _.filter(alt_symbols, function(pair) { return pair[1] > 1; });
+						if (alt_symbol_high_weight.length == 1) {
+							alt_symbol = alt_symbol_high_weight[0][0];
 						}
-						if (alt_symbols_round2.length == 1) {
-							alt_symbol = alt_symbols_round2[0];
-							var message = label + " -> " + alt_symbol;
-							_raiseInfo(info, "solved_conflict", key, message, alt_symbols);
-						}
+						// unsolved conflict
 						else {
-							_raiseError(error, "unsolved_conflict", key, label, key);
+							var alt_symbols_round2 = [];
+							for (var j = 0; j < alt_symbols.length; j++) {
+								if (_matchLabelsWithSymbol(label, label_2, alt_symbols[j][0], "label_priority")) {
+									alt_symbols_round2.push(alt_symbols[j][0]);
+								}
+							}
+							if (alt_symbols_round2.length == 1) {
+								alt_symbol = alt_symbols_round2[0];
+								var message = label + " -> " + alt_symbol;
+								_raiseInfo(info, "solved_conflict", key, message, alt_symbols);
+							}
+							else {
+								_raiseError(error, "unsolved_conflict", key, label, key);
+							}
 						}
 					}
 				}
@@ -1023,12 +1034,12 @@ function TKG() {
 			for (var i = 0; i < target_labels.length; i++) {
 				if (match_2) {
 					if (_matchLabels(label, target_labels[i], label_2, target_labels_2[i])) {
-						return true;
+						return 2;
 					}
 				}
 				else {
 					if (_matchLabels(label, target_labels[i])) {
-						return true;
+						return 1;
 					}
 				}
 			}
@@ -1047,11 +1058,11 @@ function TKG() {
 					}
 					// ignore label_2
 					if (target_labels_2.length == 0) {
-						return true;
+						return 1;
 					}
 					// match with label_2
 					if (_.indexOf(target_labels_2, label_2) != -1) {
-						return true;
+						return 2;
 					}
 					else {
 						return false;
@@ -1059,7 +1070,7 @@ function TKG() {
 				}
 				// only match label
 				else {
-					return true;
+					return 1;
 				}
 			}
 			// not found
