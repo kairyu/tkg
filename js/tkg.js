@@ -1743,6 +1743,52 @@ function TKG() {
 		return _led_symbol;
 	}
 
+	var _getLayersCount = function() {
+		var count = 0;
+		for (var i = 0; i < _layers.length; i++) {
+			if (_getNonBlankKeyCount(i)) {
+				count = i + 1;
+			}
+		}
+		return count;
+	}
+
+	var _getFnsCount = function() {
+		var count = 0;
+		for (var i = 0; i < _fns.length; i++) {
+			if (_fns[i]) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	var _getKeysCount = function() {
+		var max = 0;
+		for (var i = 0; i < _layers.length; i++) {
+			var count = _getNonBlankKeyCount(i);
+			max = Math.max(max, count);
+		}
+		return max;
+	}
+
+	var _getNonBlankKeyCount = function(layer) {
+		if (!_layers[layer]) {
+			return 0;
+		}
+		if (!_layers[layer]["keys"]) {
+			return 0;
+		}
+		var keys = _layers[layer]["keys"];
+		var count = 0;
+		for (var i = 0; i < keys.length; i++) {
+			if (keys[i]["keycode"] > 1) {
+				count++;
+			}
+		}
+		return count;
+	}
+
 	// public methods
 	this.NONE = _NONE;
 	this.ERROR = _ERROR;
@@ -1778,5 +1824,8 @@ function TKG() {
 	this.getFnActionsSymbol = _getFnActionsSymbol;
 	this.getLedsHex = _getLedsHex;
 	this.getLedsSymbol = _getLedsSymbol;
+	this.getLayersCount = _getLayersCount;
+	this.getFnsCount = _getFnsCount;
+	this.getKeysCount = _getKeysCount;
 
 }

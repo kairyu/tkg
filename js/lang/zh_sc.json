@@ -8,6 +8,7 @@
 		"Language":"语言",
 		"Tools":"工具",
 		"Show Tour":"显示帮助",
+		"Statistics":"统计",
 		"View":"查看",
 		"Sort by":"排序方式",
 		"Name":"名称",
@@ -156,6 +157,10 @@
 		"5. Download your keymap.":"5. 下载您的键盘布局。",
 		"Show this tour again.":"再次显示本帮助。",
 		"You can import and export Fn settings from here.":"您可以从此处导入和导出Fn设置。",
+
+		"Number of Layers:":"层数:",
+		"Number of Fns:":"Fn数:",
+		"Number of Keys:":"按键数:",
 
 		"How to Use":"使用方法",
 		"Available Labels":"可用标签",

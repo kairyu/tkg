@@ -70,6 +70,9 @@
 								<li role="presentation">
 									<a id="tools-show-tour" role="menuitem" tabindex="-1" href="javascript:void(0)"><i class="glyphicon glyphicon-info-sign"></i> <span lang="en">Show Tour</span></a>
 								</li>
+								<li role="presentation">
+									<a id="tools-stat" role="menuitem" tabindex="-1" href="javascript:void(0)"><i class="glyphicon glyphicon-stats"></i> <span lang="en">Statistics</span></a>
+								</li>
 								<li class="divider" role="presentation"></li>
 								<li class="menu-item dropdown dropdown-submenu" role="presentation">
 									<a role="menuitem" tabindex="-1" href="javascript:void(0)"><i class="glyphicon glyphicon-th-list"></i> <span lang="en">View</span> </a>
@@ -267,6 +270,27 @@
 			<p class="text-muted credit">
 				TMK Keymap Generator 2014 by <a href="https://github.com/kairyu">kai1103</a>
 			</p>
+		</div>
+	</div>
+	<!-- prompt dialog: statistics -->
+	<div class="modal fade" id="stat-dialog" tab-index="-1" data-keyboard="true" role="dialog" aria-labelledby="stat-title" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="stat-title" lang="en">Statistics</h4>
+				</div>
+				<div class="modal-body">
+					<dl class="dl-horizontal">
+						<dt lang="en">Number of Layers:</dt><dd id="stat-layer-count">0</dd>
+						<dt lang="en">Number of Fns:</dt><dd id="stat-fn-count">0</dd>
+						<dt lang="en">Number of Keys:</dt><dd id="stat-key-count">0</dd>
+					</dl>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default" data-dismiss="modal" lang="en">OK</button>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!-- prompt dialog: import fn -->

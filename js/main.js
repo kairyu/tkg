@@ -122,6 +122,21 @@ $(function() {
 	});
 	updateViewGroupState();
 
+	// stat dialog
+	$('#tools-stat').click(function(e) {
+		if ($(this).parent().hasClass('disabled')) {
+			e.preventDefault();
+			return false;
+		}
+		$('#stat-dialog').modal('show');
+	});
+	$('#stat-dialog').on('show.bs.modal', function() {
+		$('#stat-layer-count').text(tkg.getLayersCount());
+		$('#stat-fn-count').text(tkg.getFnsCount());
+		$('#stat-key-count').text(tkg.getKeysCount());
+	});
+
+
 	// import fn dialog
 	$('#tools-import-fn').click(function(e) {
 		if ($(this).parent().hasClass('disabled')) {
