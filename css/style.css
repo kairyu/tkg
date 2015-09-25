@@ -199,6 +199,9 @@ body {
 #layer-info-container .popover li.key span {
 	display: block;
 }
+#layer-info-container .popover li.key span:empty:before {
+	content: "\00a0";
+}
 #layer-info-container .popover .tooltip-inner {
 	text-align: left;
 }
