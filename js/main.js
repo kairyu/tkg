@@ -770,23 +770,43 @@ function adjustPopoverPosition($popover) {
 }
 
 function isKLEUrl(url) {
-	return /^(http:\/\/)?www\..*\/layouts\/[0-9a-z]+$/.test(url);
+	return /^(http:\/\/)?www\..*\/(layouts|gists)\/[0-9a-z]+$/.test(url);
 }
 
 function getKLERawData(url, success, fail) {
-	var match = /layouts\/([0-9a-z]+)$/.exec(url);
+	var url = url.trim();
+	var match = /(layouts|gists)\/([0-9a-z]+)$/.exec(url);
 	if (match) {
-		var hash = match[1];
-		$.get("http://www.keyboard-layout-editor.com.s3.amazonaws.com/layouts/" + hash,  function(data) {
-			if (data.substr(0, 1) == '[' && data.substr(-1, 1) == ']') {
-				success.call(this, data.slice(1, -1));
-			}
-			else {
+		var type = match[1];
+		var hash = match[2];
+		if (type == "layouts") {
+			$.get("http://www.keyboard-layout-editor.com.s3.amazonaws.com/layouts/" + hash,  function(data) {
+				if (data.substr(0, 1) == '[' && data.substr(-1, 1) == ']') {
+					success.call(this, data.slice(1, -1));
+				}
+				else {
+					fail.call(this);
+				}
+			}, "text").fail(function() {
 				fail.call(this);
-			}
-		}, "text").fail(function() {
+			});
+		}
+		else if (type == "gists") {
+			$.getJSON("http://api.github.com/gists/" + hash,  function(data) {
+					var content = "";
+					for (var name in data["files"]) {
+						content = data["files"][name]["content"]
+						break;
+					}
+					console.log(content);
+					success.call(this, content.slice(1, -1));
+			}).fail(function() {
+				fail.call(this);
+			});
+		}
+		else {
 			fail.call(this);
-		});
+		}
 	}
 	else {
 		fail.call(this);
