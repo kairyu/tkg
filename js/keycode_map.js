@@ -598,8 +598,7 @@ var keycode_map = {
 		"name": "Keypad Enter",
 		"description": "Keypad Enter",
 		"keycode": "0x58",
-		"label": [ [ "enter" ], [ "penter" ] ],
-		"label_2": [ [ "" ], [] ],
+		"label": [ "enter", "penter" ],
 		"short_name": "KC_PENT"
 	},
 	"KC_KP_1": {
