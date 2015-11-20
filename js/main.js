@@ -18,6 +18,7 @@ $(function() {
 	$(window.lang).on('afterUpdate', function(e, currentLang, lang) {
 		afterLangChange(lang);
 	});
+	attachLinks();
 
 	$(window).on('hashchange', function() {
 		switchPage(location.hash.slice(1));
