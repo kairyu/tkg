@@ -707,7 +707,13 @@ function TKG() {
 							c_w = el.w2;
 						}
 						else {
-							c_w2 = c_w;
+							if (el.x2) {
+								c_w = el.w - el.x2;
+								c_w2 = el.w;
+							}
+							else {
+								c_w2 = c_w;
+							}
 						}
 					}
 				}
