@@ -206,6 +206,11 @@
 		"opt": [
 			"Fixed Color", "Variable Mode"
 		]
+	},
+	{
+		"name": "Tricky Esc",
+		"description": "Pressing this key with shift key, you will get a ~(tilde)!",
+		"opt": []
 	}],
 	"led_additional_index": 0,
 	"bootloader": [{
