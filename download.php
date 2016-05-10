@@ -21,7 +21,7 @@ $filename = '';
 // check get
 if (isset($_GET['file'])) {
 	$filetype = $_GET['file'];
-	if (!in_array($filetype, array('eep', 'c'))) {
+	if (!in_array($filetype, array('bin', 'eep', 'c'))) {
 		die('Invalid Parameter');
 	}
 }
@@ -46,7 +46,7 @@ if (
 	$max_fns = intval($_POST['max_fns']);
 	$keymaps = json_decode($_POST['keymaps']);
 	$fn_actions = json_decode($_POST['fn_actions']);
-	if ($filetype == 'eep') {
+	if ($filetype == 'bin' || $filetype == 'eep') {
 		if (isset($_POST['eep_size']) && isset($_POST['eep_start'])) {
 			$eep_size = intval($_POST['eep_size']);
 			$eep_start = intval($_POST['eep_start']);
@@ -64,6 +64,33 @@ if (
 }
 else {
 	die('Invalid Data');
+}
+
+// make bin file
+if ($filetype == 'bin') {
+	$filename = 'EEPROM.BIN';
+	$hash = sha1(serialize(array(
+		'matrix_rows' => $matrix_rows,
+		'matrix_cols' => $matrix_cols,
+		'max_layers' => $max_layers,
+		'max_fns' => $max_fns,
+		'keymaps' => $keymaps,
+		'fn_actions' => $fn_actions,
+		'eep_size' => $eep_size,
+		'eep_start' => $eep_start,
+		'additional' => $additional
+	)));
+	// check cache
+	$cache = check_cache('bin', $hash);
+	if (is_null($cache)) {
+		// no cache
+		$file = generate_bin_file($matrix_rows, $matrix_cols, $matrix_size, $max_layers, $max_fns, $keymaps, $fn_actions, $eep_size, $eep_start, $additional);
+		write_cache('bin', $hash, $file);
+	}
+	else {
+		// has cache
+		$file = $cache;
+	}
 }
 
 // make eep file

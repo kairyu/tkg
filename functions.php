@@ -22,7 +22,7 @@ function disable_magic_quotes() {
 	}
 }
 
-function generate_eep_file($matrix_rows, $matrix_cols, $matrix_size, $max_layers, $max_fns, $keymaps, $fn_actions, $eep_size, $eep_start, $additional) {
+function generate_bin_file($matrix_rows, $matrix_cols, $matrix_size, $max_layers, $max_fns, $keymaps, $fn_actions, $eep_size, $eep_start, $additional) {
 	// generate binary data
 	$keymap_bin = '';
 	// fn actions
@@ -54,8 +54,11 @@ function generate_eep_file($matrix_rows, $matrix_cols, $matrix_size, $max_layers
 	// overwrite additional data
 	$eep_bin = process_additional($eep_bin, $additional);
 
-	// convert to hex
-	return bin_to_intel_hex($eep_bin);
+	return $eep_bin;
+}
+
+function generate_eep_file($matrix_rows, $matrix_cols, $matrix_size, $max_layers, $max_fns, $keymaps, $fn_actions, $eep_size, $eep_start, $additional) {
+	return bin_to_intel_hex(generate_bin_file($matrix_rows, $matrix_cols, $matrix_size, $max_layers, $max_fns, $keymaps, $fn_actions, $eep_size, $eep_start, $additional));
 }
 
 function generate_c_header() {

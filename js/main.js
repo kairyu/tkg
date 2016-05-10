@@ -213,6 +213,7 @@ $(function() {
 		}
 		updateAdvancedModeState();
 		updateBurnButtonState();
+		updateDownloadBinButtonState();
 	});
 	updateAdvancedModeState();
 
@@ -258,7 +259,7 @@ $(function() {
 	});
 
 	// download
-	$('#dl_eep, #dl_c').click(function() {
+	$('#dl_eep, #dl_c, #dl_bin').click(function() {
 		download($(this).attr('id'));
 	});
 });
@@ -271,6 +272,12 @@ function download(id) {
 
 	if (id == 'dl_eep') {
 		type = 'eep';
+		keymaps = tkg.getKeymapsHex();
+		fn_actions = tkg.getFnActionsHex();
+		leds = tkg.getLedsHex();
+	}
+	else if (id == 'dl_bin') {
+		type = 'bin';
 		keymaps = tkg.getKeymapsHex();
 		fn_actions = tkg.getFnActionsHex();
 		leds = tkg.getLedsHex();
@@ -299,10 +306,10 @@ function download(id) {
 		);
 
 	var has_additional = false;
-	if (id == 'dl_eep' && _keyboard['name'].match(/^Kimera.*/i)) {
+	if ((id == 'dl_eep' || id == 'dl_bin') && _keyboard['name'].match(/^Kimera.*/i)) {
 		has_additional = true;
 	}
-	if (id == 'dl_eep' && _keyboard['led_count']) {
+	if ((id == 'dl_eep' || id == 'dl_bin') && _keyboard['led_count']) {
 		_keyboard['additional'][_keyboard['led_additional_index']]['data'] = leds;
 		console.log(leds);
 		has_additional = true;
@@ -401,6 +408,7 @@ function initialize(keyboard_name, layer_mode) {
 	appendLeds();
 	updateDownloadButtonState();
 	updateBurnButtonState();
+	updateDownloadBinButtonState();
 }
 
 function loadKeyboard(keyboard_name) {
@@ -577,6 +585,15 @@ function updateBurnButtonState() {
 	}
 	else {
 		removeBurnButton();
+	}
+}
+
+function updateDownloadBinButtonState() {
+	if (_advanced_mode) {
+		$('#dl_bin').show();
+	}
+	else {
+		$('#dl_bin').hide();
 	}
 }
 
