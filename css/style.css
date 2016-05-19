@@ -280,6 +280,10 @@ span.glyphicon-chevron-up {
 #burn_icon {
 	width: 14px;
 }
+.burn-message-tooltip {
+	white-space: nowrap;
+	max-width: none;
+}
 
 .fa.spin,
 .glyphicon.spin {

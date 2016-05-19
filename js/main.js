@@ -576,11 +576,13 @@ function updateDownloadButtonState() {
 	else {
 		$('.dl-btn-restrict').addClass('disabled');
 	}
+	updateBurnButton();
 }
 
 function updateBurnButtonState() {
-	if ((_keyboard['bootloader'] && _keyboard['bootloader'].length) &&
-	((_keyboard['bootloader'] && _keyboard['bootloader'][0]['name'] == "Printer") || _advanced_mode)) {
+	//if ((_keyboard['bootloader'] && _keyboard['bootloader'].length) &&
+	//((_keyboard['bootloader'] && _keyboard['bootloader'][0]['name'] == "Printer") || _advanced_mode)) {
+	if ((_keyboard['bootloader'] && _keyboard['bootloader'].length)) {
 		appendBurnButton(_keyboard['bootloader'], _keyboard['firmware']);
 	}
 	else {
@@ -866,3 +868,24 @@ versionCompare = function(left, right) {
 
 	return 0;
 }
+
+$(window).keydown(function(e) {
+	if (e.keyCode == 16) {
+		changeBurnButtonHEX();
+	}
+});
+
+$(window).keyup(function(e) {
+	if (e.keyCode == 16) {
+		changeBurnButtonEEP();
+	}
+});
+
+$(window).mousemove(function(e) {
+	if (!e.shiftKey) {
+		changeBurnButtonEEP();
+	}
+	if (e.shiftKey) {
+		changeBurnButtonHEX();
+	}
+});

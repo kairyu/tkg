@@ -16,6 +16,7 @@
 	<script src="./bower_components/jquery-lang-js/js/jquery-lang.js" charset="utf-8" type="text/javascript"></script>
 	<script src="./bower_components/jquery-cookie/jquery.cookie.js" charset="utf-8" type="text/javascript"></script>
 	<script src="./bower_components/chardin.js/chardinjs.min.js" charset="utf-8" type="text/javascript"></script>
+	<script src="./bower_components/async/dist/async.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/keycode_map.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/fn_map.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/led_map.js" charset="utf-8" type="text/javascript"></script>
@@ -24,9 +25,9 @@
 	<script src="js/fn.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/led.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/keyboard_config.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/programmer.js" charset="utf-8" type="text/javascript"></script>
+	<script src="js/progress.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/burn.js" charset="utf-8" type="text/javascript"></script>
-	<script src="js/bootloader_printer.js" charset="utf-8" type="text/javascript"></script>
-	<script src="js/bootloader_dfu.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/tour.js" charset="utf-8" type="text/javascript"></script>
 	<script src="js/main.js" charset="utf-8" type="text/javascript"></script>
 	<link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -340,6 +341,22 @@
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-default" data-dismiss="modal" lang="en">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- prompt dialog: progress -->
+	<div class="modal fade" id="progress-dialog" tab-index="-1" data-keyboard="false" data-backdrop="ststic" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div id="progress_msg">
+						<p><span lang="en">Progress</span></p>
+					</div>
+					<div class="progress">
+						<div id="progress_bar" class="progress-bar progress-bar-striped active" role="progressbar" style="transition:none;">
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

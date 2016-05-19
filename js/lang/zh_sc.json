@@ -177,11 +177,28 @@
 		"<a id=\"a-tmk-author\">tmk</a>, the author of <a id=\"a-tmk\">TMK Keyboard Firmware Collection</a>.":"<a id=\"a-tmk-author\">tmk</a>，<a id=\"a-tmk\">TMK键盘固件套装</a>的作者。",
 		"And also thanks to my <a id=\"a-wife\">wife</a> and my newborn son.":"此外还要特别感谢我的<a id=\"a-wife\">妻子</a>和我刚出生的儿子。",
 		"Report Bugs":"报告错误",
-		"If you found any bug, please contact me freely by <a id=\"a-mail\">email</a>, or file a issue via <a id=\"a-issue\">GitHub</a>. Any comments or requests are welcome too.":"如果您在使用过程中发现本网站有任何问题，请毫不留情地通过<a id=\"a-mail\">电子邮件</a>联系我，或通过<a id=\"a-issue\">GitHub</a>提交您的问题。我也非常欢迎您提出您宝贵的建议或请求。"
+		"If you found any bug, please contact me freely by <a id=\"a-mail\">email</a>, or file a issue via <a id=\"a-issue\">GitHub</a>. Any comments or requests are welcome too.":"如果您在使用过程中发现本网站有任何问题，请毫不留情地通过<a id=\"a-mail\">电子邮件</a>联系我，或通过<a id=\"a-issue\">GitHub</a>提交您的问题。我也非常欢迎您提出您宝贵的建议或请求。",
+
+		"Burn":"烧写",
+		"Bootloader":"引导程序",
+		"Firmware":"固件",
+		"Default":"默认",
+		"Custom":"自定义",
+		"Waiting for device...":"等待设备中...",
+		"Preparing files...":"正在准备文件...",
+		"Completed.":"完成",
+		"Unknown error.":"未知错误",
+		"Open dropdown for more information.":"请点击下拉菜单查看详细信息",
+		"Click for more information.":"点击查看详细信息",
+		"App not found":"未检测到App",
+		"No devices found":"未检测到设备",
+		"Bootloader not supported":"尚不支持此引导程序"
 	},
 	"regex": [
 		[ "Layer(\\d+)", "第$1层" ],
 		[ "Download (\\..+) file", "下载 $1 文件" ],
-		[ "Burn (\\..+) file", "烧录 $1 文件" ]
+		[ "Burn (\\..+) file", "烧写 $1 文件" ],
+		[ "(.*) Burning (\\..+) file...", "$1 正在烧写 $2 文件..." ],
+		[ "Please install the latest version of (.+) from (<a .*/a>) or download it from <a href=\"tkg-chrome-app.crx\">here</a> and install it manually to activate this feature.", "请通过 $2 安装或点击 <a href=\"tkg-chrome-app.crx\">此处</a> 下载并手动安装 $1 以激活此功能。"]
 	]
 }

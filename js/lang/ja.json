@@ -172,11 +172,28 @@
 		"<a id=\"a-tmk-author\">tmk</a>, the author of <a id=\"a-tmk\">TMK Keyboard Firmware Collection</a>.":"<a id=\"a-tmk-author\">tmk</a>、<a id=\"a-tmk\">TMKキーボードファームウェアコレクション</a>の作者。",
 		"And also thanks to my <a id=\"a-wife\">wife</a> and my newborn son.":"それに私の<a id=\"a-wife\">妻</a>と生まれたばかりの息子にも感謝します。",
 		"Report Bugs":"バグ報告",
-		"If you found any bug, please contact me freely by <a id=\"a-mail\">email</a>, or file a issue via <a id=\"a-issue\">GitHub</a>. Any comments or requests are welcome too.":"バグを発見した場合は、気軽に私に<a id=\"a-mail\">メール</a>などでお知らせください。或いは<a id=\"a-issue\">GitHub</a>にてバグレポートを出しましょう。意見やリクエストなども勿論大歓迎です。"
+		"If you found any bug, please contact me freely by <a id=\"a-mail\">email</a>, or file a issue via <a id=\"a-issue\">GitHub</a>. Any comments or requests are welcome too.":"バグを発見した場合は、気軽に私に<a id=\"a-mail\">メール</a>などでお知らせください。或いは<a id=\"a-issue\">GitHub</a>にてバグレポートを出しましょう。意見やリクエストなども勿論大歓迎です。",
+
+		"Burn":"書き込み",
+		"Bootloader":"ブートローダ",
+		"Firmware":"ファームウェア",
+		"Default":"デフォルト",
+		"Custom":"カスタム",
+		"Waiting for device...":"デバイス待機中...",
+		"Preparing files...":"書き込むファイルを準備中...",
+		"Completed.":"完成",
+		"Unknown error.":"不明のエラー",
+		"Open dropdown for more information.":"詳細は▼ボタンをクリックしてください",
+		"Click for more information.":"詳細はここをクリックしてください",
+		"App not found":"Appが見つからない",
+		"No devices found":"デバイスが検出されていない",
+		"Bootloader not supported":"ブートローダがサポートされていない"
 	},
 	"regex": [
 		[ "Layer(\\d+)", "レイヤー$1" ],
 		[ "Download (\\..+) file", "$1 ファイルをダウンロード" ],
-		[ "Burn (\\..+) file", "$1 ファイルを書き込む" ]
+		[ "Burn (\\..+) file", "$1 ファイルを書き込む" ],
+		[ "(.*) Burning (\\..+) file...", "$1 $2 ファイルを書き込み中..." ],
+		[ "Please install the latest version of (.+) from (<a .*/a>) or download it from <a href=\"tkg-chrome-app.crx\">here</a> and install it manually to activate this feature.", "書き込み機能を有効にするには、$2 経由若しくは <a href=\"tkg-chrome-app.crx\">ここ</a> からダウンロードして、最新バージョンの $1 をインストールしてください。"]
 	]
 }

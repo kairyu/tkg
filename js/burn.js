@@ -1,52 +1,88 @@
-var _bootloader = null;
+var _programmer = null;
 var _firmware = "";
+var _step = {};
 
 function BurnFile(id) {
-	if (!_bootloader) {
+	if (!_programmer) {
 		return;
 	}
 
 	changeBurnButtonPending();
-	_bootloader.prepare(function() {
-		if (id == 'burn_eep') {
-			getEEP(function(eep) {
-				console.log(eep);
-				if (_bootloader.needHEX()) {
-					getHEX(function(hex) {
-						_bootloader.burnEEP(hex, eep, function() {
-							console.log("burn eep done");
-							setTimeout(changeBurnButtonReady, 1000);
-						}, function() {
-							alert("Unknown error");
+	setProgress("Waiting for device...", 'info', -1);
+	showProgress();
+	_programmer.prepare(function() {
+		setTimeout(function() {
+			if (id == 'burn_eep') {
+				setProgress("Preparing files...", 'info', -1);
+				getEEP(function(eep) {
+					console.log(eep);
+					if (_programmer.needHEX()) {
+						_step = {
+							totalSteps: 2,
+							currentStep: 0,
+							messages: [ "Burning .hex file", "Burning .eep file" ]
+						};
+						getHEX(function(hex) {
+							_programmer.burnEEP(hex, eep, _onBurnFileDone, _onBurnFileFail);
 						});
-					});
-				}
-				else {
-					_bootloader.burnEEP(eep, function() {
-						console.log("burn eep done");
-						setTimeout(changeBurnButtonReady, 1000);
-					}, function() {
-						alert("Unknown error");
-					});
-				}
-			});
-		}
-		else if (id == 'burn_hex') {
-			getHEX(function(hex) {
-				console.log(hex);
-				_bootloader.burnHEX(hex, function() {
-					console.log("burn hex done");
-					setTimeout(changeBurnButtonReady, 1000);
-				}, function() {
-					alert("Unknown error");
+					}
+					else {
+						_step = {
+							totalSteps: 1,
+							currentStep: 0,
+							messages: [ "Burning .eep file" ]
+						};
+						_programmer.burnEEP(eep, _onBurnFileDone, _onBurnFileFail);
+					}
 				});
-			});
-		}
-		else {
-			changeBurnButtonReady();
-		}
+			}
+			else if (id == 'burn_hex') {
+				setProgress("Preparing files...", 'info', -1);
+				getHEX(function(hex) {
+					_step = {
+						totalSteps: 1,
+						currentStep: 0,
+						messages: [ "Burning .hex file" ]
+					};
+					console.log(hex);
+					_programmer.burnHEX(hex, _onBurnFileDone, _onBurnFileFail);
+				});
+			}
+			else {
+				closeProgress();
+				changeBurnButtonReady();
+			}
+		}, 100);
 	}, function() {
+		setProgress(100, "Device is not ready", 'danger');
+		closeProgress();
 		changeBurnButtonReady();
+	});
+}
+
+function _onProgrammerProgress(progress) {
+	setProgress(null, null, progress);
+	if (_step && progress == 0) {
+		if (_step.currentStep < _step.totalSteps) {
+			setTimeout(function() {
+				setProgress(_step.currentStep + '/' + _step.totalSteps + " " + _step.messages[_step.currentStep - 1] + "...", 'info', 0);
+			}, 100);
+			_step.currentStep++;
+		}
+	}
+}
+
+function _onBurnFileDone() {
+	setProgress("Completed.", 'success', -1);
+	closeProgress(function() {
+		setTimeout(changeBurnButtonReady, 100);
+	});
+}
+
+function _onBurnFileFail() {
+	setProgress("Unknown error.", 'danger', 0);
+	closeProgress(function() {
+		setTimeout(changeBurnButtonReady, 100);
 	});
 }
 
@@ -118,18 +154,26 @@ function getHEX(done) {
 }
 
 function appendBurnButton(bootloaders, firmwares) {
+	if (typeof chrome === 'undefined') {
+		// Only support chrome at this moment
+		return;
+	}
 	if ($('#burn_btn').length == 0) {
 		$('#dl_eep').parent().prepend(
-			$('<div>').attr({ "id": "burn_btn", "class": "btn-group" }).append(
+			$('<div>').attr({
+				"id": "burn_btn",
+				"class": "btn-group"
+			}).append(
 				$('<button>').attr({
 					"id": "burn_eep",
 					"type": "button",
-					"class": "dl-btn dl-btn-restrict burn-btn btn btn-default disabled",
+					"class": "dl-btn burn-btn btn btn-default disabled"
 				}).append(
 					$('<i>').attr({ "id": "burn_icon" }),
 					" ",
 					$('<span>').attr({ "lang": "en" }).text("Burn .eep file")
-				),
+				)
+				,
 				$('<button>').attr({
 					"type": "button",
 					"class": "dl-btn btn btn-default dropdown-toggle",
@@ -152,11 +196,38 @@ function appendBurnButton(bootloaders, firmwares) {
 			e.preventDefault();
 			selectFirmware(this);
 		});
+
+		$('#burn_btn').popover({
+			html: true,
+			trigger: 'manual',
+			placement: 'top',
+			content: '<span class="text-info" lang="en"></span><br/>' +
+				'<span class="burn-message-tooltip" lang="en">Open dropdown for more information.</span>'
+		});
 	}
 
-	$('#burn_dropdown').empty().append($('<li>').attr({
+	$('#burn_dropdown').empty();
+
+	$('#burn_dropdown').append($('<li>').append(
+		$('<a>').attr({
+			"id": "burn_message",
+			"href": "javascript:void(0)"
+		}).append(
+			$('<i>').attr({
+				"class": "glyphicon glyphicon-info-sign",
+				"style": "visibility:hidden;"
+			}),
+			$('<span>').attr({
+				"class": "text-info",
+				"lang": "en"
+			}).text('')
+		)
+	));
+
+	$('#burn_dropdown').append($('<li>').attr({
 		"role": "presentation",
-		"class": "dropdown-header"
+		"class": "dropdown-header",
+		"lang": "en"
 	}).text("Bootloader"));
 	for (var i = 0; i < bootloaders.length; i++) {
 		$('#burn_dropdown').append($('<li>').append(
@@ -168,7 +239,10 @@ function appendBurnButton(bootloaders, firmwares) {
 					"class": "glyphicon glyphicon-ok",
 					"style": "visibility:hidden;"
 				}),
-				" " + bootloaders[i]["name"]
+				" ",
+				$('<span>').attr({
+					"lang": "en"
+				}).text(bootloaders[i]["name"])
 			).data("param", bootloaders[i])
 		));
 	}
@@ -176,7 +250,8 @@ function appendBurnButton(bootloaders, firmwares) {
 	$('#burn_dropdown').append(
 		$('<li>').attr({
 			"role": "presentation",
-			"class": "dropdown-header"
+			"class": "dropdown-header",
+			"lang": "en"
 		}).text("Firmware"),
 		$('<li>').append(
 			$('<a>').attr({
@@ -187,7 +262,10 @@ function appendBurnButton(bootloaders, firmwares) {
 					"class": "glyphicon glyphicon-ok",
 					"style": "visibility:hidden;"
 				}),
-				" Default"
+				" ",
+				$('<span>').attr({
+					"lang": "en",
+				}).text("Default")
 			).data("param", "")
 		)
 	);
@@ -202,7 +280,10 @@ function appendBurnButton(bootloaders, firmwares) {
 						"class": "glyphicon glyphicon-ok",
 						"style": "visibility:hidden;"
 					}),
-					" " + firmwares[i]["name"]
+					" ",
+					$('<span>').attr({
+						"lang": "en"
+					}).text(firmwares[i]["name"])
 				).data("param", firmwares[i])
 			));
 		}
@@ -219,7 +300,10 @@ function appendBurnButton(bootloaders, firmwares) {
 						"class": "glyphicon glyphicon-ok",
 						"style": "visibility:hidden;"
 					}),
-					" Custom"
+					" ",
+					$('<span>').attr({
+						"lang": "en"
+					}).text("Custom")
 				).data("param", { "name": "Custom" }),
 				$('<input>').attr({
 					"id": "input_firmware_custom",
@@ -238,7 +322,132 @@ function selectBootloader(a) {
 	var $a = $(a);
 	$('#burn_dropdown .burn_bootloader i').css('visibility', 'hidden');
 	$a.find('i').css('visibility', 'visible');
-	return initBootloader($a.data("param"));
+	if (!_programmer) {
+		_programmer = new Programmer($a.data("param"), {
+			"message": _onProgrammerMessage,
+			"heartbeat": _onProgrammerHeartbeat,
+			"progress": _onProgrammerProgress
+		});
+	}
+	else {
+		_programmer.setBootloader($a.data("param"));
+	}
+}
+
+function _onProgrammerMessage(msg, cls, more) {
+	var $burn_btn = $('.burn-btn');
+	var $burn_msg = $('#burn_message');
+	if (msg) {
+		if (msg && msg != $burn_msg.data('message')) {
+			$burn_msg.data('message', msg);
+			$burn_msg.find('span').remove();
+			$burn_msg.append($('<span>').attr({
+				"class": "text-" + cls,
+				"lang": "en"
+			}).text(msg));
+			$burn_msg.show();
+			$burn_btn.parent().popover('destroy');
+			if (cls == 'danger') {
+				setTimeout(function() {
+					$burn_btn.parent().popover({
+						html: true,
+						trigger: 'hover',
+						placement: 'top',
+						content: '<span class="text-' + cls + '" lang="en">' + msg + '</span><br/>' +
+							'<span class="burn-message-tooltip" lang="en">Open dropdown for more information.</span>'
+					});
+				}, 200);
+				if (!$burn_btn.data('error')) {
+					$burn_btn.data('error', true);
+					updateBurnButton();
+				}
+			}
+			else {
+				if ($burn_btn.data('error')) {
+					$burn_btn.data('error', false);
+					updateBurnButton();
+				}
+			}
+			$('#burn_message_more').remove();
+			if (more) {
+				$burn_msg.tooltip({
+					html: true,
+					trigger: 'hover',
+					placement: 'right',
+					title: '<span class="burn-message-tooltip" lang="en">Click for more information.</span>'
+				}).show();
+				$burn_msg.unbind('click').on('click', function() {
+					$('#burn_message_more').modal('show');
+				});
+				$('body').append(
+					$('<div>').attr({
+						"id": "burn_message_more",
+						"class": "modal fade",
+						"tabindex": "-1",
+						"role": "dialog"
+					}).append(
+						$('<div>').attr({ "class": "modal-dialog" }).append(
+							$('<div>').attr({ "class": "modal-content" }).append(
+								$('<div>').attr({
+									"class": "modal-header"
+								}).append(
+									$('<button>').attr({
+										"type": "button",
+										"class": "close",
+										"data-dismiss": "modal",
+										"aria-label": "Close"
+									}).html('<span aria-hidden="true">&times;</span>'),
+									$('<h4>').attr({
+										"class": "modal-title",
+										"lang": "en"
+									}).text("Burn")
+								),
+								$('<div>').attr({
+									"class": "modal-body",
+									"lang": "en"
+								}).html(more),
+								$('<div>').attr({
+									"class": "modal-footer"
+								}).append(
+									$('<button>').attr({
+										"type": "button",
+										"class": "btn btn-default",
+										"data-dismiss": "modal",
+										"lang": "en"
+									}).text("Close")
+								)
+							)
+						)
+					)
+				);
+			}
+			else {
+				$burn_msg.tooltip('destroy');
+				$burn_msg.unbind('click');
+			}
+		}
+	}
+	else {
+		if (!msg && msg != $burn_msg.data()) {
+			$burn_msg.data('message', msg);
+			$burn_msg.find('span').remove();
+			$burn_msg.hide();
+			$burn_msg.tooltip('destroy');
+			$burn_btn.parent().popover('destroy');
+			if ($burn_btn.data('error')) {
+				$burn_btn.data('error', false);
+				updateBurnButton();
+			}
+		}
+	}
+}
+
+function _onProgrammerHeartbeat(alive) {
+	var $burn_btn = $('.burn-btn');
+	if ($burn_btn.data('alive') != alive) {
+		$burn_btn.data('alive', alive);
+		updateBurnButton();
+	}
 }
 
 function selectFirmware(a) {
@@ -269,35 +478,9 @@ function selectFirmware(a) {
 	}
 }
 
-function initBootloader(object) {
-	if (_bootloader) {
-		_bootloader.remove();
-	}
-	switch (object["name"]) {
-		case "Printer":
-			_bootloader = new BootloaderPrinter(object);
-			break;
-		case "DFU":
-			_bootloader = new BootloaderDfu(object);
-			break;
-		default:
-			_bootloader = null;
-			break;
-	}
-	if (_bootloader) {
-		_bootloader.appendTo($('.burn-btn').parent(), function() {
-			console.log("plugin ready");
-			updateDownloadButtonState();
-		});
-		_bootloader.moveTo($('#burn_icon').offset().top - 1, $('#burn_icon').offset().left);
-		return true;
-	}
-	return false;
-}
-
 function removeBurnButton() {
-	if (_bootloader) {
-		_bootloader.remove();
+	if (_programmer) {
+		_programmer = null;
 	}
 	if ($('#burn_btn').length != 0) {
 		$('#burn_btn').remove();
@@ -305,79 +488,94 @@ function removeBurnButton() {
 }
 
 function changeBurnButtonPending() {
-	$('.burn-btn').data("pending", true).addClass("disabled");
-	$('#burn_icon').removeAttr("class").addClass("fa fa-spinner spin");
+	if (!$('.burn-btn').data("pending")) {
+		$('.burn-btn').data("pending", true);
+		updateBurnButton();
+	}
 }
 
 function changeBurnButtonReady() {
-	$('#burn_icon').removeAttr("class").addClass("glyphicon glyphicon-fire");
 	if ($('.burn-btn').data("pending")) {
 		$('.burn-btn').data("pending", false);
-	}
-	switch ($('.burn-btn').data("file")) {
-		case "eep":
-			changeBurnButtonEEP();
-			break;
-		case "hex":
-			changeBurnButtonHEX();
-			break;
+		updateBurnButton();
 	}
 }
 
 function changeBurnButtonHEX() {
-	var $burn_btn = $('.burn-btn');
-	if ($burn_btn.length && !$burn_btn.data("pending")) {
-		var html = $burn_btn.html();
-		$burn_btn.html(html.replace(".eep", ".hex")).attr("id", "burn_hex");
-		if (!_bootloader.isAvailable()) {
-			$burn_btn.addClass("disabled");
-		}
-		else {
-			$burn_btn.removeClass("disabled");
-		}
+	if ($('.burn-btn').data("file") != "hex") {
+		$('.burn-btn').data("file", "hex").attr("id", "burn_hex");
+		updateBurnButton();
 	}
 }
 
 function changeBurnButtonEEP() {
-	var $burn_btn = $('.burn-btn');
-	if ($burn_btn.length && !$burn_btn.data("pending")) {
-		var html = $burn_btn.html();
-		$burn_btn.html(html.replace(".hex", ".eep")).attr("id", "burn_eep");
-		if (!_bootloader.isAvailable() || $burn_btn.is(".btn-default,.btn-danger")) {
-			$burn_btn.addClass("disabled");
-		}
-		else {
-			$burn_btn.removeClass("disabled");
-		}
-
+	if ($('.burn-btn').data("file") != "eep") {
+		$('.burn-btn').data("file", "eep").attr("id", "burn_eep");
+		updateBurnButton();
 	}
 }
 
-$(window).keydown(function(e) {
-	if (e.keyCode == 16) {
-		if ($('.burn-btn').data("file") != "hex") {
-			$('.burn-btn').data("file", "hex");
-			changeBurnButtonHEX();
+function updateBurnButton() {
+	var $container = $('#burn_btn');
+	var $button = $('.burn-btn');
+	var $icon = $('#burn_icon');
+	var $text = $('.burn-btn span');
+	var pending = $button.data('pending');
+	var alive = $button.data('alive');
+	var error = $button.data('error');
+	var file = $button.data('file');
+	var icon = '';
+	var disabled = false;
+	if (alive) {
+		if (pending) {
+			icon = 'pending';
+			disabled = true;
+		}
+		else {
+			icon = 'normal';
+			disabled = false;
+		}
+		if (error) {
+			disabled = true;
 		}
 	}
-});
-
-$(window).keyup(function(e) {
-	if (e.keyCode == 16) {
-		if ($('.burn-btn').data("file") != "eep") {
-			$('.burn-btn').data("file", "eep");
-			changeBurnButtonEEP();
+	else {
+		icon = 'dead';
+		disabled = true;
+	}
+	if (!pending) {
+		var text = $text.text() || '';
+		if (file == 'hex') {
+			$text.text(text.replace(".eep", ".hex"));
+		}
+		else {
+			$text.text(text.replace(".hex", ".eep"));
+			if ($button.is(".btn-default,.btn-danger")) {
+				disabled = true;
+			}
 		}
 	}
-});
-
-$(window).mousemove(function(e) {
-	if (!e.shiftKey && $('.burn-btn').data("file") != "eep") {
-		$('.burn-btn').data("file", "eep");
-		changeBurnButtonEEP();
+	switch (icon) {
+		case 'pending':
+			if (!$icon.is('.fa-spinner')) {
+				$('#burn_icon').removeAttr("class").addClass("fa fa-spinner spin");
+			}
+			break;
+		case 'dead':
+			if (!$icon.is('.glyphicon-ban-circle')) {
+				$('#burn_icon').removeAttr("class").addClass("glyphicon glyphicon-ban-circle");
+			}
+			break;
+		default:
+			if (!$icon.is('.glyphicon-fire')) {
+				$('#burn_icon').removeAttr("class").addClass("glyphicon glyphicon-fire");
+			}
+			break;
 	}
-	if (e.shiftKey && $('.burn-btn').data("file") != "hex") {
-		$('.burn-btn').data("file", "hex");
-		changeBurnButtonHEX();
+	if (disabled) {
+		$button.addClass('disabled');
 	}
-});
+	else {
+		$button.removeClass('disabled');
+	}
+}
