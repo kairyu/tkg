@@ -1,8 +1,26 @@
-window.lang = new Lang('en', undefined, undefined, {
+var language = navigator.userLanguage || navigator.language || navigator.bowserLanguage;
+switch (language.toLowerCase()) {
+	case 'ja':
+	case 'ja-jp':
+		language = 'ja';
+		break;
+	case 'zh-cn':
+		language = 'zh_sc';
+		break;
+	case 'zh-tw':
+		language = 'zh_tc';
+		break;
+	case 'en-us':
+	default:
+		language = 'en';
+		break;
+}
+window.lang = new Lang('en', language, true, {
 	"ja": "js/lang/ja.json",
 	"zh_sc": "js/lang/zh_sc.json",
 	"zh_tc": "js/lang/zh_tc.json"
 });
+
 var tkg = new TKG();
 var _keyboard = {};
 var _layer_mode = LAYER_NORMAL;
