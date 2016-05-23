@@ -191,6 +191,7 @@
 		"Open dropdown for more information.":"请点击下拉菜单查看详细信息",
 		"Click for more information.":"点击查看详细信息",
 		"App not found":"未检测到App",
+		"App version is too old":"App版本过旧",
 		"No devices found":"未检测到设备",
 		"Bootloader not supported":"尚不支持此引导程序"
 	},

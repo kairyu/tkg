@@ -186,6 +186,7 @@
 		"Open dropdown for more information.":"詳細は▼ボタンをクリックしてください",
 		"Click for more information.":"詳細はここをクリックしてください",
 		"App not found":"Appが見つからない",
+		"App version is too old":"Appは最新バージョンではない",
 		"No devices found":"デバイスが検出されていない",
 		"Bootloader not supported":"ブートローダがサポートされていない"
 	},

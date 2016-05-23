@@ -27,6 +27,7 @@ Programmer.prototype = {
 		'clijbellammajbodikfacoomakbhhmpb',
 		'kmbmjdabhpdnpeobnbdchihdcdaccidi'
 	],
+	_APP_VERSION: 0.7,
 	_APP_URL: 'https://chrome.google.com/webstore/detail/tkg-chrome-app/kmbmjdabhpdnpeobnbdchihdcdaccidi',
 	isAvailable: function() {
 		return this._port != null;
@@ -76,19 +77,18 @@ Programmer.prototype = {
 				catch (e) {
 					console.log(e);
 					console.log("lost connection");
-					self._onAppNotFound();
-					callback(false);
+					self._port = null;
 				}
 			}
 			if (!self._port) {
-				//console.log("detecting");
+				console.log("detecting");
 				//console.log(self._port);
 				if (!self._detecting) {
-					self._detect(function(found) {
-						if (!found) {
-							self._onAppNotFound();
+					self._detect(function(result) {
+						if (result != 'found') {
+							self._onAppNotFound(result == 'old version');
 						}
-						callback(found);
+						callback(result == 'found');
 					});
 				}
 			}
@@ -102,31 +102,59 @@ Programmer.prototype = {
 		self._detecting = true;
 		if (typeof chrome !== 'undefined') {
 			// async.js v1.5
-			async.detectSeries(self._appIds, function(appId, _callback) {
+			async.concat(self._appIds, function(appId, _callback) {
 				chrome.runtime.sendMessage(appId, { "request": "test", "appId": appId }, function(response) {
-					//console.log(response);
-					_callback(response && response.response == "ok");
+					console.log(response);
+					var result = '';
+					if (response && response.response == 'ok') {
+						if (response.version && response.version >= self._APP_VERSION) {
+							result = 'found';
+						}
+						else {
+							result = 'old version';
+						}
+					}
+					else {
+						result = 'not found';
+					}
+					_callback(null, { "appId": appId, "result": result });
+
 				});
-			}, function(result) {
+			}, function(error, results) {
 				self._detecting = false;
-				if (result) {
+				//console.log(results);
+				var appId = '';
+				var result = 'not found';
+				for (var i = 0; i < results.length; i++) {
+					if (results[i].result == 'found') {
+						appId = results[i].appId;
+						result = results[i].result;
+						break;
+					}
+					else if (results[i].result == 'old version') {
+						result = results[i].result;
+					}
+				}
+				if (appId) {
 					if (!self._port) {
-						console.log("connected to " + result);
-						self._port = chrome.runtime.connect(result);
+						console.log("Connected to " + appId);
+						self._port = chrome.runtime.connect(appId);
 						self._port.onMessage.addListener(self._onMessage.bind(self));
 						self._port.postMessage({ "request": "set", "bootloader": self._bootloader, "target": self._targetName });
 					}
-					callback.call(self, true);
 				}
-				else {
-					callback.call(self, false);
-				}
+				callback.call(self, result);
 			});
 		}
 	},
-	_onAppNotFound: function() {
+	_onAppNotFound: function(oldVersion) {
 		var self = this;
-		self.lastError = new Error("App not found");
+		if (oldVersion) {
+			self.lastError = new Error("App version is too old");
+		}
+		else {
+			self.lastError = new Error("App not found");
+		}
 		var more = 'Please install the latest version of <b>TKG Chrome App</b> from ' +
 			'<a href="' + self._APP_URL + '" target="_blank">Chrome Web Store</a> or ' +
 			'download it from <a href="tkg-chrome-app.crx">here</a> and install it manually ' +
