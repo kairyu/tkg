@@ -405,6 +405,9 @@ function updateKeyboardSelect() {
 				$sel.append($('<option>').text(list[i]["name"]));
 			}
 		}
+		if (!value) {
+			value = $sel.find('option').first().text();
+		}
 		$sel.val(value);
 		rebuildKeyboardSelect();
 	}).fail(function(d, textStatus, error) {
