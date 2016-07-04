@@ -92,6 +92,7 @@
 		"3.75,4": { "row": 4, "col": 1, "note": "WKL LWin" },
 		"4.75,4,1.5": { "row": 4, "col": 2, "note": "WKL LAlt" },
 		"6.25,4,7": { "row": 4, "col": 9, "note": "WKL Spacebar" },
+		"6.25,4,6": { "row": 4, "col": 9, "note": "WKL 6u Spacebar" },
 		"13.25,4,1.5": { "row": 4, "col": 11, "note": "WKL RAlt" },
 		"14.75,4": { "row": 4, "col": 12, "note": "WKL RWin" },
 		"15.75,4,1.5": { "row": 4, "col": 13, "note": "WKL RWin" },
