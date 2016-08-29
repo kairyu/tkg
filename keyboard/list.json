@@ -66,4 +66,8 @@
 	"name": "NerD (TKL)",
 	"size": 80,
 	"group": "third-party"
+},{
+	"name": "USB2USB",
+	"size": 0,
+	"group": "third-party"
 }]

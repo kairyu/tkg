@@ -270,6 +270,10 @@ body {
 	margin-bottom: 0;
 	margin-top: 20px;
 }
+#usb2usb-config-inner {
+	width: 400px;
+	padding: 20px;
+}
 
 span.glyphicon-chevron-down,
 span.glyphicon-chevron-up {

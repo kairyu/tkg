@@ -1,0 +1,45 @@
+{
+	"name": "USB2USB",
+	"description": "USB2USB Converter",
+	"max_layers": 3,
+	"max_fns": 32,
+	"eep_size": 1024,
+	"eep_start": 16,
+	"matrix_rows": 16,
+	"matrix_cols": 16,
+	"matrix_map": {},
+	"led_count": 3,
+	"led_map": [{
+		"name": "Num Lock",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NUM_LOCK",
+			"backlight": 0
+		}
+	},{
+		"name": "Caps Lock",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_CAPS_LOCK",
+			"backlight": 0
+		}
+	},{
+		"name": "Scroll Lock",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_SCROLL_LOCK",
+			"backlight": 0
+		}
+	}],
+	"led_additional_index": 0,
+	"bootloader": [{
+		"name": "DFU",
+		"mcu": "atmega32u4"
+	}],
+	"additional": [{
+		"start": 8,
+		"size": 6,
+		"type": "word",
+		"data": []
+	}]
+}

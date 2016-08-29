@@ -192,7 +192,9 @@ function TKG() {
 								var label = labels[i][j].toLowerCase();
 								var conflicted = false;
 								if (keycode_map_reversed[label]) {
-									conflicted = true;
+									if (keycode_map_reversed[label].indexOf(symbol) == -1) {
+										conflicted = true;
+									}
 								}
 								keycode_map_reversed[label] = _smartPush(keycode_map_reversed[label], symbol);
 								if (conflicted) {
@@ -375,10 +377,14 @@ function TKG() {
 	var _smartPush = function(target, value) {
 		if (target) {
 			if (_.isArray(target)) {
-				target.push(value);
+				if (target.indexOf(value) == -1) {
+					target.push(value);
+				}
 			}
 			else {
-				target = [ target, value ];
+				if (target != value) {
+					target = [ target, value ];
+				}
 			}
 		}
 		else {
@@ -449,10 +455,13 @@ function TKG() {
 					var layer_3 = JSON.parse(JSON.stringify(layer));
 				}
 				// parse keys
-				var state = _postParseLayer(layer_number, layer, "top", "bottom");
+				layer = _parseKeycode(layer, "top", "bottom");
+				var state = _postParseLayer(layer_number, layer);
 				if (layer_mode == LAYER_SIMPLE) {
-					var state_2 = _postParseLayer(layer_number + 1, layer_2, "side_print", "side_print_secondary");
-					var state_3 = _postParseLayer(layer_number + 2, layer_3, "top_secondary", "bottom_secondary");
+					layer_2 = _parseKeycode(layer_2, "side_print", "side_print_secondary");
+					var state_2 = _postParseLayer(layer_number + 1, layer_2);
+					layer_3 = _parseKeycode(layer_3, "top_secondary", "bottom_secondary");
+					var state_3 = _postParseLayer(layer_number + 2, layer_3);
 					// fn hack
 					if (_fns[0] && _fns[0]["action"] == "ACTION_NO") {
 						_setFns(0, { "action": "ACTION_LAYER_MOMENTARY", "args": [ layer_number + 1 ] });
@@ -480,7 +489,8 @@ function TKG() {
 				var layers = _parseRawData(raw_string, block_rows);
 				var state = _NONE;
 				for (var i = 0; i < layers.length; i++) {
-					var state_2 = _postParseLayer(layer_number + i, layers[i], "top", "bottom");
+					layers[i] = _parseKeycode(layers[i], "top", "bottom");
+					var state_2 = _postParseLayer(layer_number + i, layers[i]);
 					state = _worseState(state, state_2);
 				}
 				// return state
@@ -491,7 +501,7 @@ function TKG() {
 			// clear when raw string is empty
 			if (layer_mode == LAYER_NORMAL) {
 				var layer = {};
-				var state = _postParseLayer(layer_number, layer, "top", "bottom");
+				var state = _postParseLayer(layer_number, layer);
 				return state;
 			}
 			else if (layer_mode == LAYER_SIMPLE || layer_mode == LAYER_ALL_IN_ONE) {
@@ -503,7 +513,7 @@ function TKG() {
 		return _NONE;
 	}
 
-	var _postParseLayer = function(layer_number, layer, label_property, label_property_2) {
+	var _postParseLayer = function(layer_number, layer) {
 		_consoleInfoGroup("parseLayer");
 		_consoleInfo("layer_number: " + layer_number);
 
@@ -511,14 +521,6 @@ function TKG() {
 		var matrix = [];
 		var keymap_hex = [];
 		var keymap_symbol = [];
-
-		// parse keycode from label
-		layer = _parseKeycode(layer, label_property, label_property_2);
-		_consoleInfo("layer:");
-		_consoleInfo(layer);
-
-		// check warning
-		layer = _scanWarn(layer, label_property, label_property_2);
 
 		// set layer
 		_layers[layer_number] = layer;
@@ -569,7 +571,7 @@ function TKG() {
 		return state;
 	}
 
-	var _parseMatrixMapLayer = function(raw_string, rows, cols) {
+	var _parseMatrixMapLayer = function(raw_string, combining, parse_keycode, parser) {
 		_consoleInfoGroup("parseMatrixMapLayer");
 		_consoleInfo("Parse matrix map layer");
 		var layer = {};
@@ -579,8 +581,12 @@ function TKG() {
 			layer = _parseRawData(raw_string);
 		}
 
+		if (parse_keycode) {
+			_parseKeycode(layer, "top", "bottom");
+		}
+
 		// parse keys to matrix map
-		var matrix_map = _parseMatrixMap(layer, "top", rows, cols);
+		var matrix_map = _parseMatrixMap(layer, combining, parser);
 		_matrix_map = matrix_map;
 		_matrix_map_layer = layer;
 		_consoleInfo("matrix_map:");
@@ -758,15 +764,23 @@ function TKG() {
 		return layer;
 	}
 
-	var _parseMatrixMap = function(layer, label_property, col_collapse) {
+	var _parseMatrixMap = function(layer, combining, parser) {
 		var error = layer["error"];
 		var warn = layer["warn"];
 		var info = layer["info"];
 		var matrix_map = {};
 
-		if (col_collapse) {
-			var half_rows = parseInt((_matrix_rows + 1) / 2);
-			var half_cols = _matrix_cols;
+		if (combining) {
+			if (combining == 1) {
+				// col combining
+				var half_rows = parseInt((_matrix_rows + 1) / 2);
+				var half_cols = _matrix_cols;
+			}
+			else if (combining == 2) {
+				// row combining
+				var half_rows = _matrix_rows;
+				var half_cols = parseInt((_matrix_cols + 1) / 2);
+			}
 		}
 
 		// check keys property
@@ -775,16 +789,19 @@ function TKG() {
 		}
 
 		// check label parameter
+		/*
 		if (!label_property) {
 			_consoleError("Wrong function call");
 			return false;
 		}
+		*/
 
 		// parse matrix map from key labels
 		var keys = layer["keys"];
 		for (var i = 0; i < keys.length; i++) {
 			var key = keys[i];
 			// check label property
+			/*
 			var label;
 			if (key["label"][label_property] || key["label"][label_property] == "") {
 				label = key["label"][label_property].toLowerCase();
@@ -794,19 +811,26 @@ function TKG() {
 				_consoleDebug("No valid label: " + key["x"] + "," + key["y"]);
 				_consoleDebug(key);
 			}
+			*/
+			var result = parser(key);
 			// get row col mapping
-			var mapping = /^(\d+),(\d+)$/.exec(label);
-			if (mapping) {
-				var index = _positionToIndex(key["x"], key["y"], key["w"], key["h"], key["x2"], key["w2"]);
+			//var mapping = /^(\d+),(\d+)$/.exec(label);
+			if (result) {
+				//var index = _positionToIndex(key["x"], key["y"], key["w"], key["h"], key["x2"], key["w2"]);
+				var index = _positionToIndex(key);
 				// check existence
 				if (index in matrix_map) {
 					_raiseWarn(warn, "matrix_map_overlapping", key, index, key);
 				}
 				else {
 					// check validness
+					/*
 					var row = parseInt(mapping[1]) - 1;
 					var col = parseInt(mapping[2]) - 1;
-					if (col_collapse) {
+					*/
+					var row = parseInt(result["row"]);
+					var col = parseInt(result["col"]);
+					if (combining == 1) {
 						if (row >= 0 && row < half_rows && col >= 0 && col < half_cols) {
 							matrix_map[index] = {};
 							matrix_map[index]["row"] = row;
@@ -816,6 +840,21 @@ function TKG() {
 							matrix_map[index] = {};
 							matrix_map[index]["row"] = row;
 							matrix_map[index]["col"] = col - half_cols;
+						}
+						else {
+							_raiseError(error, "matrix_map_invalid_mapping", key, row + ',' + col, key);
+						}
+					}
+					else if (combining == 2) {
+						if (row >= 0 && row < half_rows && col >= 0 && col < half_cols) {
+							matrix_map[index] = {};
+							matrix_map[index]["row"] = row;
+							matrix_map[index]["col"] = col;
+						}
+						else if (row >= half_rows && (row - half_rows) < _matrix_rows && col >= half_cols && col < _matrix_cols) {
+							matrix_map[index] = {};
+							matrix_map[index]["row"] = row - half_rows;
+							matrix_map[index]["col"] = col;
 						}
 						else {
 							_raiseError(error, "matrix_map_invalid_mapping", key, row + ',' + col, key);
@@ -842,6 +881,18 @@ function TKG() {
 	}
 
 	var _parseKeycode = function(layer, label_property, label_property_2) {
+		// parse keycode from label
+		layer = _parseKeycodeSub(layer, label_property, label_property_2);
+		_consoleInfo("layer:");
+		_consoleInfo(layer);
+
+		// check warning
+		layer = _scanWarn(layer, label_property, label_property_2);
+
+		return layer;
+	}
+
+	var _parseKeycodeSub = function(layer, label_property, label_property_2) {
 		var error = layer["error"];
 		var warn = layer["warn"];
 		var info = layer["info"];
@@ -1206,7 +1257,8 @@ function TKG() {
 		// parse matrix from position
 		for (var i = 0; i < keys.length; i++) {
 			var key = keys[i];
-			var index = _positionToIndex(key["x"], key["y"], key["w"], key["h"], key["x2"], key["w2"]);
+			//var index = _positionToIndex(key["x"], key["y"], key["w"], key["h"], key["x2"], key["w2"]);
+			var index = _positionToIndex(key);
 			if (_matrix_map[index]) {
 				var row = _matrix_map[index]["row"];
 				var col = _matrix_map[index]["col"];
@@ -1378,19 +1430,20 @@ function TKG() {
 		return label;
 	}
 
-	var _positionToIndex = function(x, y, w, h, x2, w2) {
-		var index = x + "," + y;
-		if (w > 1 || h > 1) {
-			index += "," + w;
+	//var _positionToIndex = function(x, y, w, h, x2, w2) {
+	var _positionToIndex = function(key) {
+		var index = key.x + "," + key.y;
+		if (key.w > 1 || key.h > 1) {
+			index += "," + key.w;
 		}
-		if (h > 1) {
-			index += "," + h;
+		if (key.h > 1) {
+			index += "," + key.h;
 		}
-		if (x2 || w2) {
-			index += "," + x2;
+		if (key.x2 || key.w2) {
+			index += "," + key.x2;
 		}
-		if (w2) {
-			index += "," + w2;
+		if (key.w2) {
+			index += "," + key.w2;
 		}
 		return index;
 	}
@@ -1833,5 +1886,7 @@ function TKG() {
 	this.getLayersCount = _getLayersCount;
 	this.getFnsCount = _getFnsCount;
 	this.getKeysCount = _getKeysCount;
-
+	this.parseRawData = _parseRawData;
+	this.postParseLayer = _postParseLayer;
+	this.positionToIndex = _positionToIndex;
 }

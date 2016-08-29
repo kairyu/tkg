@@ -4,11 +4,11 @@ function initKeyboardConfig(name) {
 	var result = parseKeyboardName(name);
 	var main = result["main"];
 	var variant = result["variant"];
-	if (main.match(/^kimera.*/)) {
+	if (main.match(/^(kimera.*|usb2usb)/)) {
+		_keyboard_config = loadKeyboardConfig(main, variant);
 		$('#kbd-cfg').show();
 		$('#kbd-cfg-container').show();
 		initKeyboardConfigPopover(main, variant);
-		_keyboard_config = loadKeyboardConfig(main, variant);
 		afterLoadKeyboardConfig(main, variant);
 	}
 	else {
@@ -178,6 +178,21 @@ function initKeyboardConfigPanel(main, variant) {
 
 		kimeraRowColMappingChange(variant);
 		kimeraMatrixMappingRefresh();
+	}
+	else if (main.match(/^(usb2usb)/)) {
+		var $orig_layout = $("#kbd-cfg-container #usb2usb-orig-layout-val");
+		$orig_layout.val(_keyboard_config["original_layout"]);
+		$orig_layout.data('last', $orig_layout.val());
+		$orig_layout.on('blur_custom', function() {
+			var $orig_layout = $("#kbd-cfg-container #usb2usb-orig-layout-val");
+			var raw = $orig_layout.val();
+			var last = $orig_layout.data('last') || "";
+			if (last != raw) {
+				$orig_layout.data('last', raw);
+				usb2usbOriginalLayoutChange(variant);
+			}
+		});
+		usb2usbOriginalLayoutChange(variant);
 	}
 }
 
@@ -386,4 +401,137 @@ function kimeraMakeConfigData() {
 	}
 
 	return data;
+}
+
+function usb2usbOriginalLayoutChange(variant) {
+	var $orig_layout = $("#kbd-cfg-container #usb2usb-orig-layout-val");
+	var raw = $orig_layout.val();
+	_keyboard_config["original_layout"] = raw;
+	usb2usbParseMatrixMapping(variant);
+}
+
+function usb2usbParseMatrixMapping(variant) {
+	_keyboard_config["matrix_map_state"] = tkg.parseMatrixMapLayer(_keyboard_config["original_layout"],
+			0,
+			true,
+			function(key) {
+				var keycode = parseInt(key.keycode, 16);
+				if (key.keycode) {
+					return {
+						"row": (keycode & 0xF0) >> 4,
+						"col": keycode & 0x0F
+					};
+				}
+				else {
+					return null;
+				}
+			});
+	_keyboard_config["matrix_map"] = tkg.getMatrixMap();
+	_keyboard_config["physical_rows"] = tkg.parseRowCount(_keyboard_config["original_layout"]);
+	usb2usbOriginalLayoutRefresh();
+	usb2usbConfigUpdate(true, variant);
+	updateLayers();
+}
+
+function usb2usbOriginalLayoutRefresh() {
+	var $orig_layout = $("#kbd-cfg-container #usb2usb-orig-layout-val");
+	var raw = $orig_layout.val();
+	var state = _keyboard_config["matrix_map_state"];
+
+	var $div = $orig_layout.parent();
+	// clear validation states
+	var class_names = [ "has-success", "has-warning", "has-error" ];
+	for (var i in class_names) {
+		var class_name = class_names[i];
+		if ($div.hasClass(class_name)) {
+			$div.removeClass(class_name);
+		}
+	}
+	// set validation state
+	if (raw != "") {
+		switch (state) {
+			case tkg.NONE:
+				$div.addClass("has-success");
+				break;
+			case tkg.WARNING:
+				$div.addClass("has-warning");
+				break;
+			case tkg.ERROR:
+				$div.addClass("has-error");
+				break;
+		}
+	}
+
+	// set data for popover
+	$orig_layout.data('error', tkg.getMatrixMapError());
+	$orig_layout.data('warning', tkg.getMatrixMapWarning());
+	$orig_layout.data('info', tkg.getMatrixMapInfo());
+	usb2usbSetupOriginalLayoutPopover();
+}
+
+function usb2usbSetupOriginalLayoutPopover() {
+	var $orig_layout = $("#kbd-cfg-container #usb2usb-orig-layout-val");
+	var has_popover = false;
+	var error = $orig_layout.data('error');
+	var warning = $orig_layout.data('warning');
+	var info = $orig_layout.data('info');
+	var top_prop = [ "top", "side_print" ];
+	var bottom_prop = [ "bottom", "side_print_secondary" ];
+	var $content = $('<div>');
+
+	if (error && !_.isEmpty(error)) {
+		$content.append(appendLayerError(error, top_prop[0], bottom_prop[0]));
+		has_popover = true;
+	}
+	if (warning && !_.isEmpty(warning)) {
+		$content.append(appendLayerWarning(warning, top_prop[0], bottom_prop[0]));
+		has_popover = true;
+	}
+	if (info && !_.isEmpty(info)) {
+		$content.append(appendLayerInfo(info, top_prop[0], bottom_prop[0]));
+		has_popover = true;
+	}
+
+	$orig_layout.popover('destroy');
+	$orig_layout.nextAll().remove();
+	if (has_popover) {
+		// setup popover
+		$orig_layout.popover({
+			animation: false,
+			html: true,
+			trigger: 'focus',
+			content: $content.html(),
+			container: '#layer-info-container',
+		});
+
+		$orig_layout.on('shown.bs.popover', function() {
+			var $popover = $('#layer-info-container .popover');
+			adjustPopoverPosition($popover);
+
+			// setup tooltip of keys
+			$('#layer-info-container .popover').find('li.key').tooltip('destroy').tooltip({
+				trigger: 'hover',
+				placement: 'bottom',
+				html: true,
+				delay: { show: 500, hide: 100 },
+				container: '#key-info-container',
+			});
+		});
+	}
+}
+
+function usb2usbConfigUpdate(init, variant) {
+	_keyboard["matrix_rows"] = _keyboard_config["matrix_rows"];
+	_keyboard["matrix_cols"] = _keyboard_config["matrix_cols"];
+	_keyboard["matrix_size"] = _keyboard_config["matrix_size"];
+	_keyboard["physical_rows"] = _keyboard_config["physical_rows"];
+	_keyboard["matrix_map"] = _keyboard_config["matrix_map"];
+	if (init) {
+		tkg.init({
+			"max_layers": _keyboard["max_layers"],
+			"matrix_rows": _keyboard_config["matrix_rows"],
+			"matrix_cols": _keyboard_config["matrix_cols"],
+			"matrix_map": _keyboard_config["matrix_map"]
+		});
+	}
 }
