@@ -3,7 +3,7 @@
 	"description": "STARYÚ 5-key keypad",
 	"max_layers": 32,
 	"max_fns": 32,
-	"eep_size": 512,
+	"eep_size": 1024,
 	"eep_start": 16,
 	"matrix_rows": 1,
 	"matrix_cols": 5,
@@ -37,6 +37,6 @@
 	}],
 	"bootloader": [{
 		"name": "DFU",
-		"mcu": "atmega16u2"
+		"mcu": "atmega32u2"
 	}]
 }

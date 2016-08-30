@@ -1,0 +1,7 @@
+{
+	"eep_size": 512,
+	"bootloader": [{
+		"name": "DFU",
+		"mcu": "atmega16u2"
+	}]
+}
