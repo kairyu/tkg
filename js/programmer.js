@@ -21,9 +21,6 @@ Programmer.prototype = {
 	constructor: Programmer,
 	_appIds: [
 		'bfocfdombeaehbdbobmeljgofafkbned',
-		'pbfobdfgnfiogaipbempgngfjoegonng',
-		'eljdabheajghhgaedllojendinfkheom',
-		'jfmbofokfcfdleabbjkedppadilhgdhn',
 		'clijbellammajbodikfacoomakbhhmpb',
 		'kmbmjdabhpdnpeobnbdchihdcdaccidi'
 	],
@@ -32,11 +29,43 @@ Programmer.prototype = {
 		return this._port != null;
 	},
 	needHEX: function() {
-		return true;
+		switch (this._bootloader) {
+			case "DFU":
+				return true;
+			case "RawHID":
+				return false;
+			case "HID":
+				return false;
+			case "Printer":
+				return false;
+			case "MassStorage":
+				return false;
+			default:
+				return false;
+		}
 	},
 	setBootloader: function(object) {
-		this._targetName = object["mcu"] || "";
 		this._bootloader = object["name"] || "";
+		switch (this._bootloader) {
+			case "DFU":
+				this._targetName = object["mcu"] || "";
+				break;
+			case "RawHID":
+				this._targetName = { "mcu": object["mcu"], "vendorId": object["vid"], "productId": object["pid"] };
+				break;
+			case "HID":
+				this._targetName = { "mcu": object["mcu"], "vendorId": object["vid"], "productId": object["pid"] };
+				break;
+			case "Printer":
+				this._targetName = object["printer_name"] || "";
+				break;
+			case "MassStorage":
+				this._targetName = object["volume_label"] || "";
+				break;
+			default:
+				this._targetName = "";
+				break;
+		}
 		if (this._port) {
 			this._port.postMessage({ "request": "set", "bootloader": this._bootloader, "target": this._targetName });
 		}
@@ -46,7 +75,7 @@ Programmer.prototype = {
 			this._heartbeatSuspend = true;
 			this._done = done;
 			this._fail = fail;
-			this._port.postMessage({ "request": "get" });
+			this._port.postMessage({ "request": "get", "name": "bootloader" });
 		}
 	},
 	burnHEX: function(hex, done, fail) {
@@ -62,7 +91,12 @@ Programmer.prototype = {
 			this._heartbeatSuspend = true;
 			this._done = done;
 			this._fail = fail;
-			this._port.postMessage({ "request": "reflash", "hex": hex, "eep": eep });
+			if (hex) {
+				this._port.postMessage({ "request": "reflash", "hex": hex, "eep": eep });
+			}
+			else {
+				this._port.postMessage({ "request": "reflash", "eep": eep });
+			}
 		}
 	},
 	_heartbeatTask: function() {

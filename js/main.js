@@ -23,6 +23,7 @@ window.lang = new Lang('en', language, true, {
 
 var tkg = new TKG();
 var _keyboard = {};
+var _keyboardName = '';
 var _layer_mode = LAYER_NORMAL;
 var _advanced_mode = false;
 var _view_sortby = "name";
@@ -422,6 +423,7 @@ function rebuildKeyboardSelect() {
 
 function initialize(keyboard_name, layer_mode) {
 	var keyboard = loadKeyboard(keyboard_name);
+	_keyboardName = keyboard_name;
 	_keyboard = keyboard;
 	initKeyboardConfig(keyboard_name);
 	initKeyboardInfo(keyboard);

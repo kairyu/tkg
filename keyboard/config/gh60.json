@@ -140,8 +140,19 @@
 		"name": "DFU",
 		"mcu": "atmega32u4"
 	},{
+		"name": "RawHID",
+		"mcu": "atmega32u4",
+		"vid": 65261,
+		"pid": 24672
+	},{
+		"name": "HID",
+		"mcu": "atmega32u4"
+	},{
 		"name": "Printer",
 		"printer_name": "Generic / Text Only"
+	},{
+		"name": "MassStorage",
+		"volume_label": "LUFA BOOT"
 	}],
 	"firmware": [{
 		"name": "No Console"

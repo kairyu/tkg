@@ -215,8 +215,14 @@
 	}],
 	"led_additional_index": 0,
 	"bootloader": [{
+		"name": "HID",
+		"mcu": "atmega32u4"
+	},{
 		"name": "Printer",
 		"printer_name": "Generic / Text Only"
+	},{
+		"name": "DFU",
+		"mcu": "atmega32u4"
 	}],
 	"firmware": [{
 		"name": "No Console"
