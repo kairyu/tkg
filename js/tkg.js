@@ -674,6 +674,9 @@ function TKG() {
 		var c_h = 1;
 		var c_x2 = 0;
 		var c_w2 = 0;
+		var c_r = 0;
+		var c_rx = 0;
+		var c_ry = 0;
 		var before_first_key = true;
 		var stepped = false;
 		var rowspan = false;
@@ -706,6 +709,7 @@ function TKG() {
 							c_x = c_x2 + el.x2;
 						}
 						else {
+							c_x += el.x || 0;
 							c_x2 = c_x;
 						}
 						if (el.w2) {
@@ -721,6 +725,12 @@ function TKG() {
 								c_w2 = c_w;
 							}
 						}
+					}
+					if (el.r) {
+						c_r = el.r;
+						c_rx = el.rx || c_rx || 0;
+						c_ry = el.ry || c_ry || 0;
+						c_y = el.y;
 					}
 				}
 				// a key
@@ -741,6 +751,13 @@ function TKG() {
 						if (c_x2 != c_x || c_w2 != c_w) { key["x2"] = c_x2; }
 						if (c_w2 != c_w) { key["w2"] = c_w2; }
 						rowspan = false;
+					}
+					if (c_r) {
+						key["r"] = c_r;
+						key["rx"] = c_rx;
+						key["ry"] = c_ry;
+						key["x"] += c_rx;
+						key["y"] += c_ry;
 					}
 					keys.push(key);
 					c_x += c_w;
@@ -1444,6 +1461,9 @@ function TKG() {
 		}
 		if (key.w2) {
 			index += "," + key.w2;
+		}
+		if (key.r) {
+			index += ":" + key.r + "," + key.rx + "," + key.ry;
 		}
 		return index;
 	}
