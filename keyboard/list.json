@@ -74,4 +74,12 @@
 	"name": "USB2USB",
 	"size": 0,
 	"group": "third-party"
+},{
+	"name": "ErgoDone",
+	"size": 76,
+	"group": "first-party"
+},{
+	"name": "CW40",
+	"size": 40,
+	"group": "first-party"
 }]

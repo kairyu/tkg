@@ -1,0 +1,128 @@
+{
+	"name": "CryptoWall40",
+	"description": "An open source 40% keyboard designed by K.T.E.C.",
+	"max_layers": 8,
+	"max_fns": 32,
+	"eep_size": 1024,
+	"eep_start": 17,
+	"matrix_rows": 4,
+	"matrix_cols": 11,
+	"physical_rows": 4,
+	"matrix_map": {
+		"0,0": {"row": 0, "col": 0},
+		"1,0": {"row": 0, "col": 1},
+		"2,0": {"row": 0, "col": 2},
+		"3,0": {"row": 0, "col": 3},
+		"4,0": {"row": 0, "col": 4},
+		"5,0": {"row": 0, "col": 5},
+		"6,0": {"row": 0, "col": 6},
+		"7,0": {"row": 0, "col": 7},
+		"8,0": {"row": 0, "col": 8},
+		"9,0": {"row": 0, "col": 9},
+		"10,0": {"row": 0, "col": 10},
+		"11,0": {"row": 3, "col": 10},
+		"0,1,1.25": {"row": 1, "col": 0},
+		"1.25,1": {"row": 1, "col": 1},
+		"2.25,1": {"row": 1, "col": 2},
+		"3.25,1": {"row": 1, "col": 3},
+		"4.25,1": {"row": 1, "col": 4},
+		"5.25,1": {"row": 1, "col": 5},
+		"6.25,1": {"row": 1, "col": 6},
+		"7.25,1": {"row": 1, "col": 7},
+		"8.25,1": {"row": 1, "col": 8},
+		"9.25,1": {"row": 1, "col": 9},
+		"10.25,1,1.75": {"row": 1, "col": 10},
+		"0,2,1.75": {"row": 2, "col": 0},
+		"1.75,2": {"row": 2, "col": 1},
+		"2.75,2": {"row": 2, "col": 2},
+		"3.75,2": {"row": 2, "col": 3},
+		"4.75,2": {"row": 2, "col": 4},
+		"5.75,2": {"row": 2, "col": 5},
+		"6.75,2": {"row": 2, "col": 6},
+		"7.75,2": {"row": 2, "col": 7},
+		"8.75,2": {"row": 2, "col": 8},
+		"9.75,2,1.25": {"row": 2, "col": 9},
+		"11,2": {"row": 2, "col": 10},
+		"0,3,1.25": {"row": 3, "col":0},
+		"1.25,3": {"row": 3, "col": 1},
+		"2.25,3": {"row": 3, "col": 2},
+		"3.25,3,6.25": {"row": 3, "col": 5},
+		"9.5,3,1.25": {"row": 3, "col": 8},
+		"10.75,3,1.25": {"row": 3, "col": 9}
+	},
+	"led_count": 4,
+	"led_map": [{
+		"name": "Caps Lock",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_CAPS_LOCK",
+			"backlight": 1
+		}
+	},{
+		"name": "Esc",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NO",
+			"backlight": 1
+		}
+	},{
+		"name": "WASD",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_LAYER",
+			"args": [ 1 ],
+			"backlight": 1
+		}
+	},{
+		"name": "Backlight",
+		"description": "",
+		"default": {
+			"binding": "LEDMAP_NO",
+			"backlight": 1
+		}
+	}],
+	"led_additional_index": 0,
+	"action_functions": [{
+		"name": "RGB Toggle",
+		"description": "Toggle RGB light",
+		"opt": []
+	},
+	{
+		"name": "RGB Decrease",
+		"description": "Decrease level of RGB light",
+		"opt": []
+	},
+	{
+		"name": "RGB Increase",
+		"description": "Increase level of RGB light",
+		"opt": []
+	},
+	{
+		"name": "RGB Step",
+		"description": "Change RGB light level by step",
+		"opt": []
+	},
+	{
+		"name": "Tricky Esc",
+		"description": "Pressing this key with shift key, you will get a ~(tilde)!",
+		"opt": []
+	}],
+	"bootloader": [{
+		"name": "HID",
+		"mcu": "atmega32u4",
+		"vid": 4617,
+		"pid": 8999
+	},{
+		"name": "DFU",
+		"mcu": "atmega32u4"
+	}],
+	"additional": [{
+		"start": 7,
+		"size": 8,
+		"type": "word",
+		"data": []
+	}],
+	"firmware": [{
+		"name": "Prototype"
+	}]
+}
