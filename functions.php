@@ -83,7 +83,7 @@ const uint8_t keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
 
 EOF;
 	$file .= generate_keymaps_content($macro_name, $matrix_rows, $matrix_cols, $keymaps, $blanks);
-	$file .= "\n};\n\n";
+	$file .= "};\n\n";
 	// fn_actions block
 	$file .= <<<EOF
 #ifdef KEYMAP_SECTION_ENABLE
@@ -249,16 +249,20 @@ function str_patch($input, $length, $patch_string = " ") {
 function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_entries = array()) {
 	// prepare symbols
 	$symbols = array();
+	$matrix_cols_trimmed = 0;
 	for ($row = 0; $row < $matrix_rows; $row++) {
 		array_push($symbols, array());
+		$last = 0;
 		for ($col = 0; $col < $matrix_cols; $col++) {
 			if (!in_array("$row,$col", $blank_entries)) {
 				$symbols[$row][$col] = "K$row" . chr(ord("A") + $col);
+				$last = $col;
 			}
 			else {
 				$symbols[$row][$col] = "";
 			}
 		}
+		$matrix_cols_trimmed = max($matrix_cols_trimmed, $last + 1);
 	}
 	// generate macro
 	$macro = "#define $macro_name( \\\n    ";
@@ -273,7 +277,7 @@ function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_e
 		}, array_map(function($array) {
 			return join_with_func_glur(function($current, $next) {
 				if (is_null($next)) {
-					return str_empty($current) ? "     " : "";
+					return "";
 				}
 				else {
 					$glue = str_empty($current) ? " " : ",";
@@ -284,7 +288,7 @@ function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_e
 			});
 		}, $symbols), function($array, $index) {
 			return find_next_non_empty($array, $index);
-		}, $matrix_cols * 5 - 1);
+		}, $matrix_cols_trimmed * 5 - 1);
 	$macro .= "  \\\n) { \\\n    { ";
 	$macro .= join_with_func_glur(function($current, $next, $width) {
 			if (is_null($next)) {
@@ -315,6 +319,16 @@ function generate_keymap_macro($macro_name, $matrix_rows, $matrix_cols, $blank_e
 
 function generate_keymaps_content($macro_name, $matrix_rows, $matrix_cols, $matrices, $blank_entries = array()) {
 	// prepare symbols
+	$matrix_cols_trimmed = 0;
+	for ($row = 0; $row < $matrix_rows; $row++) {
+		$last = 0;
+		for ($col = 0; $col < $matrix_cols; $col++) {
+			if (!in_array("$row,$col", $blank_entries)) {
+				$last = $col;
+			}
+		}
+		$matrix_cols_trimmed = max($matrix_cols_trimmed, $last + 1);
+	}
 	foreach ($matrices as &$matrix) {
 		foreach ($blank_entries as $blank) {
 			list($row,$col) = explode(",", $blank);
@@ -350,7 +364,7 @@ function generate_keymaps_content($macro_name, $matrix_rows, $matrix_cols, $matr
 			});
 		}, $matrix), function($array, $index) {
 			return find_next_non_empty($array, $index);
-		}, $matrix_cols * 5 - 1);
+		}, $matrix_cols_trimmed * 5 - 1);
 		$content .= "),\n";
 	}
 	return $content;
