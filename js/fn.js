@@ -136,7 +136,7 @@ function appendFnParams(id) {
 	if (fn["param"]) {
 		var param = fn["param"];
 		var args = fn["args"];
-		var lr;
+		var lr = null;
 		var $params = $();
 		for (var i = 0; i < param.length; i++) {
 			var arg = args[i];
@@ -168,7 +168,10 @@ function appendFnParams(id) {
 						$('<div>').attr({ "class": "input-group btn-group" }).append(
 							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("modifier")
 						).append(
-							makeSelect({ "id": id + "-param-lr", "class": "btn" }, tkg.getFnOptions("lr"), lr)
+							//makeSelect({ "id": id + "-param-lr", "class": "btn" }, tkg.getFnOptions("lr"), lr)
+							function() {
+								if (lr) return makeSelect({ "id": id + "-param-lr", "class": "btn" }, tkg.getFnOptions("lr"), lr);
+							}()
 						).append(
 							makeSelect({ "id": id + "-param-mods", "class": "btn", "multiple": "multiple" },
 								tkg.getFnOptions("mod"),
@@ -234,16 +237,18 @@ function appendFnParams(id) {
 			}
 		});
 		// lr param
-		$row.find('.fn-param-mods select:first').multiselect({
-			buttonTitle: function(options, select) {
-				var $selected = $(options[0]);
-				return $selected.attr('title');
-			},
-			onChange: function(option, checked) {
-				$row.data('lr', $(option).val());
-				onFnParamsChange(id);
-			}
-		});
+		if ($row.find('.fn-param-mods select').length == 2) {
+			$row.find('.fn-param-mods select:first').multiselect({
+				buttonTitle: function(options, select) {
+					var $selected = $(options[0]);
+					return $selected.attr('title');
+				},
+				onChange: function(option, checked) {
+					$row.data('lr', $(option).val());
+					onFnParamsChange(id);
+				}
+			});
+		}
 		// mods param
 		$row.find('.fn-param-mods select:last').multiselect({
 			buttonText: function(options, select) {

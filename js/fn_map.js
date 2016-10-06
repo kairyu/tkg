@@ -274,6 +274,25 @@ var action_map = {
 		"param": [ "layer" ],
 		"default": [ 1 ]
 	},
+	"ACTION_LAYER_MODS": {
+		"group": "Layer advanced action",
+		"name": "Momentary with modifiers",
+		"description": "Registers modifier key(s) simulataneously with layer switching",
+		"code": function (layer, mods) {
+			if (layer >= 0 && layer < 16) {
+				return "0xA" + dechex(layer) + "E" + dechex(modsCode(mods) & 0xF);
+			}
+			else if (layer < 32) {
+				layer -= 16;
+				return "0xB" + dechex(layer) + "E" + dechex(modsCode(mods) & 0xF);
+			}
+			else {
+				return "";
+			}
+		},
+		"param": [ "layer", "mods" ],
+		"default": [ 1, [] ]
+	},
 	"ACTION_LAYER_TAP_KEY": {
 		"group": "Layer advanced action",
 		"name": "Dual-role send key",
