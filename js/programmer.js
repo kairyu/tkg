@@ -7,6 +7,7 @@ var Programmer = function(object, callback) {
 	this._targetName = '';
 	this._bootloader = '';
 	this._bootloaderReady = false;
+	this._watchdog = null;
 	this._message = callback.message;
 	this._heartbeat = callback.heartbeat;
 	this._progress = callback.progress;
@@ -105,6 +106,11 @@ Programmer.prototype = {
 		if (!self._heartbeatSuspend) {
 			if (self._port) {
 				try {
+					self._watchdog = setTimeout(function() {
+						console.log("lost connection");
+						self._onAppNotFound();
+						callback(false);
+					}, 1000);
 					self._port.postMessage({ "request": "device" });
 				}
 				catch (e) {
@@ -169,6 +175,9 @@ Programmer.prototype = {
 		self._port = null;
 	},
 	_onMessage: function(msg) {
+		if (this._watchdog) {
+			clearTimeout(this._watchdog);
+		}
 		if (msg.request != 'device') {
 			console.log(msg);
 		}
