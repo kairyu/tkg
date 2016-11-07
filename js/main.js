@@ -425,6 +425,7 @@ function initialize(keyboard_name, layer_mode) {
 	var keyboard = loadKeyboard(keyboard_name);
 	_keyboardName = keyboard_name;
 	_keyboard = keyboard;
+	loadFirmwareInfo();
 	initKeyboardConfig(keyboard_name);
 	initKeyboardInfo(keyboard);
 	initForm(layer_mode);
@@ -482,6 +483,47 @@ function loadKeyboard(keyboard_name) {
 	return keyboard;
 }
 
+function loadFirmwareInfo() {
+	var list = [{'name': ''}];
+	if (_keyboard['firmware']) {
+		for (var i = 0; i < _keyboard['firmware'].length; i++) {
+			list.push({'name': _keyboard['firmware'][i]['name']});
+		}
+	}
+
+	var result = parseKeyboardName(_keyboardName);
+	var main = result['main'];
+	var variant = result['variant'];
+	var filename = main;
+	if (variant) {
+		filename += '-' + variant;
+	}
+	for (var i = 0; i < list.length; i++) {
+		if (list[i]['name']) {
+			list[i]['filename'] = filename + "-" + normalizeString(list[i]['name']) + '.hex';
+		}
+		else {
+			list[i]['filename'] = filename + '.hex';
+			list[i]['name'] = 'Default';
+		}
+	}
+	_keyboard['firmware_info'] = list;
+	for (var i = 0; i < _keyboard['firmware_info'].length; i++) {
+		(function(i) {
+			$.getJSON("https://api.github.com/repos/kairyu/tkg-firmware/commits?path=" + _keyboard['firmware_info'][i]['filename'], function(response) {
+				if (response[0] && response[0].commit && response[0].commit.committer) {
+					var iso_date = response[0].commit.committer.date;
+					if (iso_date) {
+						var date = new Date(iso_date);
+						_keyboard['firmware_info'][i]['date'] = date.toLocaleString();
+						$('#kbd-info').data('bs.popover').options.content = getKeyboardInfoContent(_keyboard);
+					}
+				}
+			});
+		})(i);
+	}
+}
+
 function initKeyboardInfo(keyboard) {
 	// remove old
 	$('#kbd-info').popover('destroy');
@@ -492,12 +534,25 @@ function initKeyboardInfo(keyboard) {
 		html: true,
 		trigger: 'hover',
 		container: '#kbd-info-container',
-		content:
-			'<strong><span lang="en">Name</span>: </strong>' + keyboard['name'] + '<br/>' +
-			'<strong><span lang="en">Description</span>: </strong><span lang="en">' + keyboard['description'] + '</span><br/>' +
-			'<strong><span lang="en">Max Layers</span>: </strong>' + keyboard['max_layers'] + '<br/>' +
-			'<strong><span lang="en">Max Fns</span>: </strong>' + keyboard['max_fns']
+		content: getKeyboardInfoContent(keyboard)
 	});
+}
+
+function getKeyboardInfoContent(keyboard) {
+	var content =
+		'<strong><span lang="en">Name</span>: </strong>' + keyboard['name'] + '<br/>' +
+		'<strong><span lang="en">Description</span>: </strong><span lang="en">' + keyboard['description'] + '</span><br/>' +
+		'<strong><span lang="en">Max Layers</span>: </strong>' + keyboard['max_layers'] + '<br/>' +
+		'<strong><span lang="en">Max Fns</span>: </strong>' + keyboard['max_fns'] + '<br/>' +
+		'<strong><span lang="en">Firmware</span>: </strong><br/>';
+	for (var i = 0; i < keyboard['firmware_info'].length; i++) {
+		var info = keyboard['firmware_info'][i];
+		content += '&nbsp;&nbsp;<strong><span lang="en">' + info['name'] + '</span>: </strong>' + (info['date'] || 'Loading...');
+		if (i < keyboard['firmware_info'].length - 1) {
+			content += '<br/>';
+		}
+	}
+	return content;
 }
 
 function initForm(layer_mode) {
