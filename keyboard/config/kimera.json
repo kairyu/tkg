@@ -39,16 +39,36 @@
 		}
 	}],
 	"led_additional_index": 1,
+	"action_functions": [{
+		"name": "RGB Toggle",
+		"description": "Toggle RGB light",
+		"opt": []
+	},
+	{
+		"name": "RGB Decrease",
+		"description": "Decrease level of RGB light",
+		"opt": []
+	},
+	{
+		"name": "RGB Increase",
+		"description": "Increase level of RGB light",
+		"opt": []
+	},
+	{
+		"name": "RGB Step",
+		"description": "Change RGB light level by step",
+		"opt": []
+	}],
 	"bootloader": [{
 		"name": "DFU",
 		"mcu": "atmega32u4"
 	}],
 	"additional": [{
-		"start": 15,
+		"start": 16,
 		"size": 34,
 		"data": []
 	},{
-		"start": 7,
+		"start": 8,
 		"size": 8,
 		"type": "word",
 		"data": []
