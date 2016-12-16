@@ -241,10 +241,29 @@ $(function() {
 		var $this = $(this);
 		if (isKLEUrl($this.val())) {
 			$this.attr('disabled', 'disabled');
-			getKLERawData($this.val(), function(data) {
+			getKLERawData($this.val(), function(data, notes) {
 				$this.val(data);
 				$this.removeAttr('disabled');
 				$this.trigger('blur_custom', [ $this ]);
+				if (notes) {
+					console.log(notes);
+					var result = tkg.importFns(notes);
+					if (!result) {
+						notes = notes.replace(/\r\n/, "\n");
+						notes = notes.split("\n\n");
+						for (var i = 0; i < notes.length; i++) {
+							if (notes[i].toLowerCase().startsWith("fn:\n")) {
+								var fn = notes[i].substring(notes[i].indexOf("\n") + 1)
+								fn = fn.replace(/```/g, "");
+								result = tkg.importFns(fn);
+							}
+						}
+					}
+					if (result) {
+						appendFns();
+					}
+
+				}
 			}, function() {
 				$(this).removeAttr('disabled');
 				$(this).trigger('blur_custom', [ $this ]);
@@ -561,6 +580,7 @@ function loadFirmwareInfo() {
 						$('#kbd-info').data('bs.popover').options.content = getKeyboardInfoContent(_keyboard);
 					}
 				}
+			}).fail(function(jqXHR, textStatus, errorThrown) {
 			});
 		})(i);
 	}
@@ -932,14 +952,18 @@ function getKLERawData(url, success, fail) {
 			});
 		}
 		else if (type == "gists") {
-			$.getJSON("http://api.github.com/gists/" + hash,  function(data) {
-					var content = "";
-					for (var name in data["files"]) {
-						content = data["files"][name]["content"]
-						break;
+			$.getJSON("//api.github.com/gists/" + hash,  function(data) {
+				var kbd = "";
+				var notes = "";
+				for (var name in data["files"]) {
+					if (name.endsWith(".kbd.json")) {
+						kbd = data["files"][name]["content"]
 					}
-					console.log(content);
-					success.call(this, content.slice(1, -1));
+					else if (name.endsWith(".notes.md")) {
+						notes = data["files"][name]["content"]
+					}
+				}
+				success.call(this, kbd.slice(1, -1), notes);
 			}).fail(function() {
 				fail.call(this);
 			});
