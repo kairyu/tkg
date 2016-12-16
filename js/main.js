@@ -375,7 +375,28 @@ function switchPage(id) {
 
 function updateKeyboardSelect() {
 	$('#keyboard-sel').multiselect({
-		buttonContainer: '<div class="btn-group" />'
+		buttonContainer: '<div class="btn-group" />',
+		buttonText: function(options, select) {
+			if (options.length) {
+				var $selected = $(options[0]);
+				if ("preset" in _keyboard_config) {
+					var preset = _keyboard_config["preset"];
+					if (preset >= 0) {
+						var name = _keyboard_config["presets"][preset]["name"];
+					}
+					else {
+						var name = "Custom";
+					}
+					return $selected.text() + ' - <span lang="en">' + name + '</span> <b class="caret"></b>';
+				}
+				else {
+					return $selected.text() + ' <b class="caret"></b>';
+				}
+			}
+			else {
+				return 'Loading...';
+			}
+		}
 	});
 	$.ajaxSetup({ async: false, cache: false });
 	$.getJSON("keyboard/list.json", function(list) {

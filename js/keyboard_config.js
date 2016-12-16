@@ -17,6 +17,7 @@ function initKeyboardConfig(name) {
 	else {
 		$('#kbd-cfg').hide();
 		$('#kbd-cfg-container').hide();
+		_keyboard_config = {};
 	}
 }
 
@@ -63,11 +64,15 @@ function initKeyboardConfigPopover(main, variant) {
 
 function afterLoadKeyboardConfig(main, variant) {
 	if (main.match(/^(kimera.*)/)) {
+		_.extend(_keyboard_config, _keyboard_config["presets"][_keyboard_config["preset"]]);
+		_keyboard_config["row_mapping_input"] = _keyboard_config["row_mapping"];
+		_keyboard_config["col_mapping_input"] = _keyboard_config["col_mapping"];
 		tkg.init({
 			"matrix_rows": _keyboard_config["matrix_rows"],
 			"matrix_cols": _keyboard_config["matrix_cols"]
 		});
 		kimeraParseMatrixMapping(variant);
+		$('#keyboard-sel').multiselect('refresh');
 		/*
 		_keyboard_config["matrix_map_state"] = tkg.parseMatrixMapLayer(_keyboard_config["matrix_map_raw"], (variant == "two_headed" ? 2 : 0));
 		_keyboard_config["matrix_map"] = tkg.getMatrixMap();
@@ -86,6 +91,17 @@ function afterLoadKeyboardConfig(main, variant) {
 
 function initKeyboardConfigPanel(main, variant) {
 	if (main.match(/^(kimera.*)/)) {
+		var $preset_sel = $('#kbd-cfg-container #kimera-preset-sel');
+		var list = _keyboard_config["presets"];
+		for (var i = 0; i < list.length; i++) {
+			$preset_sel.append($('<option>').attr({ 'lang': 'en', 'value': i }).text(list[i]["name"]));
+		}
+		$preset_sel.append($('<option>').attr({ 'lang': 'en', 'value': -1 }).text('Custom'));
+		$preset_sel.multiselect().change(function() {
+			$preset_sel.val(this.value);
+			kimeraPresetChange(variant);
+		});
+
 		var $row_input = $('#kbd-cfg-container #kimera-row-val');
 		var $col_input = $('#kbd-cfg-container #kimera-col-val');
 
@@ -135,7 +151,7 @@ function initKeyboardConfigPanel(main, variant) {
 			else {
 				$row_input.data('last', '').val('');
 			}
-			kimeraRowColMappingChange(variant);
+			kimeraRowColMappingChange(variant, true);
 		});
 		$col_clear.click(function () {
 			if ($col_input.data('role') == 'tagsinput') {
@@ -144,7 +160,7 @@ function initKeyboardConfigPanel(main, variant) {
 			else {
 				$col_input.data('last', '').val('');
 			}
-			kimeraRowColMappingChange(variant);
+			kimeraRowColMappingChange(variant, true);
 		});
 
 		// matrix mapping
@@ -162,8 +178,10 @@ function initKeyboardConfigPanel(main, variant) {
 			}
 		});
 
-		kimeraRowColMappingChange(variant);
-		kimeraMatrixMappingRefresh();
+		$preset_sel.val(_keyboard_config["preset"]).multiselect('refresh');
+
+		kimeraRowColMappingChange(variant, false);
+		kimeraMatrixMappingChange();
 	}
 	else if (main.match(/^(usb2usb)/)) {
 		var $orig_layout = $("#kbd-cfg-container #usb2usb-orig-layout-val");
@@ -230,7 +248,7 @@ function kimeraInitRowColInput(variant, row_col) {
 		},
 	});
 	$input.change(function() {
-		kimeraRowColMappingChange(variant);
+		kimeraRowColMappingChange(variant, true);
 	});
 	$($input.tagsinput('input')).attr('lang', $input.attr('lang')).blur(function() {
 		var val = $input.val();
@@ -269,7 +287,7 @@ function kimeraDestoryRowColInput(variant, row_col) {
 	$input.unbind().tagsinput('destroy');
 	$input.data('role', '');
 	$input.change(function() {
-		kimeraRowColMappingChange(variant);
+		kimeraRowColMappingChange(variant, true);
 	});
 	$input.blur(function() {
 		var val = $input.val();
@@ -299,7 +317,53 @@ function kimeraRowColIsRight(vals, item) {
 	}
 }
 
-function kimeraRowColMappingChange(variant) {
+function kimeraPresetChange(variant) {
+	var $preset_sel = $('#kbd-cfg-container #kimera-preset-sel');
+	_keyboard_config["preset"] = $preset_sel.val();
+	$('#keyboard-sel').multiselect('refresh');
+	var val = _keyboard_config["preset"];
+	if (val >= 0) {
+		var preset = _keyboard_config["presets"][val];
+
+		kimeraDestoryRowColInput(variant, KIMERA_ROW);
+		kimeraDestoryRowColInput(variant, KIMERA_COL);
+		_keyboard_config["row_mapping_input"] = preset["row_mapping"];
+		_keyboard_config["col_mapping_input"] = preset["col_mapping"];
+		kimeraInitRowColInput(variant, KIMERA_ROW);
+		kimeraInitRowColInput(variant, KIMERA_COL);
+		kimeraRowColMappingChange(variant, false);
+
+		var $matrix_textarea = $("#kbd-cfg-container #kimera-matrix-val");
+		$matrix_textarea.val(preset["matrix_map_raw"]);
+		kimeraMatrixMappingChange(variant);
+	}
+}
+
+function kimeraPresetUpdate(variant) {
+	var $preset_sel = $('#kbd-cfg-container #kimera-preset-sel');
+	var list = _keyboard_config["presets"];
+	var cur = _keyboard_config["preset"];
+	var row_mapping = _keyboard_config["row_mapping_input"];
+	var col_mapping = _keyboard_config["col_mapping_input"];
+	var matrix_map_raw = _keyboard_config["matrix_map_raw"];
+	var preset = -1;
+	for (var i = 0; i < list.length; i++) {
+		if (_.isEqual(list[i]["row_mapping"], row_mapping) &&
+			_.isEqual(list[i]["col_mapping"], col_mapping) &&
+			list[i]["matrix_map_raw"] == matrix_map_raw
+		) {
+			preset = i;
+			break;
+		}
+	}
+	if (preset != cur) {
+		$preset_sel.val(preset).multiselect('refresh');
+		_keyboard_config["preset"] = preset;
+		$('#keyboard-sel').multiselect('refresh');
+	}
+}
+
+function kimeraRowColMappingChange(variant, update) {
 	var $row_input = $('#kbd-cfg-container #kimera-row-val');
 	var $col_input = $('#kbd-cfg-container #kimera-col-val');
 	var row_val = $row_input.val();
@@ -341,8 +405,11 @@ function kimeraRowColMappingChange(variant) {
 	else {
 		_keyboard_config["matrix_rows"] = _keyboard_config["row_mapping"].length;
 	}
-	kimeraConfigUpdate(true, variant);
-	kimeraMatrixMappingChange(variant);
+
+	kimeraConfigUpdate(update, variant);
+	if (update) {
+		kimeraMatrixMappingChange(variant);
+	}
 
 	$row_input.data('valid_pins', valid_pins);
 	$col_input.data('valid_pins', valid_pins);
@@ -391,6 +458,7 @@ function kimeraParseMatrixMapping(variant) {
 	kimeraMatrixMappingRefresh();
 	kimeraConfigUpdate(true, variant);
 	updateLayers();
+	kimeraPresetUpdate(variant);
 }
 
 function kimeraMatrixMappingRefresh() {
@@ -493,6 +561,14 @@ function kimeraConfigUpdate(init, variant) {
 			"matrix_rows": _keyboard_config["matrix_rows"],
 			"matrix_cols": _keyboard_config["matrix_cols"],
 			"matrix_map": _keyboard_config["matrix_map"]
+		});
+	}
+	else {
+		tkg.init({
+			"max_layers": _keyboard["max_layers"],
+			"matrix_rows": _keyboard_config["matrix_rows"],
+			"matrix_cols": _keyboard_config["matrix_cols"],
+			"matrix_map": {}
 		});
 	}
 }
