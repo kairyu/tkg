@@ -307,6 +307,12 @@ function download(id) {
 		fn_actions = tkg.getFnActionsSymbol();
 		leds = tkg.getLedsSymbol();
 	}
+	else if (id == 'dl_hex') {
+		return downloadHEX();
+	}
+	else {
+		return;
+	}
 
 	if ($('#dl_form').length > 0) {
 		$('#dl_form').remove();
@@ -345,6 +351,21 @@ function download(id) {
 	console.log(fn_actions);
 	console.log(leds);
 	console.log($('#dl_form').html());
+	$('#dl_form').submit();
+}
+
+function downloadHEX() {
+	var result = parseKeyboardName(_keyboardName);
+
+	if ($('#dl_form').length > 0) {
+		$('#dl_form').remove();
+	}
+	var $form = $("<form>").attr({ "id": "dl_form", "action": "download.php?file=hex", "method": "POST" }).append(
+			$("<input>").attr({ "type": "hidden", "name": "name_main", "value": result["main"] }),
+			$("<input>").attr({ "type": "hidden", "name": "name_variant", "value": result["variant"] || "" })
+		);
+
+	$("body").append($form);
 	$('#dl_form').submit();
 }
 
@@ -968,23 +989,45 @@ versionCompare = function(left, right) {
 	return 0;
 }
 
+function changeDownloadButtonHEX() {
+	$dl_btn = $('#dl_eep');
+	if ($dl_btn.length) {
+		$dl_btn.html($dl_btn.html().replace('.eep', '.hex'));
+		$dl_btn.attr('id', 'dl_hex').removeClass('dl-btn-restrict disabled');
+		updateDownloadButtonState();
+	}
+}
+
+function changeDownloadButtonEEP() {
+	$dl_btn = $('#dl_hex');
+	if ($dl_btn.length) {
+		$dl_btn.html($dl_btn.html().replace('.hex', '.eep'));
+		$dl_btn.attr('id', 'dl_eep').addClass('dl-btn-restrict');
+		updateDownloadButtonState();
+	}
+}
+
 $(window).keydown(function(e) {
 	if (e.keyCode == 16) {
+		changeDownloadButtonHEX();
 		changeBurnButtonHEX();
 	}
 });
 
 $(window).keyup(function(e) {
 	if (e.keyCode == 16) {
+		changeDownloadButtonEEP();
 		changeBurnButtonEEP();
 	}
 });
 
 $(window).mousemove(function(e) {
 	if (!e.shiftKey) {
+		changeDownloadButtonEEP();
 		changeBurnButtonEEP();
 	}
 	if (e.shiftKey) {
+		changeDownloadButtonHEX();
 		changeBurnButtonHEX();
 	}
 });

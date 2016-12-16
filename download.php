@@ -17,11 +17,13 @@ $eeprom_size = 0;
 $file = '';
 $header = '';
 $filename = '';
+$name_main = '';
+$name_variant = '';
 
 // check get
 if (isset($_GET['file'])) {
 	$filetype = $_GET['file'];
-	if (!in_array($filetype, array('bin', 'eep', 'c'))) {
+	if (!in_array($filetype, array('bin', 'hex', 'eep', 'c'))) {
 		die('Invalid Parameter');
 	}
 }
@@ -32,38 +34,52 @@ else {
 disable_magic_quotes();
 
 // check post data
-if (
-	isset($_POST['matrix_rows']) &&
-	isset($_POST['matrix_cols']) &&
-	isset($_POST['max_layers']) &&
-	isset($_POST['max_fns']) &&
-	isset($_POST['keymaps']) &&
-	isset($_POST['fn_actions'])
-) {
-	$matrix_rows = intval($_POST['matrix_rows']);
-	$matrix_cols = intval($_POST['matrix_cols']);
-	$max_layers = intval($_POST['max_layers']);
-	$max_fns = intval($_POST['max_fns']);
-	$keymaps = json_decode($_POST['keymaps']);
-	$fn_actions = json_decode($_POST['fn_actions']);
-	if ($filetype == 'bin' || $filetype == 'eep') {
-		if (isset($_POST['eep_size']) && isset($_POST['eep_start'])) {
-			$eep_size = intval($_POST['eep_size']);
-			$eep_start = intval($_POST['eep_start']);
+if ($filetype == 'bin' || $filetype == 'eep' || $filetype == 'c') {
+	if (
+		isset($_POST['matrix_rows']) &&
+		isset($_POST['matrix_cols']) &&
+		isset($_POST['max_layers']) &&
+		isset($_POST['max_fns']) &&
+		isset($_POST['keymaps']) &&
+		isset($_POST['fn_actions'])
+	) {
+		$matrix_rows = intval($_POST['matrix_rows']);
+		$matrix_cols = intval($_POST['matrix_cols']);
+		$max_layers = intval($_POST['max_layers']);
+		$max_fns = intval($_POST['max_fns']);
+		$keymaps = json_decode($_POST['keymaps']);
+		$fn_actions = json_decode($_POST['fn_actions']);
+		if ($filetype == 'bin' || $filetype == 'eep') {
+			if (isset($_POST['eep_size']) && isset($_POST['eep_start'])) {
+				$eep_size = intval($_POST['eep_size']);
+				$eep_start = intval($_POST['eep_start']);
+			}
+			else {
+				die('Invalid EEP Data');
+			}
+			if (isset($_POST['additional'])) {
+				$additional = json_decode($_POST['additional'], true);
+			}
 		}
-		else {
-			die('Invalid EEP Data');
-		}
-		if (isset($_POST['additional'])) {
-			$additional = json_decode($_POST['additional'], true);
+		if (isset($_POST['matrix_size'])) {
+			$matrix_size = intval($_POST['matrix_size']);
 		}
 	}
-	if (isset($_POST['matrix_size'])) {
-		$matrix_size = intval($_POST['matrix_size']);
+	else {
+		die('Invalid Data');
 	}
 }
-else {
-	die('Invalid Data');
+else if ($filetype == 'hex') {
+	if (
+		isset($_POST['name_main']) &&
+		isset($_POST['name_variant'])
+	) {
+		$name_main = str_replace('./\\', '', $_POST['name_main']);
+		$name_variant = str_replace('./\\', '', $_POST['name_variant']);
+	}
+	else {
+		die('Invalid Data');
+	}
 }
 
 // make bin file
@@ -145,6 +161,16 @@ if ($filetype == 'c') {
 	// prepend header
 	$header = generate_c_header();
 	$file = $header . $file;
+}
+
+// make hex file
+if ($filetype == 'hex') {
+	$filename = $name_main;
+	if (!empty($name_variant)) {
+		$filename .= '-' . $name_variant;
+	}
+	$filename .= '.hex';
+	$file = file_get_contents('keyboard/firmware/' . $filename);
 }
 
 // download
