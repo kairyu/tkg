@@ -869,7 +869,7 @@ var keycode_map = {
 	"KC__VOLDOWN": {
 		"name": "Volumn Down",
 		"description": "Volumn Down",
-		"keycode": "0x82"
+		"keycode": "0x81"
 	},
 	"KC_LOCKING_CAPS": {
 		"name": "Locking Caps Lock",
@@ -1135,10 +1135,24 @@ var keycode_map = {
 		"label": [ "previous track", "prevtrack", "previous", "prev" ],
 		"short_name": "KC_MPRV"
 	},
+	"KC_MEDIA_FAST_FORWARD": {
+		"name": "Media Fast Forward",
+		"description": "Media Fast Forward",
+		"keycode": "0xAD",
+		"label": [ "apple next", "fast forward", "fastforward", "ffwd" ],
+		"short_name": "KC_MFFD"
+	},
+	"KC_MEDIA_REWIND": {
+		"name": "Media Rewind",
+		"description": "Media Rewind",
+		"keycode": "0xAE",
+		"label": [ "apple prev", "rewind", "rwd" ],
+		"short_name": "KC_MRWD"
+	},
 	"KC_MEDIA_STOP": {
 		"name": "Media Stop",
 		"description": "Media Stop",
-		"keycode": "0xAD",
+		"keycode": "0xAF",
 		"label": [ "stop" ],
 		"label_priority": [ "stop" ],
 		"short_name": "KC_MSTP"
@@ -1146,14 +1160,14 @@ var keycode_map = {
 	"KC_MEDIA_PLAY_PAUSE": {
 		"name": "Media Play/Pause",
 		"description": "Media Play/Pause",
-		"keycode": "0xAE",
+		"keycode": "0xB0",
 		"label": [ "play", "apple play" ],
 		"short_name": "KC_MPLY"
 	},
 	"KC_MEDIA_SELECT": {
 		"name": "Media Select",
 		"description": "Media Select",
-		"keycode": "0xAF",
+		"keycode": "0xB1",
 		"label": [ "select" ],
 		"label_priority": [ "select" ],
 		"short_name": "KC_MSEL"
@@ -1161,93 +1175,79 @@ var keycode_map = {
 	"KC_MEDIA_EJECT": {
 		"name": "Media Eject",
 		"description": "Media Eject",
-		"keycode": "0xB0",
+		"keycode": "0xB2",
 		"label": [ "eject" ],
 		"short_name": "KC_EJCT"
 	},
 	"KC_MAIL": {
 		"name": "Mail",
 		"description": "Mail",
-		"keycode": "0xB1",
+		"keycode": "0xB3",
 		"label": [ "mail" ],
 		"short_name": "KC_MAIL"
 	},
 	"KC_CALCULATOR": {
 		"name": "Calculator",
 		"description": "Calculator",
-		"keycode": "0xB2",
+		"keycode": "0xB4",
 		"label": [ "calc", "cal" ],
 		"short_name": "KC_CALC"
 	},
 	"KC_MY_COMPUTER": {
 		"name": "My Computer",
 		"description": "My Computer",
-		"keycode": "0xB3",
+		"keycode": "0xB5",
 		"label": [ "my computer", "mycomp" ],
 		"short_name": "KC_MYCM"
 	},
 	"KC_WWW_SEARCH": {
 		"name": "WWW Search",
 		"description": "WWW Search",
-		"keycode": "0xB4",
+		"keycode": "0xB6",
 		"label": [ "www search", "wwwsearch", "wsearch" ],
 		"short_name": "KC_WSCH"
 	},
 	"KC_WWW_HOME": {
 		"name": "WWW Home",
 		"description": "WWW Home",
-		"keycode": "0xB5",
+		"keycode": "0xB7",
 		"label": [ "www home", "wwwhome", "whome" ],
 		"short_name": "KC_WHOM"
 	},
 	"KC_WWW_BACK": {
 		"name": "WWW Back",
 		"description": "WWW Back",
-		"keycode": "0xB6",
+		"keycode": "0xB8",
 		"label": [ "www back", "wwwback", "wback" ],
 		"short_name": "KC_WBAK"
 	},
 	"KC_WWW_FORWARD": {
 		"name": "WWW Forward",
 		"description": "WWW Forward",
-		"keycode": "0xB7",
+		"keycode": "0xB9",
 		"label": [ "www forward", "wwwforward", "wforward" ],
 		"short_name": "KC_WFWD"
 	},
 	"KC_WWW_STOP": {
 		"name": "WWW Stop",
 		"description": "WWW Stop",
-		"keycode": "0xB8",
+		"keycode": "0xBA",
 		"label": [ "www stop", "wwwstop", "wstop" ],
 		"short_name": "KC_WSTP"
 	},
 	"KC_WWW_REFRESH": {
 		"name": "WWW Refresh",
 		"description": "WWW Refresh",
-		"keycode": "0xB9",
+		"keycode": "0xBB",
 		"label": [ "www refresh", "wwwrefresh", "wrefresh" ],
 		"short_name": "KC_WREF"
 	},
 	"KC_WWW_FAVORITES": {
 		"name": "WWW Favorites",
 		"description": "WWW Favorites",
-		"keycode": "0xBA",
+		"keycode": "0xBC",
 		"label": [ "www favorites", "wwwfavorites", "wfav" ],
 		"short_name": "KC_WFAV"
-	},
-	"KC_MEDIA_FAST_FORWARD": {
-		"name": "Media Fast Forward",
-		"description": "Media Fast Forward",
-		"keycode": "0xBB",
-		"label": [ "apple next", "fast forward", "fastforward", "ffwd" ],
-		"short_name": "KC_MFFD"
-	},
-	"KC_MEDIA_REWIND": {
-		"name": "Media Rewind",
-		"description": "Media Rewind",
-		"keycode": "0xBC",
-		"label": [ "apple prev", "rewind", "rwd" ],
-		"short_name": "KC_MRWD"
 	},
 	
 	/* Fn Key */
