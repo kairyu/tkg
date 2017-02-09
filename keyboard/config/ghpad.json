@@ -4,7 +4,7 @@
 	"max_layers": 32,
 	"max_fns": 32,
 	"eep_size": 1024,
-	"eep_start": 17,
+	"eep_start": 19,
 	"matrix_rows": 6,
 	"matrix_cols": 4,
 	"physical_rows": 6,
@@ -43,44 +43,87 @@
 	"led_count": 5,
 	"led_map": [{
 		"name": "SW1",
-		"description": "",
+		"description": "The LED of the first key in the top row",
 		"default": {
-			"binding": "LEDMAP_NUM_LOCK",
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_INDICATOR",
+					"param": {
+						"ind": "LEDMAP_NUM_LOCK"
+					}
+				},
+				"backlight": 1
+			}
 		}
 	},{
 		"name": "SW6",
-		"description": "",
+		"description": "The LED of the second key in the top row",
 		"default": {
-			"binding": "LEDMAP_NO",
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_DEFAULT_LAYER",
+					"param": {
+						"layer": 1
+					}
+				},
+				"backlight": 1
+			}
 		}
 	},{
 		"name": "SW11",
-		"description": "",
+		"description": "The LED of the third key in the top row",
 		"default": {
-			"binding": "LEDMAP_NO",
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_DEFAULT_LAYER",
+					"param": {
+						"layer": 2
+					}
+				},
+				"backlight": 1
+			}
 		}
 	},{
 		"name": "SW16",
-		"description": "",
+		"description": "The LED of the forth key in the top row",
 		"default": {
-			"binding": "LEDMAP_NO",
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_DEFAULT_LAYER",
+					"param": {
+						"layer": 3
+					}
+				},
+				"backlight": 1
+			}
 		}
 	},{
-		"name": "Others",
-		"description": "",
+		"name": "Other",
+		"description": "The LEDs of the other keys beside above (Only for RSI)",
 		"default": {
-			"binding": "LEDMAP_NO",
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_HIGH",
+			"param": {
+				"binding": "LEDMAP_BINDING_NO",
+				"backlight": 1
+			}
 		}
 	}],
 	"action_macros": [{
 		"name": "00",
 		"description": "Keypad 00",
 		"opt": []
+	}],
+	"action_functions": [{
+		"name": "RGB LED",
+		"description": "Control RGB LEDs",
+		"opt": [
+			"Toggle", "Decrease Level", "Increase Level",
+			"Step", "Decrease Brightness", "Increase Brightness"
+		]
 	}],
 	"led_additional_index": 0,
 	"bootloader": [{
@@ -91,7 +134,7 @@
 		"name": "No Console"
 	}],
 	"additional": [{
-		"start": 7,
+		"start": 9,
 		"size": 10,
 		"type": "word",
 		"data": []

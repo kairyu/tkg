@@ -71,7 +71,7 @@ $(function() {
 	appendAvailableLabelTable();
 
 	tkg.setKeycodeMap(keycode_map);
-	tkg.setLedMaps(binding_map, reverse_map, backlight_map);
+	tkg.setLedMaps(led_map, binding_map, ind_map, reverse_map, backlight_map);
 
 	// select keyboard
 	$('#keyboard-sel').change(function() {
@@ -233,6 +233,7 @@ $(function() {
 		updateAdvancedModeState();
 		updateBurnButtonState();
 		updateDownloadBinButtonState();
+		updateLedMapState();
 	});
 	updateAdvancedModeState();
 

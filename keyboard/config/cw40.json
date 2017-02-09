@@ -4,7 +4,7 @@
 	"max_layers": 8,
 	"max_fns": 32,
 	"eep_size": 1024,
-	"eep_start": 17,
+	"eep_start": 19,
 	"matrix_rows": 4,
 	"matrix_cols": 11,
 	"physical_rows": 4,
@@ -50,62 +50,84 @@
 		"9.5,3,1.25": {"row": 3, "col": 8},
 		"10.75,3,1.25": {"row": 3, "col": 9}
 	},
-	"led_count": 4,
+	"led_count": 5,
 	"led_map": [{
 		"name": "Caps Lock",
-		"description": "",
+		"description": "Typically the LED of Caps Lock key",
 		"default": {
-			"binding": "LEDMAP_CAPS_LOCK",
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_INDICATOR",
+					"param": {
+						"ind": "LEDMAP_CAPS_LOCK"
+					}
+				},
+				"backlight": 1
+			}
 		}
 	},{
 		"name": "Esc",
-		"description": "",
+		"description": "Typically the LED of Esc key",
 		"default": {
-			"binding": "LEDMAP_NO",
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_LAYER",
+					"param": {
+						"layer": 3
+					}
+				},
+				"backlight": 1
+			}
 		}
 	},{
 		"name": "WASD",
-		"description": "",
+		"description": "Typically the LEDs of WASD keys",
 		"default": {
-			"binding": "LEDMAP_LAYER",
-			"args": [ 1 ],
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_LAYER",
+					"param": {
+						"layer": 1
+					}
+				},
+				"backlight": 1
+			}
 		}
 	},{
 		"name": "Backlight",
-		"description": "",
+		"description": "The LEDs of all the other keys",
 		"default": {
-			"binding": "LEDMAP_NO",
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": "LEDMAP_BINDING_NO",
+				"backlight": 1
+			}
+		}
+	},{
+		"name": "RGB",
+		"description": "The RGB LED underglow",
+		"default": {
+			"value": "LEDMAP_RGB_LED",
+			"param": {
+				"led_count": 12
+			}
 		}
 	}],
 	"led_additional_index": 0,
 	"action_functions": [{
-		"name": "RGB Toggle",
-		"description": "Toggle RGB light",
-		"opt": []
-	},
-	{
-		"name": "RGB Decrease",
-		"description": "Decrease level of RGB light",
-		"opt": []
-	},
-	{
-		"name": "RGB Increase",
-		"description": "Increase level of RGB light",
-		"opt": []
-	},
-	{
-		"name": "RGB Step",
-		"description": "Change RGB light level by step",
-		"opt": []
-	},
-	{
 		"name": "Tricky Esc",
-		"description": "Pressing this key with shift key, you will get a ~(tilde)!",
+		"description": "By pressing this key with shift key, you will get a ~(tilde)!",
 		"opt": []
+	},{
+		"name": "RGB LED",
+		"description": "Control RGB LEDs",
+		"opt": [
+			"Toggle", "Decrease Level", "Increase Level",
+			"Step", "Decrease Brightness", "Increase Brightness"
+		]
 	}],
 	"bootloader": [{
 		"name": "HID",
@@ -113,11 +135,16 @@
 		"vid": 4617,
 		"pid": 8999
 	},{
+		"name": "RawHID",
+		"mcu": "atmega32u4",
+		"vid": 4617,
+		"pid": 9000
+	},{
 		"name": "DFU",
 		"mcu": "atmega32u4"
 	}],
 	"additional": [{
-		"start": 7,
+		"start": 9,
 		"size": 8,
 		"type": "word",
 		"data": []

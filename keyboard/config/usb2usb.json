@@ -13,22 +13,46 @@
 		"name": "Num Lock",
 		"description": "",
 		"default": {
-			"binding": "LEDMAP_NUM_LOCK",
-			"backlight": 0
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_INDICATOR",
+					"param": {
+						"ind": "LEDMAP_NUM_LOCK"
+					}
+				},
+				"backlight": 0
+			}
 		}
 	},{
 		"name": "Caps Lock",
 		"description": "",
 		"default": {
-			"binding": "LEDMAP_CAPS_LOCK",
-			"backlight": 0
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_INDICATOR",
+					"param": {
+						"ind": "LEDMAP_CAPS_LOCK"
+					}
+				},
+				"backlight": 0
+			}
 		}
 	},{
 		"name": "Scroll Lock",
 		"description": "",
 		"default": {
-			"binding": "LEDMAP_SCROLL_LOCK",
-			"backlight": 0
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_INDICATOR",
+					"param": {
+						"ind": "LEDMAP_SCROLL_LOCK"
+					}
+				},
+				"backlight": 0
+			}
 		}
 	}],
 	"led_additional_index": 0,

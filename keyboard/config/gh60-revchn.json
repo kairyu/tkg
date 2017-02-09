@@ -4,22 +4,38 @@
 	"led_count": 2,
 	"led_map": [{
 		"name": "Caps Lock",
-		"description": "",
+		"description": "Typically the LED of Caps Lock key",
 		"default": {
-			"binding": "LEDMAP_CAPS_LOCK",
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_INDICATOR",
+					"param": {
+						"ind": "LEDMAP_CAPS_LOCK"
+					}
+				},
+				"backlight": 1
+			}
 		}
 	},{
 		"name": "Backlight",
-		"description": "",
+		"description": "The LEDs of all the other keys except Caps Lock",
 		"default": {
-			"binding": "LEDMAP_NO",
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_HIGH",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_LAYER",
+					"param": {
+						"layer": 1
+					}
+				},
+				"backlight": 1
+			}
 		}
 	}],
 	"led_additional_index": 0,
 	"additional": [{
-		"start": 7,
+		"start": 9,
 		"size": 4,
 		"type": "word",
 		"data": []

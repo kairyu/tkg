@@ -11,7 +11,7 @@ function appendLeds() {
 			var led = leds[index];
 			$('#led-wrapper').append(
 				$('<div>').attr({ "class": "form-group"  }).append(
-					$('<label>').attr({ "for": "led" + index + '-binding', "class": "col-md-2 control-label" })
+					$('<label>').attr({ "for": "led" + index + '-map', "class": "col-md-2 control-label", "title": _keyboard["led_map"][index]["description"] })
 					.text(_keyboard["led_map"][index]["name"])
 				).append(
 					$('<div>').attr({ "id": "led" + index, "class": "led-row col-md-10" })
@@ -32,139 +32,263 @@ $.fn.led = function() {
 		var id = $row.attr('id');
 		var index = Number(id.slice('led'.length));
 		var led = tkg.getLeds(index);
-		var binding = led["binding"];
-		var reverse = led["reverse"] | 0;
-		var backlight = led["backlight"] | 0;
+		var value = led["value"];
+		var param = led["param"];
 		$row.removeData();
 		$row.data('index', index);
-		$row.data('binding', binding);
-		$row.data('reverse', reverse);
-		$row.data('backlight', backlight);
-		var $binding = $('<div>').attr({ "class": "led-param led-binding" }).append(
-			makeSelect({ "id": id + "-binding", "class": "multiselect" }, tkg.getLedOptions("binding"), binding)
+		$row.data('value', value);
+		$row.data('param', param);
+		var $map = $('<div>').attr({ "class": "led-param led-map" }).append(
+			makeSelect({ "id": id + "-map", "class": "multiselect" }, tkg.getLedOptions("led"), value)
 		);
-		var $reverse = $('<div>').attr({ "class": "led-param led-reverse" }).append(
-			$('<div>').attr({ "class": "checkbox" }).append(
-				$('<label>').append(
-					$('<input>').attr({ "id": id + "-reverse", "type": "checkbox" }).prop('checked', reverse)
-				).append(
-					$('<span>').attr({ "lang": "en" }).text("Reverse")
-				)
-			)
-		);
-		var $backlight = $('<div>').attr({ "class": "led-param led-backlight" }).append(
-			$('<div>').attr({ "class": "checkbox" }).append(
-				$('<label>').append(
-					$('<input>').attr({ "id": id + "-backlight", "type": "checkbox" }).prop('checked', backlight)
-				).append(
-					$('<span>').attr({ "lang": "en" }).text("Backlight")
-				)
-			)
-		);
-		$row.empty().append($binding).append($reverse).append($backlight);
-		$row.find('.led-binding select').multiselect({
+		$row.empty().append($map);
+		$row.find('.led-map select').multiselect({
 			buttonTitle: function(options, select) {
 				var $selected = $(options[0]);
 				return $selected.attr('title');
 			},
 			onChange: function(element, checked) {
-				$row.data('binding', $(element).val());
+				$row.data('value', $(element).val());
 				onLedChange(id);
 			},
 		});
-		$row.find('.led-backlight input').change(function() {
-			$row.data('backlight', $(this).is(':checked') ? 1 : 0);
-			onLedChange(id);
-		});
-		$row.find('.led-reverse input').change(function() {
-			$row.data('reverse', $(this).is(':checked') ? 1 : 0);
-			onLedChange(id);
-		});
-		onLedChange(id);
+		appendLedParams(id);
+		updateLedMapState();
 	});
 }
 
 function onLedChange(id) {
 	var $row = $('#led-wrapper #' + id);
 	var index = $row.data('index');
-	var binding = $row.data('binding');
-	var reverse = $row.data('reverse');
-	var backlight = $row.data('backlight');
+	var value = $row.data('value');
 	$row.removeData();
 	$row.data('index', index);
-	$row.data('binding', binding);
-	$row.data('reverse', reverse);
-	$row.data('backlight', backlight);
-	tkg.setLeds(index, {
-		"binding": binding,
-		"reverse": reverse,
-		"backlight": backlight
-	});
+	$row.data('value', value);
+	var led = tkg.getLeds(index);
+	led["value"] = value;
+	tkg.setLeds(index, led);
 	appendLedParams(id);
 }
 
 function appendLedParams(id) {
 	var $row = $('#led-wrapper #' + id);
-	var $binding = $row.find('.led-binding');
-	$binding.nextAll('.led-param-layer').remove();
+	var $map = $row.find('.led-map');
+	$map.nextAll().remove();
 	var index = $row.data('index');
 	var led = tkg.getLeds(index);
-	var binding = led["binding"];
+	var value = led["value"];
 	if (led["param"]) {
 		var param = led["param"];
-		var args = led["args"];
+		var binding = param["binding"];
+		var reverse = param["reverse"];
+		var backlight = param["backlight"];
+		var led_count = param["led_count"];
 		var $params = $();
-		for (var i = 0; i < param.length; i++) {
-			var arg = args[i];
-			$row.data(param[i], arg);
-			switch (param[i]) {
-				case "layer":
-					$params = $params.add($('<div>').attr({ "class": "led-param led-param-layer" }).append(
+		for (var key in param) {
+			switch (key) {
+				case "binding":
+					$params = $params.add($('<div>').attr({ "class": "led-param led-param-binding" }).append(
 						$('<div>').attr({ "class": "input-group btn-group" }).append(
-							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("layer")
+							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("binding")
 						).append(
-							makeSelect({ "id": id + "-param-layer" }, tkg.getFnOptions("layer"), arg, false)
+							makeSelect({ "id": id + "-param-binding" }, tkg.getLedOptions("binding"), binding["value"])
+						)
+					));
+					break;
+				case "reverse":
+					$params = $params.add($('<div>').attr({ "class": "led-param led-param-reverse" }).append(
+						$('<div>').attr({ "class": "checkbox" }).append(
+							$('<label>').append(
+								$('<input>').attr({ "id": id + "-param-reverse", "type": "checkbox" }).prop('checked', reverse)
+							).append(
+								$('<span>').attr({ "lang": "en" }).text("reverse")
+							)
+						)
+					));
+					break;
+				case "backlight":
+					$params = $params.add($('<div>').attr({ "class": "led-param led-param-backlight" }).append(
+						$('<div>').attr({ "class": "checkbox" }).append(
+							$('<label>').append(
+								$('<input>').attr({ "id": id + "-param-backlight", "type": "checkbox" }).prop('checked', backlight)
+							).append(
+								$('<span>').attr({ "lang": "en" }).text("backlight")
+							)
+						)
+					));
+					break;
+				case "led_count":
+					$params = $params.add($('<div>').attr({ "class": "led-param led-param-led-count" }).append(
+						$('<div>').attr({ "class": "input-group btn-group" }).append(
+							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("number of led")
+						).append(
+							makeSelect({ "id": id + "-param-led-count" }, tkg.getLedOptions("led_count"), led_count)
 						)
 					));
 					break;
 			}
 		}
-		$row.find('.led-reverse').before($params);
-		// layer param
-		$row.find('.led-param-layer select').multiselect({
+		$row.append($params);
+		$row.find('.led-param-binding select').multiselect({
 			buttonTitle: function(options, select) {
 				var $selected = $(options[0]);
 				return $selected.attr('title');
 			},
 			onChange: function(option, checked) {
-				$row.data('layer', $(option).val());
+				$row.data('binding', $(option).val());
 				onLedParamsChange(id);
 			}
 		});
-		onLedParamsChange(id);
+		$row.find('.led-param-backlight input').change(function() {
+			$row.data('backlight', $(this).is(':checked') ? 1 : 0);
+			onLedParamsChange(id);
+		});
+		$row.find('.led-param-reverse input').change(function() {
+			$row.data('reverse', $(this).is(':checked') ? 1 : 0);
+			onLedParamsChange(id);
+		});
+		$row.find('.led-param-led-count select').multiselect({
+			buttonTitle: function(options, select) {
+				var $selected = $(options[0]);
+				return $selected.attr('title');
+			},
+			onChange: function(option, checked) {
+				$row.data('led_count', $(option).val());
+				onLedParamsChange(id);
+			}
+		});
+		appendLedSubParams(id);
 	}
 }
 
 function onLedParamsChange(id) {
 	var $row = $('#led-wrapper #' + id);
 	var index = $row.data('index');
+	var value = $row.data('value');
 	var binding = $row.data('binding');
 	var reverse = $row.data('reverse');
 	var backlight = $row.data('backlight');
+	var led_count = $row.data('led_count');
 	var led = tkg.getLeds(index);
-	var param = led["param"];
-	var args = [];
-	for (var i = 0; i < param.length; i++) {
-		args.push($row.data(param[i]));
+	$row.removeData();
+	$row.data('index', index);
+	$row.data('value', value);
+	if (binding) {
+		if (_.isObject(led["param"]["binding"])) {
+			led["param"]["binding"]["value"] = binding;
+		}
+		else {
+			led["param"]["binding"] = { "value": binding };
+		}
+		$row.data('binding', binding);
 	}
-	tkg.setLeds(index, {
-		"binding": binding,
-		"args": args,
-		"reverse": reverse,
-		"backlight": backlight
-	});
+	if (backlight !== undefined) {
+		led["param"]["backlight"] = backlight;
+		$row.data('backlight', backlight);
+	}
+	if (reverse !== undefined) {
+		led["param"]["reverse"] = reverse;
+		$row.data('reverse', reverse);
+	}
+	if (led_count !== undefined) {
+		led["param"]["led_count"] = led_count;
+		$row.data('led_count', led_count);
+	}
+	tkg.setLeds(index, led);
+	appendLedSubParams(id);
+}
+
+function appendLedSubParams(id) {
+	var $row = $('#led-wrapper #' + id);
+	var $binding = $row.find('.led-param-binding');
+	$row.find('.led-sub-param').remove();
+	var index = $row.data('index');
+	var led = tkg.getLeds(index);
+	var binding = led["param"]["binding"];
+	if (binding && binding["param"]) {
+		var param = binding["param"];
+		var layer = param["layer"];
+		var ind = param["ind"];
+		var $params = $();
+		for (var key in param) {
+			switch (key) {
+				case "layer":
+					$params = $params.add($('<div>').attr({ "class": "led-param led-sub-param led-param-layer" }).append(
+						$('<div>').attr({ "class": "input-group btn-group" }).append(
+							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("layer")
+						).append(
+							makeSelect({ "id": id + "-param-layer" }, tkg.getFnOptions("layer"), param[key])
+						)
+					));
+					break;
+				case "ind":
+					$params = $params.add($('<div>').attr({ "class": "led-param led-sub-param led-param-ind" }).append(
+						$('<div>').attr({ "class": "input-group btn-group" }).append(
+							$('<span>').attr({ "class": "input-group-addon", "lang": "en" }).text("indicator")
+						).append(
+							makeSelect({ "id": id + "-param-ind" }, tkg.getLedOptions("ind"), param[key])
+						)
+					));
+					break;
+			}
+		}
+		$binding.after($params);
+		$row.find('.led-param-layer select').multiselect({
+			buttonTitle: function(options, select) {
+				var $selected = $(options[0]);
+				return $selected.attr('title');
+			},
+			onChange: function(option, checked) {
+				$row.data('layer', Number($(option).val()));
+				onLedSubParamsChange(id);
+			}
+		});
+		$row.find('.led-param-ind select').multiselect({
+			buttonTitle: function(options, select) {
+				var $selected = $(options[0]);
+				return $selected.attr('title');
+			},
+			onChange: function(option, checked) {
+				$row.data('ind', $(option).val());
+				onLedSubParamsChange(id);
+			}
+		});
+	}
+}
+
+function onLedSubParamsChange(id) {
+	var $row = $('#led-wrapper #' + id);
+	var index = $row.data('index');
+	var value = $row.data('value');
+	var layer = $row.data('layer');
+	var ind = $row.data('ind');
+	var led = tkg.getLeds(index);
+	$row.removeData();
+	$row.data('index', index);
+	$row.data('value', value);
+	if (layer) {
+		led["param"]["binding"]["param"]["layer"] = layer;
+		$row.data('layer', layer);
+	}
+	if (ind) {
+		led["param"]["binding"]["param"]["ind"] = ind;
+		$row.data('ind', ind);
+	}
+	tkg.setLeds(index, led);
 }
 
 function rebuildLedSelect() {
 	$('.led-param select').multiselect('rebuild');
+}
+
+function updateLedMapState() {
+	var result = parseKeyboardName(_keyboardName);
+	var main = result['main'];
+	var variant = result['variant'];
+	if (_advanced_mode || main.match(/^(kimera.*)/)) {
+		$('.led-map').show();
+	}
+	else {
+		$('.led-map').hide();
+	}
 }

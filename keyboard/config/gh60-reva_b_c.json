@@ -4,46 +4,78 @@
 	"led_count": 5,
 	"led_map": [{
 		"name": "Caps Lock",
-		"description": "",
+		"description": "Typically the LED of Caps Lock key",
 		"default": {
-			"binding": "LEDMAP_CAPS_LOCK",
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_INDICATOR",
+					"param": {
+						"ind": "LEDMAP_CAPS_LOCK"
+					}
+				},
+				"backlight": 1
+			}
 		}
 	},{
-		"name": "Esc",
-		"description": "",
+		"name": "GPIO0",
+		"description": "Typically the LEDs of WASD keys",
 		"default": {
-			"binding": "LEDMAP_NO",
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_LAYER",
+					"param": {
+						"layer": 1
+					}
+				},
+				"backlight": 1
+			}
 		}
 	},{
-		"name": "WASD",
-		"description": "",
+		"name": "GPIO1",
+		"description": "Typically the LED of Esc key (also underglow for XD60)",
 		"default": {
-			"binding": "LEDMAP_LAYER",
-			"args": [ 1 ],
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": "LEDMAP_BINDING_NO",
+				"backlight": 1
+			}
 		}
 	},{
-		"name": "Right Shift/Alt/Ctrl",
-		"description": "",
+		"name": "GPIO2",
+		"description": "Typically the LEDs of Right Shift/Alt/Ctrl keys (also backlight for XD60)",
 		"default": {
-			"binding": "LEDMAP_LAYER",
-			"args": [ 2 ],
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_LAYER",
+					"param": {
+						"layer": 2
+					}
+				},
+				"backlight": 1
+			}
 		}
 	},{
-		"name": "Fn",
-		"description": "",
+		"name": "GPIO3",
+		"description": "Typically the LED of the key separated from Right Shift key",
 		"default": {
-			"binding": "LEDMAP_LAYER",
-			"args": [ 1 ],
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_LAYER",
+					"param": {
+						"layer": 1
+					}
+				},
+				"backlight": 1
+			}
 		}
 	}],
 	"led_additional_index": 0,
 	"additional": [{
-		"start": 7,
+		"start": 9,
 		"size": 10,
 		"type": "word",
 		"data": []

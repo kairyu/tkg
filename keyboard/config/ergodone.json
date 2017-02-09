@@ -125,40 +125,78 @@
 	"led_count": 5,
 	"led_map": [{
 		"name": "LED1",
-		"description": "",
+		"description": "The first LED of the 3 LEDs",
 		"default": {
-			"binding": "LEDMAP_NUM_LOCK",
-			"backlight": 0
+			"value": "LEDMAP_ACTIVE_HIGH",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_INDICATOR",
+					"param": {
+						"ind": "LEDMAP_NUM_LOCK"
+					}
+				},
+				"backlight": 0
+			}
 		}
 	},{
 		"name": "LED2",
-		"description": "",
+		"description": "The second LED of the 3 LEDs",
 		"default": {
-			"binding": "LEDMAP_CAPS_LOCK",
-			"backlight": 0
+			"value": "LEDMAP_ACTIVE_HIGH",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_INDICATOR",
+					"param": {
+						"ind": "LEDMAP_CAPS_LOCK"
+					}
+				},
+				"backlight": 0
+			}
 		}
 	},{
 		"name": "LED3",
-		"description": "",
+		"description": "The third LED of the 3 LEDs",
 		"default": {
-			"binding": "LEDMAP_SCROLL_LOCK",
-			"backlight": 0
+			"value": "LEDMAP_ACTIVE_HIGH",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_INDICATOR",
+					"param": {
+						"ind": "LEDMAP_SCROLL_LOCK"
+					}
+				},
+				"backlight": 0
+			}
 		}
 	},{
 		"name": "RX",
-		"description": "RX LED on Pro Micro",
+		"description": "The RX LED on Pro Micro",
 		"default": {
-			"binding": "LEDMAP_LAYER",
-			"args": [ 1 ],
-			"backlight": 0
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_LAYER",
+					"param": {
+						"layer": 1
+					}
+				},
+				"backlight": 0
+			}
 		}
 	},{
 		"name": "TX",
-		"description": "TX LED on Pro Micro",
+		"description": "The TX LED on Pro Micro",
 		"default": {
-			"binding": "LEDMAP_LAYER",
-			"args": [ 2 ],
-			"backlight": 0
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_LAYER",
+					"param": {
+						"layer": 2
+					}
+				},
+				"backlight": 0
+			}
 		}
 	}],
 	"led_additional_index": 0,

@@ -92,29 +92,8 @@
 		"13.75,4,1.25": { "row": 7, "col": 7, "note": "sw64 oem rctrl" },
 		"13.5,4,1.5": { "row": 7, "col": 7, "note": "sw64a wkl rctrl" }
 	},
-	"led_count": 3,
-	"led_map": [{
-		"name": "Caps Lock",
-		"description": "",
-		"default": {
-			"binding": "LEDMAP_CAPS_LOCK",
-			"backlight": 0
-		}
-	},{
-		"name": "Backlight",
-		"description": "",
-		"default": {
-			"binding": "LEDMAP_NO",
-			"backlight": 1
-		}
-	},{
-		"name": "RGB",
-		"description": "",
-		"default": {
-			"binding": "LEDMAP_NO",
-			"backlight": 1
-		}
-	}],
+	"led_count": 0,
+	"led_map": [],
 	"led_additional_index": 0,
 	"bootloader": [{
 		"name": "DFU",

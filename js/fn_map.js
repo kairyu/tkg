@@ -333,14 +333,14 @@ var action_map = {
 	},
 	"ACTION_BACKLIGHT_INCREASE": {
 		"group": "Backlight action",
-		"name": "Increase",
-		"description": "Increase backlight brightness",
+		"name": "Increase Level",
+		"description": "Increase backlight level",
 		"code": "0xD000"
 	},
 	"ACTION_BACKLIGHT_DECREASE": {
 		"group": "Backlight action",
-		"name": "Decrease",
-		"description": "Decrease backlight brightness",
+		"name": "Decrease Level",
+		"description": "Decrease backlight level",
 		"code": "0xD001"
 	},
 	"ACTION_BACKLIGHT_TOGGLE": {

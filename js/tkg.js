@@ -17,7 +17,9 @@ function TKG() {
 	var _on_map = {};
 	var _af_map = [];
 	var _am_map = [];
+	var _led_map = {};
 	var _binding_map = {};
+	var _ind_map = {};
 	var _reverse_map = {};
 	var _backlight_map = {};
 	var _fn_options = {};
@@ -83,20 +85,29 @@ function TKG() {
 		_consoleInfoGroupEnd();
 	}
 
-	var _setLedMaps = function(binding_map, reverse_map, backlight_map) {
+	var _setLedMaps = function(led_map, binding_map, ind_map, reverse_map, backlight_map) {
 		_consoleInfoGroup("setLedMap");
+		_led_map = led_map;
 		_binding_map = binding_map;
+		_ind_map = ind_map;
 		_reverse_map = reverse_map;
 		_backlight_map = backlight_map;
+		_consoleInfo("led_map:");
+		_consoleInfo(_led_map);
 		_consoleInfo("binding_map:");
 		_consoleInfo(_binding_map);
+		_consoleInfo("ind_map:");
+		_consoleInfo(_ind_map);
 		_consoleInfo("reverse map:");
 		_consoleInfo(_reverse_map);
 		_consoleInfo("backlight map:");
 		_consoleInfo(_backlight_map);
+		_led_options["led"] = _generateLedMapOptions(_led_map);
 		_led_options["binding"] = _generateBindingOptions(_binding_map);
-		_led_options["reverse"] = _generateBindingOptions(_reverse_map);
+		_led_options["ind"] = _generateIndOptions(_ind_map);
+		_led_options["reverse"] = _generateReverseOptions(_reverse_map);
 		_led_options["backlight"] = _generateBacklightOptions(_backlight_map);
+		_led_options["led_count"] = _generateLedCountOptions(32);
 		_consoleInfoGroupEnd();
 	}
 
@@ -362,8 +373,16 @@ function TKG() {
 		return key_options;
 	}
 
+	var _generateLedMapOptions = function(led_map) {
+		return _generateUngroupedOptions(led_map);
+	}
+
 	var _generateBindingOptions = function(binding_map) {
-		return _generateGroupedOptions(binding_map);
+		return _generateUngroupedOptions(binding_map);
+	}
+
+	var _generateIndOptions = function(ind_map) {
+		return _generateUngroupedOptions(ind_map);
 	}
 
 	var _generateReverseOptions = function(reverse_map) {
@@ -371,7 +390,19 @@ function TKG() {
 	}
 
 	var _generateBacklightOptions = function(backlight_map) {
-		return _generateUngroupedOptions(binding_map);
+		return _generateUngroupedOptions(backlight_map);
+	}
+
+	var _generateLedCountOptions = function(max_led_count) {
+		var options = [];
+		for (var i = 0; i <= max_led_count; i++) {
+			options.push({
+				"value": i,
+				"text": i,
+				"title": i
+			});
+		}
+		return options;
 	}
 
 	var _smartPush = function(target, value) {
@@ -1381,27 +1412,54 @@ function TKG() {
 		}
 	}
 
-	var _generateLedHex = function(led) {
-		if (led["binding"]) {
-			var hex = "0x0000";
-			var binding = led["binding"];
-			if (_binding_map[binding]) {
-				var code = _binding_map[binding]["code"];
-				if (_.isFunction(code)) {
-					hex = code.apply(code, led["args"]);
-				}
-				else {
-					hex = code;
-				}
+	var _evaluateLedOption = function(key, value) {
+		var map;
+		var param;
+		if (_.isObject(value)) {
+			param = value["param"];
+			value = value["value"];
+		}
+		switch (key) {
+			case "led":
+				map = _led_map[value];
+				break;
+			case "binding":
+				map = _binding_map[value];
+				break;
+			case "ind":
+				map = _ind_map[value];
+				break;
+			default:
+				return value;
+		}
+		var code = map["code"];
+		if (_.isFunction(code)) {
+			param = _evaluateLedParam(map, param);
+			return code.apply(code, param);
+		}
+		else {
+			return code;
+		}
+	}
+
+	var _evaluateLedParam = function(map, param) {
+		var evaluated = [];
+		for (var i = 0; i < map["param"].length; i++) {
+			var key = map["param"][i];
+			if (param[key] !== undefined) {
+				evaluated.push(_evaluateLedOption(key, param[key]));
 			}
-			var dec =  parseInt(hex, 16);
-			var reverse = led["reverse"] | 0;
-			var backlight = led["backlight"] | 0;
-			var code;
-			code = _reverse_map["LEDMAP_REVERSE"]["code"];
-			dec |= code.apply(code, [ reverse ]);
-			code = _backlight_map["LEDMAP_BACKLIGHT"]["code"];
-			dec |= code.apply(code, [ backlight ]);
+			else {
+				evaluated.push(_evaluateLedOption(key, map["default"][i]));
+			}
+		}
+		return evaluated;
+	}
+
+	var _generateLedHex = function(led) {
+		if (led["value"]) {
+			var hex = _evaluateLedOption("led", led);
+			var dec = parseInt(hex, 16);
 			return dec;
 		}
 		else {
@@ -1416,12 +1474,9 @@ function TKG() {
 	}
 
 	var _generateLedSymbol = function(led, index) {
-		if (led["binding"]) {
-			var binding = led["binding"];
-			var array = [ binding ];
-			if (led["args"]) {
-				array = array.concat(led["args"]);
-			}
+		if (led["value"]) {
+			var value = led["value"];
+			var array = [ value ];
 			return array;
 		}
 		else {
@@ -1637,7 +1692,7 @@ function TKG() {
 
 	var _getFns = function(index) {
 		if (arguments.length) {
-			return _fns[index];
+			return _.clone(_fns[index]);
 		}
 		else {
 			return _fns;
@@ -1660,7 +1715,44 @@ function TKG() {
 				if (action["param"]) {
 					fn["param"] = action["param"];
 					if (object["args"]) {
-						fn["args"] = object["args"];
+						// check action function and action macro
+						var args = [];
+						if (symbol == 'ACTION_FUNCTION' || symbol == 'ACTION_MACRO') {
+							var id = 0;
+							for (var i = 0; i < fn["param"].length; i++) {
+								var arg = object["args"][i];
+								var param = fn["param"][i];
+								if (param == 'af_id' || param == 'am_id') {
+									var list = _fn_options[param];
+									if (list.length) {
+										if (arg >= list.length) {
+											arg = 0;
+										}
+									}
+									else {
+										fn["action"] = 'ACTION_NO';
+										delete fn["param"];
+										delete fn["args"];
+										break;
+									}
+									id = arg;
+									args.push(arg);
+								}
+								else if (param == 'af_opt' || param == 'am_opt') {
+									var list = _fn_options[param][id];
+									if (list.length && arg < list.length) {
+										args.push(arg);
+									}
+									else {
+										args.push(0);
+									}
+								}
+							}
+						}
+						else {
+							args = object["args"];
+						}
+						fn["args"] = args;
 					}
 					else {
 						fn["args"] = action["default"];
@@ -1735,58 +1827,63 @@ function TKG() {
 
 	var _getLeds = function(index) {
 		if (arguments.length) {
-			return _leds[index];
+			return _.clone(_leds[index]);
 		}
 		else {
 			return _leds;
 		}
 	}
 
+	var _setLedOption = function(key, value) {
+		var map = {};
+		var param = {};
+		if (_.isObject(value)) {
+			param = value["param"] || {};
+			value = value["value"];
+		}
+		switch (key) {
+			case "led":
+				map = _led_map[value];
+				break;
+			case "binding":
+				map = _binding_map[value];
+				break;
+			case "ind":
+				map = _ind_map[value];
+				break;
+			default:
+				return value;
+		}
+		if (map["param"]) {
+			var new_param = {};
+			for (var i = 0; i < map["param"].length; i++) {
+				if (param[map["param"][i]]) {
+					new_param[map["param"][i]] = _setLedOption(map["param"][i], param[map["param"][i]]);
+				}
+				else {
+					new_param[map["param"][i]] = _setLedOption(map["param"][i], map["default"][i]);
+				}
+			}
+			return { "value": value, "param": new_param };
+		}
+		else {
+			return value;
+		}
+	}
+
 	var _setLeds = function(index, object) {
 		_consoleInfoGroup("setLeds");
-		var led = _leds[index];
 		_consoleInfo("Set Led" + index + ":");
 		_consoleInfo(object);
-		if (object["binding"]) {
-			var symbol = object["binding"];
-			if (led["binding"] != symbol || object["args"]) {
-				led["binding"] = symbol;
-				if (_binding_map[symbol]) {
-					var binding = _binding_map[symbol];
-					if (binding["param"]) {
-						led["param"] = binding["param"];
-						if (object["args"]) {
-							led["args"] = object["args"];
-						}
-						else {
-							led["args"] = binding["default"];
-						}
-					}
-					else {
-						delete led["param"];
-						delete led["args"];
-					}
-				}
-				_led_hex[index] = _generateLedHex(led);
-				_led_symbol[index] = _generateLedSymbol(led);
-			}
-		}
-		if (object["reverse"] !== undefined) {
-			if (led["reverse"] != object["reverse"]) {
-				led["reverse"] = object["reverse"];
-				_led_hex[index] = _generateLedHex(led);
-				_led_symbol[index] = _generateLedSymbol(led);
-			}
-		}
-		if (object["backlight"] !== undefined) {
-			if (led["backlight"] != object["backlight"]) {
-				led["backlight"] = object["backlight"];
-				_led_hex[index] = _generateLedHex(led);
-				_led_symbol[index] = _generateLedSymbol(led);
-			}
+		if (object["value"]) {
+			_leds[index] = _setLedOption("led", object);
+			console.log(_leds[index]);
+			_led_hex[index] = _generateLedHex(_leds[index]);
+			console.log(_led_hex[index].toString(16));
+			_led_symbol[index] = _generateLedSymbol(_leds[index]);
 		}
 		_consoleInfoGroupEnd();
-		return led;
+		return _leds[index];
 	}
 
 	var _getLedOptions = function(item) {

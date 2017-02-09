@@ -4,7 +4,7 @@
 	"max_layers": 3,
 	"max_fns": 32,
 	"eep_size": 1024,
-	"eep_start": 82,
+	"eep_start": 84,
 	"matrix_rows": 16,
 	"matrix_cols": 16,
 	"matrix_map": {},
@@ -13,62 +13,77 @@
 		"name": "LED1",
 		"description": "",
 		"default": {
-			"binding": "LEDMAP_NUM_LOCK",
-			"backlight": 0
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_INDICATOR",
+					"param": {
+						"ind": "LEDMAP_NUM_LOCK"
+					}
+				},
+				"backlight": 0
+			}
 		}
 	},{
 		"name": "LED2",
 		"description": "",
 		"default": {
-			"binding": "LEDMAP_CAPS_LOCK",
-			"backlight": 0
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_INDICATOR",
+					"param": {
+						"ind": "LEDMAP_CAPS_LOCK"
+					}
+				},
+				"backlight": 0
+			}
 		}
 	},{
 		"name": "LED3",
 		"description": "",
 		"default": {
-			"binding": "LEDMAP_SCROLL_LOCK",
-			"backlight": 0
+			"value": "LEDMAP_ACTIVE_LOW",
+			"param": {
+				"binding": {
+					"value": "LEDMAP_BINDING_INDICATOR",
+					"param": {
+						"ind": "LEDMAP_SCROLL_LOCK"
+					}
+				},
+				"backlight": 0
+			}
 		}
 	},{
 		"name": "LED4",
 		"description": "",
 		"default": {
-			"binding": "LEDMAP_NO",
-			"backlight": 1
+			"value": "LEDMAP_ACTIVE_HIGH",
+			"param": {
+				"binding": "LEDMAP_BINDING_NO",
+				"backlight": 1
+			}
 		}
 	}],
 	"led_additional_index": 1,
 	"action_functions": [{
-		"name": "RGB Toggle",
-		"description": "Toggle RGB light",
-		"opt": []
-	},
-	{
-		"name": "RGB Decrease",
-		"description": "Decrease level of RGB light",
-		"opt": []
-	},
-	{
-		"name": "RGB Increase",
-		"description": "Increase level of RGB light",
-		"opt": []
-	},
-	{
-		"name": "RGB Step",
-		"description": "Change RGB light level by step",
-		"opt": []
+		"name": "RGB LED",
+		"description": "Control RGB LEDs",
+		"opt": [
+			"Toggle", "Decrease Level", "Increase Level",
+			"Step", "Decrease Brightness", "Increase Brightness"
+		]
 	}],
 	"bootloader": [{
 		"name": "DFU",
 		"mcu": "atmega32u4"
 	}],
 	"additional": [{
-		"start": 16,
+		"start": 17,
 		"size": 34,
 		"data": []
 	},{
-		"start": 8,
+		"start": 9,
 		"size": 8,
 		"type": "word",
 		"data": []
