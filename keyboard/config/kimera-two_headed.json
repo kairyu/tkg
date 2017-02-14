@@ -1,5 +1,18 @@
 {
 	"name": "Kimera (Two-Headed)",
 	"description": "Two-Headed Kimera board",
-	"eep_start": 82
+	"eep_start": 84,
+	"firmware": [{
+		"name": "Default",
+		"file": "kimera-core.hex"
+	},{
+		"name": "No Console",
+		"file": "kimera-core-no_console.hex"
+	},{
+		"name": "Classic Default",
+		"file": "kimera-two_headed.hex"
+	},{
+		"name": "Classic No Console",
+		"file": "kimera-two_headed-no_console.hex"
+	}]
 }

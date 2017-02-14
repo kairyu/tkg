@@ -138,14 +138,20 @@ function getHEX(done) {
 	var result = parseKeyboardName(_keyboardName);
 	var main = result["main"];
 	var variant = result["variant"];
-	var url = "keyboard/firmware/" + main;
-	if (variant) {
-		url += "-" + variant;
+	var url = "keyboard/firmware/";
+	if (_firmware["file"]) {
+		url += _firmware["file"];
 	}
-	if (_firmware["name"]) {
-		url += "-" + normalizeString(_firmware["name"]);
+	else {
+		url += main;
+		if (variant) {
+			url += "-" + variant;
+		}
+		if (_firmware["name"] && _firmware["name"] != "Default") {
+			url += "-" + normalizeString(_firmware["name"]);
+		}
+		url += ".hex";
 	}
-	url += ".hex";
 	$.get(url, function(data) {
 		done.apply(this, [ data ]);
 	}).fail(function(d, textStatus, error) {
@@ -252,8 +258,18 @@ function appendBurnButton(bootloaders, firmwares) {
 			"role": "presentation",
 			"class": "dropdown-header",
 			"lang": "en"
-		}).text("Firmware"),
-		$('<li>').append(
+		}).text("Firmware")
+	);
+	if (firmwares) {
+		if (_.isEmpty(_.where(firmwares, {"name": "Default"}))) {
+			firmwares.unshift({"name": "Default"});
+		}
+	}
+	else {
+		firmwares = [{"name": "Default"}];
+	}
+	for (var i = 0; i < firmwares.length; i++) {
+		$('#burn_dropdown').append($('<li>').append(
 			$('<a>').attr({
 				"class": "burn_firmware",
 				"href": "javascript:void(0)"
@@ -264,29 +280,10 @@ function appendBurnButton(bootloaders, firmwares) {
 				}),
 				" ",
 				$('<span>').attr({
-					"lang": "en",
-				}).text("Default")
-			).data("param", "")
-		)
-	);
-	if (firmwares) {
-		for (var i = 0; i < firmwares.length; i++) {
-			$('#burn_dropdown').append($('<li>').append(
-				$('<a>').attr({
-					"class": "burn_firmware",
-					"href": "javascript:void(0)"
-				}).append(
-					$('<i>').attr({
-						"class": "glyphicon glyphicon-ok",
-						"style": "visibility:hidden;"
-					}),
-					" ",
-					$('<span>').attr({
-						"lang": "en"
-					}).text(firmwares[i]["name"])
-				).data("param", firmwares[i])
-			));
-		}
+					"lang": "en"
+				}).text(firmwares[i]["name"])
+			).data("param", firmwares[i])
+		));
 	}
 	if (window.File && window.FileReader && window.FileList && window.Blob) {
 		$('#burn_dropdown').append(
