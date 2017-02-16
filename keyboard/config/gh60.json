@@ -127,6 +127,13 @@
 		"description": "Pressing this key with shift key, you will get a ~(tilde)!",
 		"opt": []
 	},{
+		"name": "RGB LED",
+		"description": "Control RGB LEDs",
+		"opt": [
+			"Toggle", "Decrease Level", "Increase Level",
+			"Step", "Decrease Brightness", "Increase Brightness"
+		]
+	},{
 		"name": "Apple Fn",
 		"description": "Pressing directly: the key you selected, pressing with shift: Apple fn + the key you selected.",
 		"opt": [
