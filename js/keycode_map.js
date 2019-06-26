@@ -1164,20 +1164,20 @@ var keycode_map = {
 		"label": [ "play", "apple play" ],
 		"short_name": "KC_MPLY"
 	},
-	"KC_MEDIA_SELECT": {
-		"name": "Media Select",
-		"description": "Media Select",
-		"keycode": "0xB1",
-		"label": [ "select" ],
-		"label_priority": [ "select" ],
-		"short_name": "KC_MSEL"
-	},
 	"KC_MEDIA_EJECT": {
 		"name": "Media Eject",
 		"description": "Media Eject",
-		"keycode": "0xB2",
+		"keycode": "0xB1",
 		"label": [ "eject" ],
 		"short_name": "KC_EJCT"
+	},
+	"KC_MEDIA_SELECT": {
+		"name": "Media Select",
+		"description": "Media Select",
+		"keycode": "0xB2",
+		"label": [ "select" ],
+		"label_priority": [ "select" ],
+		"short_name": "KC_MSEL"
 	},
 	"KC_MAIL": {
 		"name": "Mail",
